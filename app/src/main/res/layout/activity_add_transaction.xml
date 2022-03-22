@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/add_trans"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Add_Transaction">
+
+<TextView
+    android:id="@+id/text_transaction"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:translationX="200dp">
+
+</TextView>
+    <Button
+        android:id="@+id/button_add"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:translationY="520dp"
+        android:translationX="60dp"
+        android:clickable="true"
+        android:visibility="visible"
+        android:text="Add"/>
+
+    <Button
+        android:id="@+id/cancel_clicked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/white"
+        android:clickable="true"
+        android:shadowColor="@color/white"
+        android:text="CANCEL"
+        android:textColor="@color/purple_500"
+        android:textSize="12dp"
+        android:translationX="-60dp"
+        android:translationY="520dp"
+        android:visibility="visible" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/transaction_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Transaction">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/trans_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/money_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/transaction_name"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="32dp"
+        android:hint="$">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/amount_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</RelativeLayout>
