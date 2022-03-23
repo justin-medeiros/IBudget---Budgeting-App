@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -20,27 +18,20 @@ import java.util.ArrayList;
 
 public class Transactions_List extends Fragment {
 
-    //private GalleryViewModel galleryViewModel;
     private FragmentGalleryBinding binding;
     private FloatingActionButton add_exp_button;
-    static boolean deleted_transList;
-    TextView tot_bal, exp_bal;
     ArrayList<String> new_items_big;
     ArrayAdapter<String> adapter_big;
-    ListView trans_big;
-    HomeFragment home_frag = new HomeFragment();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        //galleryViewModel = new ViewModelProvider(this).get(GalleryViewModel.class);
 
         binding = FragmentGalleryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        // Set title
         ((MainActivity) getActivity()).setActionBarTitle("Transaction List");
-
-        //trans_big = (ListView)root.findViewById(R.id.transaction_list);
 
         // Set amount to 0
         Add_Transaction.amount_flt = 0;

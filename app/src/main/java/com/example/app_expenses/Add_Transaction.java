@@ -21,7 +21,6 @@ public class Add_Transaction extends AppCompatActivity {
     public TextInputLayout amount_lay;
     public static double amount_flt = 0;
     public String transaction_line;
-    public String amount_str;
     public static ArrayList<String> items = new ArrayList<>();
 
     @Override
@@ -59,8 +58,6 @@ public class Add_Transaction extends AppCompatActivity {
                         items.add(0, transaction_line);
                         home_menu();
                     }
-
-
                 }catch(Exception e) {
                         Snackbar invalid_num = Snackbar.make(view, "Invalid amount, please try again.", 600);
                         invalid_num.show();

@@ -17,7 +17,6 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class Add_Budget extends Fragment {
 
-    //private Add_BudgetViewModel slideshowViewModel;
     Button budget_button, remove_button;
     TextInputLayout budget_lay;
     public static double budget_amount = 0;
@@ -26,8 +25,6 @@ public class Add_Budget extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        // REMOVE AT END
-        //slideshowViewModel = new ViewModelProvider(this).get(Add_BudgetViewModel.class);
 
         binding = FragmentSlideshowBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

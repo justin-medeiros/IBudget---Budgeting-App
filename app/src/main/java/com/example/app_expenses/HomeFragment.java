@@ -46,7 +46,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        //homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -70,9 +69,7 @@ public class HomeFragment extends Fragment {
         if (amount_exp != 0) {
             expense_arr.add(0, amount_exp);        // Add each amount to array
         }
-        Log.d("SIZEEE", Integer.toString(expense_arr.size()));
         expenses_amount += amount_exp;
-        Log.d("AHHHH", Double.toString(amount_exp));
         expenses_bal = (TextView) root.findViewById(R.id.expenses_amount);
         expenses_bal.setText("- $ " + String.format("%.2f", expenses_amount));
 
@@ -88,7 +85,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 openAdd_transaction();
-                //amount_exp = 0;
             }
 
         });
@@ -114,29 +110,8 @@ public class HomeFragment extends Fragment {
         return x - y;
     }
 
-    public TextView getExp_str(){
-        return expenses_bal;
-    }
-
-    public TextView getTotBal_str(){
-        return total_bal;
-    }
-
     public static double getTotalBudget(){
         return budget_amount;
-    }
-
-    public double getExpenses_amount(){
-        return expenses_amount;
-    }
-
-    public double getArrTop(){
-        return expense_arr.get(0);
-    }
-
-    public static void remove_arr_elem(){
-        expense_arr.remove(0);
-        return;
     }
 
     public void swipeMenuCreated(View root, SwipeMenuListView listView, String choose_class){
@@ -161,12 +136,7 @@ public class HomeFragment extends Fragment {
         listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                // open, the click
-                Log.d("HJBDHJ", Integer.toString(position));
-
                 delete_list_item(root, position, choose_class);
-
-                // false : close the menu; true : not close the menu
                 return false;
             }
         });
@@ -184,13 +154,13 @@ public class HomeFragment extends Fragment {
                 Log.d("EXP ARR POSITION", Double.toString(expense_arr.get(position)));
                 adapter.remove(adapter.getItem(position));
 
+                // If one item in list
                 if (adapter.getCount() == 0){
                     expenses_amount = 0;
                     expense_arr.remove(0);
                 }
                 else{
                     expenses_amount-= expense_arr.remove(position);
-                    Log.d("SIZE AFTER", Integer.toString(expense_arr.size()));
 
 
                 }
