@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="30dp"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    tools:context="com.example.app_expenses.HomeFragment">
+
+
+    <RelativeLayout
+        android:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/big_box"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/layout_bg"
+            android:orientation="vertical"
+            android:padding="25dp">
+
+
+            <TextView
+                android:id="@+id/balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Balance"
+                android:textColor="@color/white"
+                android:textSize="16dp">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/total_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="0.00"
+                android:textColor="@color/white"
+                android:textSize="36dp">
+            </TextView>
+
+            <TextView
+                android:id="@+id/budget_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="Budget"
+                android:textColor="@color/white"
+                android:textSize="14dp"
+                android:translationY="18dp">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/expenses_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="Expenses"
+                android:textColor="#FFFFFF"
+                android:textSize="14dp"
+                android:translationY="-2dp">
+
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:id="@+id/budget_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="80"
+                    android:layout_height="wrap_content"
+                    android:text="0.00"
+                    android:textColor="#00ff00"
+                    android:textSize="16dp">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/expenses_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="0.00"
+                    android:textColor="#EE4B2B"
+                    android:textSize="16dp">
+
+                </TextView>
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/plus_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:visibility="visible"
+        android:src="@android:drawable/ic_input_add"
+        android:layout_centerHorizontal="true"
+        android:translationX="145dp"
+        android:translationY="475dp"
+        app:backgroundTint="@color/purple_500"
+        app:rippleColor="@color/purple_500"
+        app:tint="@color/white" />
+
+
+    <TextView
+        android:id="@+id/first_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:translationY = "400dp"/>
+
+    <TextView
+        android:id="@+id/expenses_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:translationY = "208dp"
+        android:text="Expenses"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/underline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:translationY = "209dp"
+        android:text="__________"
+        android:textSize="16dp" />
+
+    <com.baoyz.swipemenulistview.SwipeMenuListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="460dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="48dp"
+        android:layout_marginBottom="189dp"
+        android:scrollbars="vertical"
+        android:translationY="190dp">
+
+    </com.baoyz.swipemenulistview.SwipeMenuListView>
+
+
+</RelativeLayout>
