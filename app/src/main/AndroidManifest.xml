@@ -17,6 +17,12 @@
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.App_Expenses.NoActionBar">
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.App_Expenses.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
