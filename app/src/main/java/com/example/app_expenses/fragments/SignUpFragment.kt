@@ -1,4 +1,4 @@
-package com.example.app_expenses
+package com.example.app_expenses.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.example.app_expenses.R
 import com.example.app_expenses.databinding.FragmentSignUpBinding
 
 private lateinit var fragmentSignUpBinding: FragmentSignUpBinding

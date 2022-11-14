@@ -34,7 +34,7 @@
         android:clickable="true"
         android:shadowColor="@color/white"
         android:text="CANCEL"
-        android:textColor="@color/purple_500"
+        android:textColor="@color/background_primary"
         android:textSize="12dp"
         android:translationX="-60dp"
         android:translationY="520dp"

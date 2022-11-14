@@ -1,31 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/frameLayoutSplashScreen"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/purple_200"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <FrameLayout
-            android:id="@+id/frameLayoutSplashScreen"
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@color/background_primary">
             <ImageView
                 android:id="@+id/imageSplashScreen"
-                android:layout_width="400px"
-                android:layout_height="400px"
+                android:layout_width="280px"
+                android:layout_height="280px"
                 android:layout_gravity="center"
-                android:background="@drawable/common_full_open_on_phone"/>
-
-            <TextView
-                android:id="@+id/testTv"
+                android:background="@drawable/logo_dark"
+                android:layout_marginBottom="30dp"/>
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TEST"
-                android:textSize="30dp"
-                android:textColor="@color/white"/>
-        </FrameLayout>
-    </LinearLayout>
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+                <TextView
+                    android:id="@+id/nameTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="I"
+                    android:textSize="22dp"
+                    android:letterSpacing="0.2"
+                    android:fontFamily="@font/figerona_bold"
+                    android:textColor="@color/foreground_primary"/>
+
+                <TextView
+                    android:id="@+id/nameTwoTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BUDGET"
+                    android:textSize="22dp"
+                    android:letterSpacing="0.2"
+                    android:fontFamily="@font/figerona_bold"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
 </layout>
