@@ -1,4 +1,4 @@
-package com.example.app_expenses
+package com.example.app_expenses.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.example.app_expenses.R
 import com.example.app_expenses.databinding.FragmentLoginBinding
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.database.DatabaseReference

@@ -22,8 +22,8 @@
         android:layout_centerHorizontal="true"
         android:translationX="145dp"
         android:translationY="505dp"
-        app:backgroundTint="@color/purple_500"
-        app:rippleColor="@color/purple_500"
+        app:backgroundTint="@color/background_primary"
+        app:rippleColor="@color/background_primary"
         app:tint="@color/white" />
 
 

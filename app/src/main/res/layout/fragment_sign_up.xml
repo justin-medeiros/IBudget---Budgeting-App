@@ -9,7 +9,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/purple_700"
+            android:background="@drawable/background"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -19,7 +19,9 @@
                 android:layout_gravity="left"
                 android:layout_marginLeft="60dp"
                 android:layout_marginBottom="20dp"
+                android:fontFamily="@font/figerona_bold"
                 android:text="Sign Up"
+                android:textColor="@color/white"
                 android:textSize="42sp" />
 
             <TextView
@@ -28,7 +30,9 @@
                 android:layout_gravity="left"
                 android:layout_marginLeft="60dp"
                 android:layout_marginBottom="20dp"
+                android:fontFamily="@font/figerona_regular"
                 android:text="Create your account!"
+                android:textColor="@color/foreground_primary"
                 android:textSize="16sp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -40,16 +44,30 @@
                 android:layout_marginRight="60dp"
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
+                android:textColorHint="@color/white"
+                app:boxBackgroundColor="@color/background_secondary"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxStrokeColor="@color/background_secondary"
+                app:boxStrokeWidth="2dp"
+                app:hintAnimationEnabled="false"
+                app:hintTextColor="@color/white"
                 app:startIconDrawable="@drawable/ic_account"
-                app:startIconTint="@color/white">
+                app:startIconTint="@color/foreground_primary">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tvFirstName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:fontFamily="@font/figerona_regular"
                     android:hint="First Name"
-                    android:inputType="textEmailAddress"
+                    android:inputType="textPersonName"
+                    android:paddingTop="20dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
                     android:textSize="16sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -62,16 +80,30 @@
                 android:layout_marginRight="60dp"
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
+                android:textColorHint="@color/white"
+                app:boxBackgroundColor="@color/background_secondary"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxStrokeColor="@color/background_secondary"
+                app:boxStrokeWidth="2dp"
+                app:hintAnimationEnabled="false"
+                app:hintTextColor="@color/white"
                 app:startIconDrawable="@drawable/ic_account"
-                app:startIconTint="@color/white">
+                app:startIconTint="@color/foreground_primary">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tvLastName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:fontFamily="@font/figerona_regular"
                     android:hint="Last Name"
-                    android:inputType="textEmailAddress"
+                    android:inputType="textPersonName"
+                    android:paddingTop="20dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
                     android:textSize="16sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -84,16 +116,30 @@
                 android:layout_marginRight="60dp"
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
+                android:textColorHint="@color/white"
+                app:boxBackgroundColor="@color/background_secondary"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxStrokeColor="@color/background_secondary"
+                app:boxStrokeWidth="2dp"
+                app:hintAnimationEnabled="false"
+                app:hintTextColor="@color/white"
                 app:startIconDrawable="@drawable/ic_email"
-                app:startIconTint="@color/purple_500">
+                app:startIconTint="@color/foreground_primary">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tvLoginEmail"
+                    android:id="@+id/tvEmailSignUp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:fontFamily="@font/figerona_regular"
                     android:hint="Email"
                     android:inputType="textEmailAddress"
+                    android:paddingTop="20dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
                     android:textSize="16sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -106,17 +152,30 @@
                 android:layout_marginRight="60dp"
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
+                android:textColorHint="@color/white"
+                app:boxBackgroundColor="@color/background_secondary"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxStrokeColor="@color/background_secondary"
+                app:boxStrokeWidth="2dp"
+                app:hintAnimationEnabled="false"
+                app:hintTextColor="@color/white"
                 app:startIconDrawable="@drawable/ic_lock"
-                app:startIconTint="@color/black">
+                app:startIconTint="@color/foreground_primary">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tvLoginPassword"
+                    android:id="@+id/tvPasswordSignUp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:fontFamily="@font/figerona_regular"
                     android:gravity="center_vertical"
+                    android:textColor="@color/white"
                     android:hint="Password"
+                    android:paddingTop="20dp"
                     android:inputType="textPassword"
-                    android:padding="20dp" />
+                    app:boxStrokeColor="@color/background_secondary" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -125,8 +184,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginRight="60dp"
+                android:backgroundTint="@color/white"
+                android:fontFamily="@font/figerona_bold"
                 android:paddingHorizontal="25dp"
-                android:text="SIGN UP" />
+                android:text="SIGN UP"
+                android:textColor="@color/background_primary" />
         </LinearLayout>
 
         <LinearLayout
@@ -138,13 +200,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Already have an account? "/>
+                android:fontFamily="@font/figerona_regular"
+                android:text="Already have an account? "
+                android:textColor="@color/white"/>
             <TextView
                 android:id="@+id/tvSignIn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="Sign In"/>
+                android:fontFamily="@font/figerona_medium"
+                android:text="Sign In"
+                android:textColor="@color/foreground_primary"/>
         </LinearLayout>
     </RelativeLayout>
 </layout>

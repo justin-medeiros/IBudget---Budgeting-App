@@ -6,8 +6,8 @@ import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.example.app_expenses.databinding.ActivitySplashScreenBinding
+import com.example.app_expenses.fragments.LoginFragment
 
 
 class SplashScreenActivity: AppCompatActivity() {
@@ -21,7 +21,8 @@ class SplashScreenActivity: AppCompatActivity() {
 
     private fun finishSplashScreen(binding: ActivitySplashScreenBinding){
         Handler(Looper.getMainLooper()).postDelayed({
-            binding.testTv.visibility = View.GONE
+            binding.nameTv.visibility = View.GONE
+            binding.nameTwoTv.visibility = View.GONE
             binding.imageSplashScreen.visibility = View.GONE
             callLoginFragment()
         }, 5000)

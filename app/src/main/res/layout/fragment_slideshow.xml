@@ -14,7 +14,7 @@
         android:textAlignment="center"
         android:textSize="72dp"
         android:translationY="180dp"
-        android:textColor="@color/purple_500"
+        android:textColor="@color/background_primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:translationY="130dp"
-        android:textColor="@color/purple_500"
+        android:textColor="@color/background_primary"
         android:textSize="24dp"
         android:text="Total Budget">
 
@@ -47,7 +47,7 @@
         android:layout_centerHorizontal="true"
         android:text="Remove"
         android:backgroundTint="@color/white"
-        android:textColor="@color/purple_500"
+        android:textColor="@color/background_primary"
         android:translationX="-80dp"
         android:translationY="400dp" />
 
@@ -56,8 +56,8 @@
         android:id="@+id/budget_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/purple_500"
-        app:boxStrokeColor="@color/purple_500"
+        android:textColorHint="@color/background_primary"
+        app:boxStrokeColor="@color/background_primary"
         android:layout_marginStart="32dp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="32dp"
