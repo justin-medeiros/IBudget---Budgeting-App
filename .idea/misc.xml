@@ -31,6 +31,16 @@
         <entry key="..\:/Users/Justin Medeiros/AndroidStudioProjects/App_Expenses/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.28958333333333336" />
         <entry key="..\:/Users/Justin Medeiros/AndroidStudioProjects/App_Expenses/app/src/main/res/mipmap-anydpi-v26/ic_trans.xml" value="0.28958333333333336" />
         <entry key="..\:/Users/Justin Medeiros/AndroidStudioProjects/App_Expenses/app/src/main/res/mipmap-anydpi-v26/ic_trans_round.xml" value="0.28958333333333336" />
+        <entry key="app/src/main/res/drawable/account.xml" value="0.143" />
+        <entry key="app/src/main/res/layout/activity_add_transaction.xml" value="0.11458333333333333" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.1140625" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.11458333333333333" />
+        <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.20102298017861187" />
+        <entry key="app/src/main/res/layout/content_main.xml" value="0.1140625" />
+        <entry key="app/src/main/res/layout/fragment_gallery.xml" value="0.11458333333333333" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.21782531738281252" />
+        <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.1328125" />
+        <entry key="app/src/main/res/layout/fragment_slideshow.xml" value="0.11458333333333333" />
       </map>
     </option>
   </component>
