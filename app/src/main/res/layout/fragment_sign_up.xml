@@ -36,13 +36,13 @@
                 android:textSize="16sp" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputLayoutFirstName"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="60dp"
                 android:layout_marginRight="60dp"
-                android:layout_marginBottom="20dp"
                 android:gravity="center"
                 android:textColorHint="@color/white"
                 app:boxBackgroundColor="@color/background_secondary"
@@ -52,7 +52,6 @@
                 app:boxCornerRadiusTopStart="10dp"
                 app:boxStrokeColor="@color/background_secondary"
                 app:boxStrokeWidth="2dp"
-                app:hintAnimationEnabled="false"
                 app:hintTextColor="@color/white"
                 app:startIconDrawable="@drawable/ic_account"
                 app:startIconTint="@color/foreground_primary">
@@ -67,18 +66,34 @@
                     android:inputType="textPersonName"
                     android:paddingTop="20dp"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/white"
                     android:textSize="16sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:id="@+id/tvInvalidFirstName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/invalid_first_name"
+                android:textSize="10sp"
+                android:textColor="@color/red_bright"
+                android:fontFamily="@font/figerona_light"
+                android:layout_gravity="left"
+                android:drawablePadding="5dp"
+                android:layout_marginLeft="70dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginTop="5dp"
+                android:drawableLeft="@drawable/ic_close_circle"/>
+
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputLayoutLastName"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="60dp"
                 android:layout_marginRight="60dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:textColorHint="@color/white"
                 app:boxBackgroundColor="@color/background_secondary"
@@ -88,7 +103,6 @@
                 app:boxCornerRadiusTopStart="10dp"
                 app:boxStrokeColor="@color/background_secondary"
                 app:boxStrokeWidth="2dp"
-                app:hintAnimationEnabled="false"
                 app:hintTextColor="@color/white"
                 app:startIconDrawable="@drawable/ic_account"
                 app:startIconTint="@color/foreground_primary">
@@ -103,18 +117,34 @@
                     android:inputType="textPersonName"
                     android:paddingTop="20dp"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/white"
                     android:textSize="16sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:id="@+id/tvInvalidLastName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/invalid_last_name"
+                android:textSize="10sp"
+                android:textColor="@color/red_bright"
+                android:fontFamily="@font/figerona_light"
+                android:layout_gravity="left"
+                android:drawablePadding="5dp"
+                android:layout_marginLeft="70dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginTop="5dp"
+                android:drawableLeft="@drawable/ic_close_circle"/>
+
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputLayoutEmail"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="60dp"
                 android:layout_marginRight="60dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:textColorHint="@color/white"
                 app:boxBackgroundColor="@color/background_secondary"
@@ -124,7 +154,6 @@
                 app:boxCornerRadiusTopStart="10dp"
                 app:boxStrokeColor="@color/background_secondary"
                 app:boxStrokeWidth="2dp"
-                app:hintAnimationEnabled="false"
                 app:hintTextColor="@color/white"
                 app:startIconDrawable="@drawable/ic_email"
                 app:startIconTint="@color/foreground_primary">
@@ -139,18 +168,34 @@
                     android:inputType="textEmailAddress"
                     android:paddingTop="20dp"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/white"
                     android:textSize="16sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:id="@+id/tvInvalidEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/invalid_email"
+                android:textSize="10sp"
+                android:textColor="@color/red_bright"
+                android:fontFamily="@font/figerona_light"
+                android:layout_gravity="left"
+                android:drawablePadding="5dp"
+                android:layout_marginLeft="70dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginTop="5dp"
+                android:drawableLeft="@drawable/ic_close_circle"/>
+
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputLayoutPassword"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="60dp"
                 android:layout_marginRight="60dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:textColorHint="@color/white"
                 app:boxBackgroundColor="@color/background_secondary"
@@ -160,7 +205,6 @@
                 app:boxCornerRadiusTopStart="10dp"
                 app:boxStrokeColor="@color/background_secondary"
                 app:boxStrokeWidth="2dp"
-                app:hintAnimationEnabled="false"
                 app:hintTextColor="@color/white"
                 app:startIconDrawable="@drawable/ic_lock"
                 app:startIconTint="@color/foreground_primary">
@@ -171,12 +215,39 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/figerona_regular"
                     android:gravity="center_vertical"
-                    android:textColor="@color/white"
                     android:hint="Password"
-                    android:paddingTop="20dp"
                     android:inputType="textPassword"
+                    android:paddingTop="20dp"
+                    android:textColor="@color/white"
                     app:boxStrokeColor="@color/background_secondary" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tvInvalidPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/invalid_password"
+                android:textSize="10sp"
+                android:textColor="@color/red_bright"
+                android:fontFamily="@font/figerona_light"
+                android:layout_gravity="left"
+                android:drawablePadding="5dp"
+                android:layout_marginLeft="70dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginTop="5dp"
+                android:drawableLeft="@drawable/ic_close_circle"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="60dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/figerona_light"
+                android:text="@string/password_requirement"
+                android:textColor="@color/white"
+                android:textSize="8sp" />
 
             <Button
                 android:id="@+id/btnSignUp"

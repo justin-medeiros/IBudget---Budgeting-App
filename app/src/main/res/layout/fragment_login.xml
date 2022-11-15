@@ -37,6 +37,7 @@
                 android:textSize="16sp" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/loginEmailTextInput"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -73,13 +74,13 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/loginPasswordTextInput"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="60dp"
                 android:layout_marginRight="60dp"
-                android:layout_marginBottom="20dp"
                 android:gravity="center"
                 android:textColorHint="@color/white"
                 app:boxBackgroundColor="@color/background_secondary"
@@ -95,6 +96,7 @@
                 app:startIconTint="@color/foreground_primary">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tvLoginPassword"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/figerona_regular"
@@ -107,10 +109,27 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/tvInvalidLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/login_invalid"
+                android:textSize="12sp"
+                android:textColor="@color/red_bright"
+                android:fontFamily="@font/figerona_light"
+                android:layout_gravity="left"
+                android:drawablePadding="5dp"
+                android:layout_marginLeft="70dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/ic_close_circle"/>
+            <TextView
+                android:id="@+id/tvLoginForgotPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginRight="60dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:fontFamily="@font/figerona_regular"
                 android:text="Forgot Password?"

@@ -6,5 +6,7 @@
     <color name="foreground_primary">#44C7E4</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="red">#712D2D</color>
+    <color name="red_bright">#FA3939</color>
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">@color/background_secondary</color>
 </resources>
