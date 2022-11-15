@@ -11,6 +11,8 @@
     <string name="invalid_email">Please enter a valid email address.</string>
     <string name="invalid_password">Please enter a valid password.</string>
     <string name="email_taken">Email is taken. Please enter a new email address.</string>
+    <string name="login_invalid">Email and/or password is incorrect! Please try again!</string>
+    <string name="alert_invalid">Email does not match any of our records. Please enter a valid email address.</string>
     <string name="password_requirement">* Password must be at least 6 characters long and contain at least a capital letter, a lowercase letter, a character and a number.</string>
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>

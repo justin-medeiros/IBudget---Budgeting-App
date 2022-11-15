@@ -81,7 +81,7 @@ class SignUpFragment: Fragment() {
 
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if(task.isSuccessful){
-                newUser = UserData(firstName, lastName, email, password)
+                newUser = UserData(firstName, lastName, email)
                 firebaseDatabase.child("users").child(FirebaseAuth.getInstance().currentUser?.uid!!).child("profile").setValue(newUser).addOnCompleteListener { registerUser ->
                     if(registerUser.isSuccessful){
                         Toast.makeText(context, "User has been registered successfully!", Toast.LENGTH_LONG).show()
