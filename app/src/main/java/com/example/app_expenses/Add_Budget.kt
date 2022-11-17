@@ -45,7 +45,7 @@ class Add_Budget : Fragment() {
         val root: View = binding!!.root
 
         // Set title
-        (activity as MainActivity?)!!.setActionBarTitle("Add Budget")
+        //(activity as MainActivity?)!!.setActionBarTitle("Add Budget")
 
 //        // Set expenses amount to 0
         Add_Transaction.amount = 0.0

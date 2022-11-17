@@ -1,5 +1,6 @@
 package com.example.app_expenses
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,7 +9,12 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.app_expenses.databinding.ActivitySplashScreenBinding
 import com.example.app_expenses.fragments.LoginFragment
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
+private lateinit var auth: FirebaseAuth
 
 class SplashScreenActivity: AppCompatActivity() {
 
@@ -16,6 +22,7 @@ class SplashScreenActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         var binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
+        auth = Firebase.auth
         finishSplashScreen(binding)
     }
 
@@ -24,7 +31,11 @@ class SplashScreenActivity: AppCompatActivity() {
             binding.nameTv.visibility = View.GONE
             binding.nameTwoTv.visibility = View.GONE
             binding.imageSplashScreen.visibility = View.GONE
-            callLoginFragment()
+            if(auth.currentUser != null){
+                callMainActivity()
+            }else{
+                callLoginFragment()
+            }
         }, 5000)
     }
 
@@ -35,5 +46,10 @@ class SplashScreenActivity: AppCompatActivity() {
             .commit()
     }
 
-    override fun onBackPressed() {} // disallow back pressing
+    private fun callMainActivity(){
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
+
+    override fun onBackPressed() {}
 }
