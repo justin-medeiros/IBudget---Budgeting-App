@@ -43,9 +43,6 @@ class Transactions_List : Fragment() {
         binding = FragmentGalleryBinding.inflate(inflater, container, false)
         val root: View = binding!!.root
 
-        // Set title
-        (activity as MainActivity?)!!.setActionBarTitle("Transaction List")
-
         // Set amount to 0
         Add_Transaction.amount = 0.0
         Add_Budget.budgAmount = 0.0
