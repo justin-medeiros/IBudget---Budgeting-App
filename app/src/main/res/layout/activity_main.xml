@@ -2,25 +2,46 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background_primary"
+    android:id="@+id/relativeLayoutMainActivity">
 
    <androidx.viewpager2.widget.ViewPager2
        android:id="@+id/viewPagerMain"
        android:layout_width="match_parent"
-       android:layout_height="match_parent"/>
+       android:layout_height="match_parent" />
+
+
+   <com.google.android.material.button.MaterialButton
+       android:id="@+id/tabBarButton"
+       android:layout_width="50dp"
+       android:layout_height="50dp"
+       android:layout_alignParentBottom="true"
+       android:layout_centerInParent="true"
+       android:layout_marginBottom="15dp"
+       android:gravity="center"
+       android:insetLeft="0dp"
+       android:insetTop="0dp"
+       android:insetRight="0dp"
+       android:insetBottom="0dp"
+       app:iconGravity="textStart"
+       app:iconPadding="0dp"
+       app:icon="@android:drawable/ic_input_add"
+       app:iconTint="@color/foreground_primary"
+       app:cornerRadius="12dp"
+       app:backgroundTint="@color/background_tertiary"
+       app:rippleColor="@color/white" />
 
    <com.google.android.material.tabs.TabLayout
        android:id="@+id/tabLayoutMain"
-       android:layout_height="wrap_content"
        android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_alignParentBottom="true"
        android:background="@color/background_primary"
        app:tabGravity="fill"
-       android:layout_alignParentBottom="true"
-       app:tabMode="fixed"
-       app:tabIndicatorColor="@color/foreground_primary"
        app:tabIconTint="@color/background_tertiary"
-       >
+       app:tabIndicatorColor="@color/foreground_primary"
+       app:tabMode="fixed">
 
       <com.google.android.material.tabs.TabItem
           android:layout_width="match_parent"
@@ -36,7 +57,7 @@
       <com.google.android.material.tabs.TabItem
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          android:icon="@drawable/ic_chart_box" />
+          android:icon="@drawable/ic_chart_box"/>
 
       <com.google.android.material.tabs.TabItem
           android:layout_width="match_parent"
@@ -44,5 +65,7 @@
           android:icon="@drawable/money_icon" />
 
    </com.google.android.material.tabs.TabLayout>
+
+
 
 </RelativeLayout>
