@@ -3,6 +3,7 @@ package com.example.app_expenses
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +22,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding!!.root)
         showTabBar()
         setTabBarMargins()
+    }
+
+    fun visibleTabBarVisibility(){
+        binding.tabLayoutMain.visibility = View.VISIBLE
+        binding.viewPagerMain.visibility = View.VISIBLE
+        binding.tabBarButton.visibility = View.VISIBLE
+    }
+
+    fun hideTabBarVisibility(){
+        binding.tabLayoutMain.visibility = View.GONE
+        binding.viewPagerMain.visibility = View.GONE
+        binding.tabBarButton.visibility = View.GONE
     }
 
     private fun showTabBar(){

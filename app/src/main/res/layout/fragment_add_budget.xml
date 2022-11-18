@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:orientation="vertical"
+            android:background="@color/background_primary">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/foreground_primary">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/addBudgetBackButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:icon="@drawable/ic_arrow_left_circle"
+                    app:iconTint="@color/white"
+                    android:background="@android:color/transparent"
+                    android:backgroundTint="@color/foreground_primary"
+                    app:cornerRadius="12dp"
+                    android:shadowRadius="0"
+                    app:rippleColor="@color/white"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginLeft="10dp" />
+                <TextView
+                    android:id="@+id/addBudgetNavTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add New Budget"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/figerona_bold"
+                    android:textSize="18sp"
+                    android:layout_centerInParent="true"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose a category"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/figerona_bold"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="40dp"
+                />
+
+            <HorizontalScrollView
+                android:id="@+id/scrollViewAddBudget"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                tools:ignore="MissingConstraints"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Budget Name"
+                android:textColor="@color/foreground_primary"
+                android:fontFamily="@font/figerona_semibold"
+                android:textSize="16sp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="20dp"/>
+
+            <EditText
+                android:id="@+id/budgetNameText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Budget"
+                android:textColorHint="@color/background_tertiary"
+                android:background="@drawable/text_line"
+                android:textColor="@color/white"
+                android:fontFamily="@font/figerona_semibold"
+                android:textSize="18sp"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:paddingBottom="10dp"/>
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Amount"
+                    android:textColor="@color/foreground_primary"
+                    android:fontFamily="@font/figerona_semibold"
+                    android:textSize="16sp"
+                    android:layout_marginLeft="30dp"
+                    tools:ignore="MissingConstraints" />
+
+                <EditText
+                    android:id="@+id/amountText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Budget"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="95dp"
+                    android:layout_alignRight="@+id/btnConfirmAddBudget"
+                    android:textColorHint="@color/background_tertiary"
+                    android:background="@drawable/text_line"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/figerona_semibold"
+                    android:textSize="18sp"
+                    android:paddingBottom="10dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnConfirmAddBudget"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="30dp"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    app:backgroundTint="@color/foreground_primary"
+                    app:cornerRadius="12dp"
+                    app:icon="@drawable/ic_arrow_right_thick"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconTint="@color/white"
+                    app:rippleColor="@color/white" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+</layout>
