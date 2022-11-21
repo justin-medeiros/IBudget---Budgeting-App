@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/strokeCategoryContainer"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:background="@drawable/category_inactive"
+        android:backgroundTint="@color/orangeCategory">
+            <RelativeLayout
+                android:id="@+id/categoryContainer"
+                android:layout_width="124dp"
+                android:layout_height="124dp"
+                android:background="@drawable/category_inactive"
+                android:layout_centerInParent="true">
+
+                <ImageView
+                    android:id="@+id/imageViewCategoriesContainer"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/ic_arrow_left_circle"
+                    android:backgroundTint="@color/background_primary" />
+
+                <TextView
+                    android:id="@+id/titleCategories"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/figerona_bold"
+                    android:text="Test Title"
+                    android:textColor="@color/background_primary"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+</layout>
