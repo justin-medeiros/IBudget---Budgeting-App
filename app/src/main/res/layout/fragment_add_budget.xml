@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:tools="http://schemas.android.com/tools">
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -78,7 +77,22 @@
                 />
 
             <TextView
-                android:id="@+id/budgetNameTitle"
+                android:id="@+id/tvInvalidCategorySelected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/invalid_category"
+                android:textSize="10sp"
+                android:textColor="@color/red_bright"
+                android:fontFamily="@font/figerona_light"
+                android:layout_gravity="left"
+                android:layout_marginLeft="40dp"
+                android:drawablePadding="5dp"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/ic_close_circle" />
+
+            <TextView
+                android:id="@+id/tvBudgetNameTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Budget Name"
@@ -125,7 +139,7 @@
                 android:layout_marginBottom="30dp">
 
                 <TextView
-                    android:id="@+id/amountTitle"
+                    android:id="@+id/tvBudgetAmountTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Amount"
@@ -147,20 +161,22 @@
                     android:background="@drawable/text_line"
                     android:fontFamily="@font/figerona_semibold"
                     android:hint="Enter Budget"
+                    android:layout_marginTop="10dp"
                     android:paddingBottom="10dp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/background_tertiary"
                     android:textSize="18sp"
                     android:inputType="numberDecimal"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/amountTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/tvBudgetAmountTitle"
+                    app:layout_constraintBottom_toBottomOf="@id/btnConfirmAddBudget"
                     app:layout_constraintRight_toLeftOf="@+id/btnConfirmAddBudget"/>
 
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnConfirmAddBudget"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="30dp"
                     android:insetLeft="0dp"
@@ -174,8 +190,22 @@
                     app:iconPadding="0dp"
                     app:iconTint="@color/white"
                     app:rippleColor="@color/white"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     tools:ignore="MissingConstraints" />
+                <TextView
+                    android:id="@+id/tvRequirementAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/budget_amount_requirement"
+                    tools:ignore="MissingConstraints"
+                    android:fontFamily="@font/figerona_regular"
+                    android:textSize="8sp"
+                    android:textColor="@color/white"
+                    android:layout_marginLeft="30dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/etAmount"
+                    android:layout_marginTop="5dp"/>
                 <TextView
                     android:id="@+id/tvInvalidBudgetAmount"
                     android:layout_width="wrap_content"
@@ -190,7 +220,7 @@
                     android:layout_marginTop="10dp"
                     android:drawablePadding="5dp"
                     android:drawableLeft="@drawable/ic_close_circle"
-                    app:layout_constraintTop_toBottomOf="@+id/etAmount"
+                    app:layout_constraintTop_toBottomOf="@+id/tvRequirementAmount"
                     app:layout_constraintLeft_toLeftOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 

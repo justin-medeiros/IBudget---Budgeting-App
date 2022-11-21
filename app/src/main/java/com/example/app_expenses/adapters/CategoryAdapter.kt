@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.app_expenses.R
 import com.example.app_expenses.data.Category
@@ -21,6 +22,7 @@ private lateinit var context: Context
 
 class CategoryAdapter(private val listCategories: MutableList<Category>): RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
     private var rowIndex: Int = -1
+    var isCategorySelected: MutableLiveData<Boolean> = MutableLiveData(false)
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val categoryIcon = itemView.findViewById<ImageView>(R.id.imageViewCategoriesContainer)
@@ -42,6 +44,7 @@ class CategoryAdapter(private val listCategories: MutableList<Category>): Recycl
         holder.categoryIcon.background = ContextCompat.getDrawable(context, category.icon!!)
 
         holder.categoryContainer.setOnClickListener(View.OnClickListener {
+            isCategorySelected.value = true
             rowIndex = position
             notifyDataSetChanged()
         })
