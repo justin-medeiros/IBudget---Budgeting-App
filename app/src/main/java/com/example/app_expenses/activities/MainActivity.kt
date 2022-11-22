@@ -1,4 +1,4 @@
-package com.example.app_expenses
+package com.example.app_expenses.activities
 
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
@@ -9,6 +9,8 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
+import com.example.app_expenses.R
+import com.example.app_expenses.adapters.TabBarAdapter
 import com.example.app_expenses.databinding.ActivityMainBinding
 import com.example.app_expenses.utils.PrefsHelper
 import com.google.android.material.tabs.TabLayout

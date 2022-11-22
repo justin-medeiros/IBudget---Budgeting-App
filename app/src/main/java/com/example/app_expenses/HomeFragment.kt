@@ -5,7 +5,6 @@ import com.google.android.material.textfield.TextInputLayout
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.os.Bundle
-import com.example.app_expenses.MainActivity
 import com.example.app_expenses.Add_Transaction
 import android.widget.TextView
 import com.example.app_expenses.R
@@ -34,6 +33,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.NavController
 import androidx.navigation.ui.NavigationUI
+import com.example.app_expenses.activities.MainActivity
 import com.example.app_expenses.databinding.FragmentHomeBinding
 import java.util.ArrayList
 

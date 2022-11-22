@@ -1,4 +1,4 @@
-package com.example.app_expenses
+package com.example.app_expenses.utils
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
