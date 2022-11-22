@@ -16,8 +16,8 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.example.app_expenses.MainActivity
 import com.example.app_expenses.R
+import com.example.app_expenses.activities.MainActivity
 import com.example.app_expenses.databinding.FragmentLoginBinding
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout

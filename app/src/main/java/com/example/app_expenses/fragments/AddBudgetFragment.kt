@@ -12,8 +12,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.app_expenses.MainActivity
 import com.example.app_expenses.R
+import com.example.app_expenses.activities.MainActivity
 import com.example.app_expenses.adapters.CategoryAdapter
 import com.example.app_expenses.data.BudgetData
 import com.example.app_expenses.data.Category
