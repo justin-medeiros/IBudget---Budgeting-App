@@ -11,11 +11,13 @@
     <string name="invalid_email">Please enter a valid email address.</string>
     <string name="invalid_password">Please enter a valid password.</string>
     <string name="invalid_budget_name">Field empty. Please enter a budget name.</string>
-    <string name="invalid_budget_amount">Invalid. Please enter a valid amount.</string>
+    <string name="invalid_budget_amount">Please enter a valid amount. (e.g "200.00")</string>
     <string name="email_taken">Email is taken. Please enter a new email address.</string>
     <string name="login_invalid">Email and/or password is incorrect! Please try again!</string>
+    <string name="invalid_category">Please select a category.</string>
     <string name="alert_invalid">Email does not match any of our records. Please enter a valid email address.</string>
     <string name="password_requirement">* Password must be at least 6 characters long and contain at least a capital letter, a lowercase letter, a character and a number.</string>
+    <string name="budget_amount_requirement">* Budget amount must have 2 numbers after the decimal.</string>
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>

@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.app_expenses.databinding.ActivityMainBinding
+import com.example.app_expenses.utils.PrefsHelper
 import com.google.android.material.tabs.TabLayout
 
 private lateinit var binding: ActivityMainBinding
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding!!.root)
         showTabBar()
         setTabBarMargins()
+        PrefsHelper.init(context = this)
     }
 
     fun visibleTabBarVisibility(){
