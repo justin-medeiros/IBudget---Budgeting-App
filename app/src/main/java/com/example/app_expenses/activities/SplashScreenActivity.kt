@@ -1,4 +1,4 @@
-package com.example.app_expenses
+package com.example.app_expenses.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.example.app_expenses.R
 import com.example.app_expenses.databinding.ActivitySplashScreenBinding
 import com.example.app_expenses.fragments.LoginFragment
 import com.google.android.material.snackbar.Snackbar

@@ -3,7 +3,6 @@ package com.example.app_expenses.fragments
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_expenses.MainActivity
 import com.example.app_expenses.R
-import com.example.app_expenses.UtilitiesFunctions
 import com.example.app_expenses.adapters.CategoryAdapter
 import com.example.app_expenses.data.BudgetData
 import com.example.app_expenses.data.Category

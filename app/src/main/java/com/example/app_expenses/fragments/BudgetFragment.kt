@@ -1,17 +1,14 @@
 package com.example.app_expenses.fragments
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.example.app_expenses.MainActivity
 import com.example.app_expenses.R
-import com.example.app_expenses.UtilitiesFunctions
+import com.example.app_expenses.utils.UtilitiesFunctions
 import com.example.app_expenses.databinding.FragmentBudgetBinding
 import com.example.app_expenses.utils.PrefsHelper
 import com.example.app_expenses.utils.StringUtils
