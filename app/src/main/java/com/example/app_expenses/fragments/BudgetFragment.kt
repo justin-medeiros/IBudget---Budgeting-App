@@ -2,6 +2,7 @@ package com.example.app_expenses.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,8 @@ import com.example.app_expenses.MainActivity
 import com.example.app_expenses.R
 import com.example.app_expenses.UtilitiesFunctions
 import com.example.app_expenses.databinding.FragmentBudgetBinding
+import com.example.app_expenses.utils.PrefsHelper
+import com.example.app_expenses.utils.StringUtils
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -41,12 +44,9 @@ class BudgetFragment: Fragment() {
             UtilitiesFunctions.replaceFragment(requireActivity(), AddBudgetFragment(), R.id.relativeLayoutMainActivity)
             mainActivity.hideTabBarVisibility()
         }
-    }
-    private fun replaceFragment(){
-        val backStackName = AddBudgetFragment().javaClass.name
-        val transaction = activity?.supportFragmentManager?.beginTransaction()
-        transaction?.replace(R.id.relativeLayoutMainActivity, AddBudgetFragment())
-        transaction?.addToBackStack(backStackName)
-        transaction?.commit()
+        fragmentBudgetBinding.tvBudgetAmount.text = "$%.2f".format(PrefsHelper.readFloat(StringUtils.TOTAL_BUDGET))
+        PrefsHelper.onBudgetChangeListener(fragmentBudgetBinding.tvBudgetAmount)
+
+
     }
 }

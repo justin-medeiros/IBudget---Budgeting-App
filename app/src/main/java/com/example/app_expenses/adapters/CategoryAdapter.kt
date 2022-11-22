@@ -21,7 +21,7 @@ import com.example.app_expenses.data.Category
 private lateinit var context: Context
 
 class CategoryAdapter(private val listCategories: MutableList<Category>): RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
-    private var rowIndex: Int = -1
+    var rowIndex: Int = -1
     var isCategorySelected: MutableLiveData<Boolean> = MutableLiveData(false)
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
