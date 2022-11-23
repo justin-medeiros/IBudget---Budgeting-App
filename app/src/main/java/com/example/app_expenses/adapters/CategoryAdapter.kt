@@ -16,13 +16,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.app_expenses.R
 import com.example.app_expenses.data.Category
+import com.example.app_expenses.utils.UtilitiesFunctions
 
-
-private lateinit var context: Context
 
 class CategoryAdapter(private val listCategories: MutableList<Category>): RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
     var rowIndex: Int = -1
     var isCategorySelected: MutableLiveData<Boolean> = MutableLiveData(false)
+    private lateinit var context: Context
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val categoryIcon = itemView.findViewById<ImageView>(R.id.imageViewCategoriesContainer)
@@ -59,8 +59,8 @@ class CategoryAdapter(private val listCategories: MutableList<Category>): Recycl
         }
 
         val relativeParams = RelativeLayout.LayoutParams(
-            convertDpToPixel(130.0F, context).toInt(),
-            convertDpToPixel(130.0F, context).toInt()
+            UtilitiesFunctions.convertDpToPixel(130.0F, context).toInt(),
+            UtilitiesFunctions.convertDpToPixel(130.0F, context).toInt()
         )
         if(position != itemCount-1){
             relativeParams.setMargins(0, 0, 10, 0)
@@ -73,9 +73,5 @@ class CategoryAdapter(private val listCategories: MutableList<Category>): Recycl
 
     override fun getItemCount(): Int {
         return listCategories.size
-    }
-
-    private fun convertDpToPixel(dp: Float, context: Context): Float {
-        return dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
     }
 }

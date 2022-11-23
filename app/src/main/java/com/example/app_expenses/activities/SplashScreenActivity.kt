@@ -4,26 +4,23 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.app_expenses.R
 import com.example.app_expenses.databinding.ActivitySplashScreenBinding
 import com.example.app_expenses.fragments.LoginFragment
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.example.app_expenses.viewModels.AuthViewModel
 
-private lateinit var auth: FirebaseAuth
 
 class SplashScreenActivity: AppCompatActivity() {
+
+    private val authViewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         var binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
-        auth = Firebase.auth
         finishSplashScreen(binding)
     }
 
@@ -32,9 +29,9 @@ class SplashScreenActivity: AppCompatActivity() {
             binding.nameTv.visibility = View.GONE
             binding.nameTwoTv.visibility = View.GONE
             binding.imageSplashScreen.visibility = View.GONE
-            if(auth.currentUser != null){
+            if(authViewModel.currentUserExists()){
                 callMainActivity()
-            }else{
+            } else{
                 callLoginFragment()
             }
         }, 5000)
