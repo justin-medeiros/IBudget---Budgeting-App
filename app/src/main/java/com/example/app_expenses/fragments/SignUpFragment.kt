@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -13,46 +12,54 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.example.app_expenses.R
-import com.example.app_expenses.data.UserData
 import com.example.app_expenses.databinding.FragmentSignUpBinding
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.*
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-
-
-private lateinit var fragmentSignUpBinding: FragmentSignUpBinding
-private lateinit var auth: FirebaseAuth
-private lateinit var firebaseDatabase: DatabaseReference
-private lateinit var firstName: String
-private lateinit var lastName: String
-private lateinit var email: String
-private lateinit var password: String
-private lateinit var newUser: UserData
+import com.example.app_expenses.enums.SignUpEnum
+import com.example.app_expenses.utils.UtilitiesFunctions
+import com.example.app_expenses.viewModels.AuthViewModel
 
 class SignUpFragment: Fragment() {
+    private lateinit var fragmentSignUpBinding: FragmentSignUpBinding
+    private lateinit var firstName: String
+    private lateinit var lastName: String
+    private lateinit var email: String
+    private lateinit var password: String
+    private val authViewModel: AuthViewModel by viewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        super.onCreateView(inflater, container, savedInstanceState)
         fragmentSignUpBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_sign_up,
             container, false
         )
-        auth = Firebase.auth
-        firebaseDatabase = Firebase.database.reference
         return fragmentSignUpBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+
+        authViewModel.getCreateUserLiveData().observe(viewLifecycleOwner){ userCreated ->
+            when(userCreated){
+                SignUpEnum.USER_CREATED -> {
+                    Toast.makeText(context, "User has been registered successfully!", Toast.LENGTH_LONG).show()
+                    UtilitiesFunctions.replaceFragment(requireActivity(), LoginFragment(),
+                        R.id.frameLayoutSplashScreen, false)
+                }
+                SignUpEnum.USER_NOT_CREATED ->{
+                    Toast.makeText(context, "Error. User not created. Try again", Toast.LENGTH_LONG).show()
+                }
+                SignUpEnum.EMAIL_TAKEN ->{
+                    emailIsTaken()
+                }
+            }
+        }
 
         fragmentSignUpBinding.tvSignIn.setOnClickListener {
-            replaceFragment()
+            UtilitiesFunctions.replaceFragment(requireActivity(), LoginFragment(),
+                R.id.frameLayoutSplashScreen,false)
         }
 
         fragmentSignUpBinding.btnSignUp.setOnClickListener {
@@ -66,42 +73,13 @@ class SignUpFragment: Fragment() {
         }
     }
 
-    private fun replaceFragment() {
-        val transaction = activity?.supportFragmentManager?.beginTransaction()
-        transaction?.replace(R.id.frameLayoutSplashScreen, LoginFragment())
-        transaction?.addToBackStack(null)
-        transaction?.commit()
-    }
-
     private fun userToDatabase() {
         firstName = fragmentSignUpBinding.tvFirstName.text.toString()
         lastName = fragmentSignUpBinding.tvLastName.text.toString()
         email = fragmentSignUpBinding.tvEmailSignUp.text.toString()
         password = fragmentSignUpBinding.tvPasswordSignUp.text.toString()
 
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-            if(task.isSuccessful){
-                newUser = UserData(firstName, lastName, email)
-                firebaseDatabase.child("users").child(FirebaseAuth.getInstance().currentUser?.uid!!).child("profile").setValue(newUser).addOnCompleteListener { registerUser ->
-                    if(registerUser.isSuccessful){
-                        Toast.makeText(context, "User has been registered successfully!", Toast.LENGTH_LONG).show()
-                        replaceFragment()
-                    }
-                    else{
-                        Toast.makeText(context, "Error. User not registered.", Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-            else{
-                Toast.makeText(context, "Error. Email has been taken. Try again", Toast.LENGTH_LONG).show()
-                fragmentSignUpBinding.tvInvalidEmail.visibility = View.VISIBLE
-                fragmentSignUpBinding.tvInvalidEmail.text = resources.getString(R.string.email_taken)
-                fragmentSignUpBinding.inputLayoutEmail.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.red)
-                fragmentSignUpBinding.inputLayoutEmail.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red_bright))
-                fragmentSignUpBinding.inputLayoutEmail.setStartIconTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red_bright)))
-                fragmentSignUpBinding.tvEmailSignUp.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
-            }
-        }
+        authViewModel.createUserAuth(firstName, lastName, email, password)
     }
 
     @SuppressLint("ResourceAsColor")
@@ -195,5 +173,15 @@ class SignUpFragment: Fragment() {
             fragmentSignUpBinding.tvPasswordSignUp.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
             fragmentSignUpBinding.tvInvalidPassword.visibility = View.GONE
         }
+    }
+
+    private fun emailIsTaken(){
+        Toast.makeText(context, "Error. Email has been taken. Try again", Toast.LENGTH_LONG).show()
+        fragmentSignUpBinding.tvInvalidEmail.visibility = View.VISIBLE
+        fragmentSignUpBinding.tvInvalidEmail.text = resources.getString(R.string.email_taken)
+        fragmentSignUpBinding.inputLayoutEmail.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.red)
+        fragmentSignUpBinding.inputLayoutEmail.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red_bright))
+        fragmentSignUpBinding.inputLayoutEmail.setStartIconTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red_bright)))
+        fragmentSignUpBinding.tvEmailSignUp.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
     }
 }

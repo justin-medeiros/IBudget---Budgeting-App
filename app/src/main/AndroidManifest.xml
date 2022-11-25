@@ -15,11 +15,13 @@
         <activity
             android:name=".activities.MainActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.App_Expenses.NoActionBar">
         </activity>
         <activity
             android:name=".activities.SplashScreenActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.App_Expenses.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

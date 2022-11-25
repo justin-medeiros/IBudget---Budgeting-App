@@ -6,10 +6,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 
 object UtilitiesFunctions{
-    fun replaceFragment(activity: FragmentActivity, fragment: Fragment, id: Int){
-        val backStackName = fragment.javaClass.name
+    fun replaceFragment(activity: FragmentActivity, fragment: Fragment, id: Int, addToBackStack: Boolean){
+        var backStackName = fragment.javaClass.name
         val transaction = activity?.supportFragmentManager?.beginTransaction()
         transaction?.replace(id, fragment)
+        if(!addToBackStack){
+            backStackName = null
+        }
         transaction?.addToBackStack(backStackName)
         transaction?.commit()
     }
