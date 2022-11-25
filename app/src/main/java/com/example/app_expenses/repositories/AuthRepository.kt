@@ -1,49 +1,83 @@
 package com.example.app_expenses.repositories
 
-import android.content.Context
 import android.text.TextUtils
-import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.app_expenses.data.UserData
+import com.example.app_expenses.enums.SignUpEnum
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AuthRepository(){
     private val firebaseDatabase: DatabaseReference = Firebase.database.reference
     private val auth: FirebaseAuth = Firebase.auth
+    private val signInLiveData = MutableLiveData<Boolean>()
+    private val sendPasswordLiveData = MutableLiveData<Boolean>()
+    private val createUserLiveData = MutableLiveData<SignUpEnum>()
 
-    fun signInAuthenticate(email: String, password: String): Boolean{
-        var signInSuccess = false
-        if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
-            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener  { task ->
-                if (task.isSuccessful) {
-                    signInSuccess = true
+    fun signInAuthenticate(email: String, password: String){
+        CoroutineScope(Dispatchers.IO).launch {
+            if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
+                auth.signInWithEmailAndPassword(email, password).addOnCompleteListener  { task ->
+                    signInLiveData.postValue(task.isSuccessful)
                 }
+            } else{
+                signInLiveData.postValue(false)
             }
         }
-        return signInSuccess
     }
 
-    fun createUser(firstName: String, lastName: String, email: String, password: String): Int{
-        var isSuccessful = 0
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-            if(task.isSuccessful){
-                val newUser = UserData(firstName, lastName, email)
-                firebaseDatabase.child("users").child(FirebaseAuth.getInstance().currentUser?.uid!!).child("profile").setValue(
-                    newUser
-                ).addOnCompleteListener { registerUser ->
-                    isSuccessful = if(registerUser.isSuccessful){
-                        2
-                    } else{
-                        1
+    fun getSignInLiveData(): LiveData<Boolean>{
+        return signInLiveData
+    }
+
+    fun sendPasswordReset(email: String){
+        CoroutineScope(Dispatchers.IO).launch{
+            if(!TextUtils.isEmpty(email)){
+                auth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener { task ->
+                        sendPasswordLiveData.postValue(task.isSuccessful)
                     }
+            } else{
+                sendPasswordLiveData.postValue(false)
+            }
+        }
+
+    }
+
+    fun getSendPasswordLiveData(): LiveData<Boolean>{
+        return sendPasswordLiveData
+    }
+
+    fun createUser(firstName: String, lastName: String, email: String, password: String){
+        CoroutineScope(Dispatchers.IO).launch {
+            auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+                if(task.isSuccessful){
+                    val newUser = UserData(firstName, lastName, email)
+                    firebaseDatabase.child("users").child(FirebaseAuth.getInstance().currentUser?.uid!!).child("profile").setValue(
+                        newUser
+                    ).addOnCompleteListener { registerUser ->
+                        if(registerUser.isSuccessful){
+                            createUserLiveData.postValue(SignUpEnum.USER_CREATED)
+                        } else{
+                            createUserLiveData.postValue(SignUpEnum.USER_NOT_CREATED)
+                        }
+                    }
+                } else{
+                   createUserLiveData.postValue(SignUpEnum.EMAIL_TAKEN)
                 }
             }
         }
-        return isSuccessful
+    }
+
+    fun getCreateUserLiveData(): LiveData<SignUpEnum>{
+        return createUserLiveData
     }
 
     fun currentUserExists(): Boolean{
