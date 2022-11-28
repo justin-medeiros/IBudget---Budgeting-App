@@ -35,7 +35,7 @@ private lateinit var firebaseDatabase: DatabaseReference
 private lateinit var fragmentAddBudgetBinding: FragmentAddBudgetBinding
 private lateinit var mainActivity: MainActivity
 private lateinit var categoryAdapter: CategoryAdapter
-private lateinit var categories: MutableList<Category>
+private lateinit var categories: MutableList<CategoryEnum>
 
 class AddBudgetFragment: Fragment() {
 
@@ -72,13 +72,13 @@ class AddBudgetFragment: Fragment() {
             if(validateFields() && categoryAdapter.isCategorySelected.value == true){
                 val selectedCategory = categories[categoryAdapter.rowIndex].categoryName
                 val budgetName = fragmentAddBudgetBinding.etBudgetName.text.toString()
-                val budgetAmount = fragmentAddBudgetBinding.etAmount.text.toString().toFloat()
+                val budgetAmount = fragmentAddBudgetBinding.etAmount.text.toString()
                 val newBudget = BudgetData(selectedCategory, budgetName, budgetAmount)
 
                 lifecycleScope.launch(Dispatchers.IO) {
                     firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("budgets").push().setValue(newBudget).addOnCompleteListener { registerUser ->
                         if(registerUser.isSuccessful){
-                            val total = budgetAmount + PrefsHelper.readFloat(StringUtils.TOTAL_BUDGET)!!
+                            val total = budgetAmount.toFloat() + PrefsHelper.readFloat(StringUtils.TOTAL_BUDGET)!!
                             PrefsHelper.writeFloat(StringUtils.TOTAL_BUDGET, total)
                             Toast.makeText(context, "Budget has been created successfully!", Toast.LENGTH_LONG).show()
                             parentFragmentManager.popBackStack()
@@ -94,14 +94,14 @@ class AddBudgetFragment: Fragment() {
         }
     }
 
-    private fun createCategories(): MutableList<Category>{
-        val categories = mutableListOf<Category>()
-        categories.add(Category(CategoryEnum.GROCERIES.categoryName, CategoryEnum.GROCERIES.categoryColor, CategoryEnum.GROCERIES.categoryIcon))
-        categories.add(Category(CategoryEnum.ENTERTAINMENT.categoryName, CategoryEnum.ENTERTAINMENT.categoryColor, CategoryEnum.ENTERTAINMENT.categoryIcon))
-        categories.add(Category(CategoryEnum.TRANSPORTATION.categoryName, CategoryEnum.TRANSPORTATION.categoryColor, CategoryEnum.TRANSPORTATION.categoryIcon))
-        categories.add(Category(CategoryEnum.SUBSCRIPTIONS.categoryName, CategoryEnum.SUBSCRIPTIONS.categoryColor, CategoryEnum.SUBSCRIPTIONS.categoryIcon))
-        categories.add(Category(CategoryEnum.BILLS.categoryName, CategoryEnum.BILLS.categoryColor, CategoryEnum.BILLS.categoryIcon))
-        categories.add(Category(CategoryEnum.PERSONAL_SPENDING.categoryName, CategoryEnum.PERSONAL_SPENDING.categoryColor, CategoryEnum.PERSONAL_SPENDING.categoryIcon))
+    private fun createCategories(): MutableList<CategoryEnum>{
+        val categories = mutableListOf<CategoryEnum>()
+        categories.add(CategoryEnum.GROCERIES)
+        categories.add(CategoryEnum.ENTERTAINMENT)
+        categories.add(CategoryEnum.TRANSPORTATION)
+        categories.add(CategoryEnum.SUBSCRIPTIONS)
+        categories.add(CategoryEnum.BILLS)
+        categories.add(CategoryEnum.PERSONAL_SPENDING)
         return categories
     }
 
