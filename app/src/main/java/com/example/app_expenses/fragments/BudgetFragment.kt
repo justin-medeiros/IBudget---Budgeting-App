@@ -32,7 +32,6 @@ class BudgetFragment: Fragment() {
     private lateinit var fragmentBudgetBinding: FragmentBudgetBinding
     private var mainActivity: MainActivity = MainActivity()
     var myBudgetsCategoryAdapter = MyBudgetsAdapter()
-    private var listOfBudgets: MutableList<MyBudgetData> = mutableListOf()
     private val myBudgetsViewModel: BudgetsViewModel by viewModels()
 
     override fun onCreateView(
@@ -55,7 +54,6 @@ class BudgetFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         myBudgetsViewModel.getMyBudgetsLiveData().observe(viewLifecycleOwner){ myBudgetsList->
-            listOfBudgets = myBudgetsList as MutableList<MyBudgetData>
             myBudgetsCategoryAdapter.addAllItems(myBudgetsList)
         }
 
@@ -80,18 +78,17 @@ class BudgetFragment: Fragment() {
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     val position = viewHolder.adapterPosition
-                    val item = listOfBudgets[position]
-                    listOfBudgets.removeAt(position)
+                    val item = myBudgetsCategoryAdapter.getList()[position]
                     myBudgetsCategoryAdapter.removeItem(position)
+                    myBudgetsViewModel.removeBudget(item.budgetName!!)
                     Snackbar.make(fragmentBudgetBinding.root, "Budget deleted.", Snackbar.LENGTH_LONG).setAction(
                         "Undo") {
-                        listOfBudgets.add(position, item)
                         myBudgetsCategoryAdapter.addItem(item, position)
                     }.show()
                 }
 
                 override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
-                    return 0.5F
+                    return 0.2F
                 }
 
                 override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,

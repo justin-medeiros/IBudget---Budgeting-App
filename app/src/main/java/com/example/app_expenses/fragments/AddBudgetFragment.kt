@@ -61,8 +61,9 @@ class AddBudgetFragment(private val budgetsAdapter: MyBudgetsAdapter): Fragment(
             if(newBudget != null){
                 val total = newBudget.budgetAmount!!.toFloat() + PrefsHelper.readFloat(StringUtils.TOTAL_BUDGET)!!
                 PrefsHelper.writeFloat(StringUtils.TOTAL_BUDGET, total)
-                budgetsAdapter.addItem(MyBudgetData(UtilitiesFunctions.getCategoryEnum(newBudget.categoryName!!),
-                    newBudget.budgetName, newBudget.budgetAmount), 0)
+                val item = MyBudgetData(UtilitiesFunctions.getCategoryEnum(newBudget.categoryName!!),
+                    newBudget.budgetName, newBudget.budgetAmount)
+                budgetsAdapter.addItem(item, 0)
                 budgetsViewModel.setTotalBudget()
                 Toast.makeText(context, "Budget has been created successfully!", Toast.LENGTH_LONG).show()
                 parentFragmentManager.popBackStack()

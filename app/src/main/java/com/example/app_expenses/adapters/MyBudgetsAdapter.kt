@@ -56,6 +56,10 @@ class MyBudgetsAdapter(): RecyclerView.Adapter<MyBudgetsAdapter.ViewHolder>() {
         return listOfBudgets.size
     }
 
+    fun getList(): List<MyBudgetData>{
+        return listOfBudgets
+    }
+
     fun addAllItems(items: List<MyBudgetData>){
         this.listOfBudgets.removeAll(listOfBudgets)
         this.listOfBudgets.addAll(items)
