@@ -115,7 +115,7 @@ class HomeFragment : Fragment() {
             // set item width
             deleteItem.width = 170
             // set a icon
-            deleteItem.setIcon(R.drawable.ic_delete)
+            deleteItem.setIcon(R.drawable.ic_trash_can)
             // add to menu
             menu.addMenuItem(deleteItem)
         }

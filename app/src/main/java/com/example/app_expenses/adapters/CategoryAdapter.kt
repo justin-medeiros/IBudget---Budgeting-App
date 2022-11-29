@@ -15,11 +15,11 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.app_expenses.R
-import com.example.app_expenses.data.Category
+import com.example.app_expenses.enums.CategoryEnum
 import com.example.app_expenses.utils.UtilitiesFunctions
 
 
-class CategoryAdapter(private val listCategories: MutableList<Category>): RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
+class CategoryAdapter(private val listCategories: MutableList<CategoryEnum>): RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
     var rowIndex: Int = -1
     var isCategorySelected: MutableLiveData<Boolean> = MutableLiveData(false)
     private lateinit var context: Context
@@ -38,10 +38,10 @@ class CategoryAdapter(private val listCategories: MutableList<Category>): Recycl
     }
 
     override fun onBindViewHolder(holder: CategoryAdapter.ViewHolder, @SuppressLint("RecyclerView") position: Int) {
-        val category: Category = listCategories[position]
+        val category: CategoryEnum = listCategories[position]
 
         holder.categoryTitle.text = category.categoryName
-        holder.categoryIcon.background = ContextCompat.getDrawable(context, category.icon!!)
+        holder.categoryIcon.background = ContextCompat.getDrawable(context, category.categoryIcon!!)
 
         holder.categoryContainer.setOnClickListener(View.OnClickListener {
             isCategorySelected.value = true
@@ -49,9 +49,9 @@ class CategoryAdapter(private val listCategories: MutableList<Category>): Recycl
             notifyDataSetChanged()
         })
         if (rowIndex === position) {
-            holder.strokeCategoryContainer.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, category.color!!))
-            holder.categoryTitle.setTextColor(ContextCompat.getColor(context, category.color!!))
-            holder.categoryIcon.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, category.color!!))
+            holder.strokeCategoryContainer.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, category.categoryColor!!))
+            holder.categoryTitle.setTextColor(ContextCompat.getColor(context, category.categoryColor!!))
+            holder.categoryIcon.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, category.categoryColor!!))
         } else {
             holder.strokeCategoryContainer.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.background_primary))
             holder.categoryTitle.setTextColor(ContextCompat.getColor(context, R.color.background_primary))
