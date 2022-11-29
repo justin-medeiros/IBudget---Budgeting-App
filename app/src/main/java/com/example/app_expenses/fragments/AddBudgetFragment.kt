@@ -34,7 +34,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AddBudgetFragment(val budgetsAdapter: MyBudgetsAdapter): Fragment() {
+class AddBudgetFragment(private val budgetsAdapter: MyBudgetsAdapter): Fragment() {
     private lateinit var fragmentAddBudgetBinding: FragmentAddBudgetBinding
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var categories: MutableList<CategoryEnum>
@@ -61,8 +61,9 @@ class AddBudgetFragment(val budgetsAdapter: MyBudgetsAdapter): Fragment() {
             if(newBudget != null){
                 val total = newBudget.budgetAmount!!.toFloat() + PrefsHelper.readFloat(StringUtils.TOTAL_BUDGET)!!
                 PrefsHelper.writeFloat(StringUtils.TOTAL_BUDGET, total)
-                budgetsAdapter.addItem(MyBudgetData(UtilitiesFunctions.getCategoryEnum(newBudget.categoryName!!),
-                    newBudget.budgetName, newBudget.budgetAmount), 0)
+                val item = MyBudgetData(UtilitiesFunctions.getCategoryEnum(newBudget.categoryName!!),
+                    newBudget.budgetName, newBudget.budgetAmount)
+                budgetsAdapter.addItem(item, 0)
                 budgetsViewModel.setTotalBudget()
                 Toast.makeText(context, "Budget has been created successfully!", Toast.LENGTH_LONG).show()
                 parentFragmentManager.popBackStack()
@@ -111,6 +112,15 @@ class AddBudgetFragment(val budgetsAdapter: MyBudgetsAdapter): Fragment() {
             fragmentAddBudgetBinding.etBudgetName.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(
                 requireContext(), R.color.red_bright))
             fragmentAddBudgetBinding.tvBudgetNameTitle.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
+            fragmentAddBudgetBinding.tvInvalidBudgetName.text = resources.getString(R.string.invalid_budget_name)
+        } else if(!validateUniqueName(fragmentAddBudgetBinding.etBudgetName.text.toString())){
+            fragmentAddBudgetBinding.tvInvalidBudgetName.visibility = View.VISIBLE
+            fragmentAddBudgetBinding.etBudgetName.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
+            fragmentAddBudgetBinding.etBudgetName.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
+            fragmentAddBudgetBinding.etBudgetName.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(
+                requireContext(), R.color.red_bright))
+            fragmentAddBudgetBinding.tvBudgetNameTitle.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
+            fragmentAddBudgetBinding.tvInvalidBudgetName.text = resources.getString(R.string.duplicate_budget_name)
         } else{
             isValidName = true
         }
@@ -141,6 +151,17 @@ class AddBudgetFragment(val budgetsAdapter: MyBudgetsAdapter): Fragment() {
             val amountMatcher = Regex(amountPattern)
             return amountMatcher.find(it) != null
         } ?: return false
+    }
+
+    private fun validateUniqueName(typedBudgetName: String): Boolean{
+        var isUnique = true
+        for(budget in budgetsAdapter.listOfBudgets){
+            if(budget.budgetName!! == typedBudgetName){
+                isUnique = false
+                break
+            }
+        }
+        return isUnique
     }
 
     private fun resetInvalidFields(){
