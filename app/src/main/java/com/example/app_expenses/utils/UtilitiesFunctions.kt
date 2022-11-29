@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.DisplayMetrics
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import com.example.app_expenses.enums.CategoryEnum
 
 object UtilitiesFunctions{
     fun replaceFragment(activity: FragmentActivity, fragment: Fragment, id: Int, addToBackStack: Boolean){
@@ -19,5 +20,18 @@ object UtilitiesFunctions{
 
     fun convertDpToPixel(dp: Float, context: Context): Float {
         return dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    }
+
+    fun getCategoryEnum(budgetCategory: String): CategoryEnum?{
+        var category: CategoryEnum? = null
+        when (budgetCategory){
+            CategoryEnum.GROCERIES.categoryName -> category = CategoryEnum.GROCERIES
+            CategoryEnum.ENTERTAINMENT.categoryName -> category = CategoryEnum.ENTERTAINMENT
+            CategoryEnum.TRANSPORTATION.categoryName -> category = CategoryEnum.TRANSPORTATION
+            CategoryEnum.SUBSCRIPTIONS.categoryName -> category = CategoryEnum.SUBSCRIPTIONS
+            CategoryEnum.BILLS.categoryName -> category = CategoryEnum.BILLS
+            CategoryEnum.PERSONAL_SPENDING.categoryName -> category = CategoryEnum.PERSONAL_SPENDING
+        }
+        return category
     }
 }

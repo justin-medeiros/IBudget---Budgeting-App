@@ -3,6 +3,7 @@ package com.example.app_expenses.fragments
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,17 +11,21 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_expenses.R
 import com.example.app_expenses.activities.MainActivity
 import com.example.app_expenses.adapters.CategoryAdapter
+import com.example.app_expenses.adapters.MyBudgetsAdapter
 import com.example.app_expenses.data.BudgetData
-import com.example.app_expenses.data.Category
+import com.example.app_expenses.data.MyBudgetData
 import com.example.app_expenses.databinding.FragmentAddBudgetBinding
 import com.example.app_expenses.enums.CategoryEnum
 import com.example.app_expenses.utils.PrefsHelper
 import com.example.app_expenses.utils.StringUtils
+import com.example.app_expenses.utils.UtilitiesFunctions
+import com.example.app_expenses.viewModels.BudgetsViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
@@ -29,19 +34,12 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-
-private lateinit var auth: FirebaseAuth
-private lateinit var firebaseDatabase: DatabaseReference
-private lateinit var fragmentAddBudgetBinding: FragmentAddBudgetBinding
-private lateinit var mainActivity: MainActivity
-private lateinit var categoryAdapter: CategoryAdapter
-private lateinit var categories: MutableList<CategoryEnum>
-
-class AddBudgetFragment: Fragment() {
-
-    init {
-        mainActivity = MainActivity()
-    }
+class AddBudgetFragment(val budgetsAdapter: MyBudgetsAdapter): Fragment() {
+    private lateinit var fragmentAddBudgetBinding: FragmentAddBudgetBinding
+    private lateinit var categoryAdapter: CategoryAdapter
+    private lateinit var categories: MutableList<CategoryEnum>
+    private var mainActivity: MainActivity = MainActivity()
+    private val budgetsViewModel: BudgetsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -50,8 +48,6 @@ class AddBudgetFragment: Fragment() {
             inflater, R.layout.fragment_add_budget,
             container, false
         )
-        auth = Firebase.auth
-        firebaseDatabase = Firebase.database.reference
         categories = createCategories()
         categoryAdapter = CategoryAdapter(categories)
         fragmentAddBudgetBinding.recyclerViewAddBudget.adapter = categoryAdapter
@@ -61,6 +57,21 @@ class AddBudgetFragment: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        budgetsViewModel.getAddBudgetLiveData().observe(viewLifecycleOwner){ newBudget ->
+            if(newBudget != null){
+                val total = newBudget.budgetAmount!!.toFloat() + PrefsHelper.readFloat(StringUtils.TOTAL_BUDGET)!!
+                PrefsHelper.writeFloat(StringUtils.TOTAL_BUDGET, total)
+                budgetsAdapter.addItem(MyBudgetData(UtilitiesFunctions.getCategoryEnum(newBudget.categoryName!!),
+                    newBudget.budgetName, newBudget.budgetAmount), 0)
+                budgetsViewModel.setTotalBudget()
+                Toast.makeText(context, "Budget has been created successfully!", Toast.LENGTH_LONG).show()
+                parentFragmentManager.popBackStack()
+                mainActivity.visibleTabBarVisibility()
+            } else{
+                Toast.makeText(context, "Error. User not registered.", Toast.LENGTH_LONG).show()
+            }
+        }
+
         fragmentAddBudgetBinding.addBudgetBackButton.setOnClickListener {
             parentFragmentManager.popBackStack()
             mainActivity.visibleTabBarVisibility()
@@ -74,22 +85,7 @@ class AddBudgetFragment: Fragment() {
                 val budgetName = fragmentAddBudgetBinding.etBudgetName.text.toString()
                 val budgetAmount = fragmentAddBudgetBinding.etAmount.text.toString()
                 val newBudget = BudgetData(selectedCategory, budgetName, budgetAmount)
-
-                lifecycleScope.launch(Dispatchers.IO) {
-                    firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("budgets").push().setValue(newBudget).addOnCompleteListener { registerUser ->
-                        if(registerUser.isSuccessful){
-                            val total = budgetAmount.toFloat() + PrefsHelper.readFloat(StringUtils.TOTAL_BUDGET)!!
-                            PrefsHelper.writeFloat(StringUtils.TOTAL_BUDGET, total)
-                            Toast.makeText(context, "Budget has been created successfully!", Toast.LENGTH_LONG).show()
-                            parentFragmentManager.popBackStack()
-                            mainActivity.visibleTabBarVisibility()
-                        }
-                        else{
-                            Toast.makeText(context, "Error. User not registered.", Toast.LENGTH_LONG).show()
-                        }
-                    }
-                }
-
+                budgetsViewModel.addBudget(newBudget)
             }
         }
     }

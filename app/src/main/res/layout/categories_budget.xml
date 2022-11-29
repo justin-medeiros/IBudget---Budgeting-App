@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:id="@+id/containerMyBudgets"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/category_inactive"
+        android:backgroundTint="@color/orangeCategory"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/ivCategoryIconMyBudgets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_chart_box"
+            android:backgroundTint="@color/white"
+            android:layout_gravity="left|center"
+            android:layout_marginLeft="10dp"
+            android:layout_centerInParent="true"
+            android:layout_alignParentLeft="true"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation= "vertical"
+            android:layout_alignLeft="@+id/ivCategoryIconMyBudgets"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="40dp">
+
+            <TextView
+                android:id="@+id/tvBudgetNameMyBudgets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/figerona_bold"
+                android:text="Groceries"
+                android:textColor="@color/white" />
+            <TextView
+                android:id="@+id/tvBudgetCategoryMyBudgets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/figerona_bold"
+                android:text="Groceries"
+                android:textSize="8sp"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tvBudgetAmountMyBudgets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$200.00"
+            android:textColor="@color/white"
+            android:fontFamily="@font/figerona_bold"
+            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            />
+
+    </RelativeLayout>
+</layout>
