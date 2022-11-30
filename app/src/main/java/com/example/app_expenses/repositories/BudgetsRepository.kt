@@ -11,7 +11,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -71,9 +70,24 @@ class BudgetsRepository {
         return addBudgetLiveData
     }
 
+    fun removeBudget(budgetName: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("budgets")
+                .orderByChild("budgetName").equalTo(budgetName)
+                .addListenerForSingleValueEvent(object : ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        for(data in snapshot.children){
+                            data.ref.removeValue()
+                        }
+                    }
+                    override fun onCancelled(error: DatabaseError) {}
+                })
+        }
+    }
+
     fun setTotalBudget(){
         CoroutineScope(Dispatchers.IO).launch {
-            firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("budgets").limitToLast(1).addChildEventListener(object :
+            firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("budgets").addChildEventListener(object :
                 ChildEventListener {
                 override fun onChildAdded(dataSnapshot: DataSnapshot, prevChildKey: String?) {
                     val myBudgetData = dataSnapshot.getValue(MyBudgetData::class.java)
@@ -116,9 +130,9 @@ class BudgetsRepository {
 
     private fun totalBudgetAddSubtract(myBudgetData: MyBudgetData, isAdding: Boolean){
         val totalBudget =  firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("total_budget")
-        var newTotalBudget: Float
         totalBudget.addListenerForSingleValueEvent(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
+                var newTotalBudget: Float
                 val oldTotalBudget = snapshot.value as String?
                 if(oldTotalBudget == null){
                     newTotalBudget = myBudgetData!!.budgetAmount!!.toFloat()

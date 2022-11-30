@@ -41,6 +41,7 @@ class BudgetFragment: Fragment() {
             container, false)
         myBudgetsViewModel.getMyBudgets()
         myBudgetsViewModel.getTotalBudget()
+        myBudgetsViewModel.setTotalBudget() // Used to listen to when child added/removed
         val myLinearLayoutManager = object : LinearLayoutManager(requireContext()) {
             override fun canScrollVertically(): Boolean {
                 return false

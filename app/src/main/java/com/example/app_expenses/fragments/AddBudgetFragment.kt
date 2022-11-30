@@ -64,7 +64,6 @@ class AddBudgetFragment(private val budgetsAdapter: MyBudgetsAdapter): Fragment(
                 val item = MyBudgetData(UtilitiesFunctions.getCategoryEnum(newBudget.categoryName!!),
                     newBudget.budgetName, newBudget.budgetAmount)
                 budgetsAdapter.addItem(item, 0)
-                budgetsViewModel.setTotalBudget()
                 Toast.makeText(context, "Budget has been created successfully!", Toast.LENGTH_LONG).show()
                 parentFragmentManager.popBackStack()
                 mainActivity.visibleTabBarVisibility()
