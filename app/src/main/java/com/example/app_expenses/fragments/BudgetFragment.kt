@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.app_expenses.R
 import com.example.app_expenses.activities.MainActivity
 import com.example.app_expenses.adapters.MyBudgetsAdapter
+import com.example.app_expenses.data.BudgetData
 import com.example.app_expenses.data.MyBudgetData
 import com.example.app_expenses.databinding.FragmentBudgetBinding
 import com.example.app_expenses.enums.CategoryEnum
@@ -41,6 +42,7 @@ class BudgetFragment: Fragment() {
             container, false)
         myBudgetsViewModel.getMyBudgets()
         myBudgetsViewModel.getTotalBudget()
+        myBudgetsViewModel.removeFromTotalBudget()  // Used to listen to when child removed
         val myLinearLayoutManager = object : LinearLayoutManager(requireContext()) {
             override fun canScrollVertically(): Boolean {
                 return false
@@ -84,6 +86,8 @@ class BudgetFragment: Fragment() {
                     Snackbar.make(fragmentBudgetBinding.root, "Budget deleted.", Snackbar.LENGTH_LONG).setAction(
                         "Undo") {
                         myBudgetsCategoryAdapter.addItem(item, position)
+                        myBudgetsViewModel.addBudget(BudgetData(item.category?.categoryName, item.budgetName, item.budgetAmount))
+                        myBudgetsViewModel.addToTotalBudget()
                     }.show()
                 }
 

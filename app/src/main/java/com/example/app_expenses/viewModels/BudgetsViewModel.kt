@@ -28,8 +28,16 @@ class BudgetsViewModel: ViewModel() {
         return addBudgetsLiveData
     }
 
-    fun setTotalBudget(){
-        budgetsRepository.setTotalBudget()
+    fun removeBudget(budgetName: String){
+        budgetsRepository.removeBudget(budgetName)
+    }
+
+    fun addToTotalBudget(){
+        budgetsRepository.addToTotalBudget()
+    }
+
+    fun removeFromTotalBudget(){
+        budgetsRepository.removeFromTotalBudget()
     }
 
     fun getTotalBudget(){
@@ -39,9 +47,4 @@ class BudgetsViewModel: ViewModel() {
     fun getTotalBudgetLiveData(): LiveData<Float>{
         return totalBudgetLiveData
     }
-
-
-
-
-
 }
