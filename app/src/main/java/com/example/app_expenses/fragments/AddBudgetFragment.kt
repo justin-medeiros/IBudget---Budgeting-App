@@ -3,7 +3,6 @@ package com.example.app_expenses.fragments
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,18 +18,11 @@ import com.example.app_expenses.activities.MainActivity
 import com.example.app_expenses.adapters.CategoryAdapter
 import com.example.app_expenses.adapters.MyBudgetsAdapter
 import com.example.app_expenses.data.BudgetData
-import com.example.app_expenses.data.MyBudgetData
 import com.example.app_expenses.databinding.FragmentAddBudgetBinding
 import com.example.app_expenses.enums.CategoryEnum
 import com.example.app_expenses.utils.PrefsHelper
 import com.example.app_expenses.utils.StringUtils
-import com.example.app_expenses.utils.UtilitiesFunctions
 import com.example.app_expenses.viewModels.BudgetsViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.*
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -61,9 +53,7 @@ class AddBudgetFragment(private val budgetsAdapter: MyBudgetsAdapter): Fragment(
             if(newBudget != null){
                 val total = newBudget.budgetAmount!!.toFloat() + PrefsHelper.readFloat(StringUtils.TOTAL_BUDGET)!!
                 PrefsHelper.writeFloat(StringUtils.TOTAL_BUDGET, total)
-                val item = MyBudgetData(UtilitiesFunctions.getCategoryEnum(newBudget.categoryName!!),
-                    newBudget.budgetName, newBudget.budgetAmount)
-                budgetsAdapter.addItem(item, 0)
+                budgetsAdapter.addItem(newBudget, 0)
                 budgetsViewModel.addToTotalBudget(newBudget.budgetAmount!!.toFloat())
                 Toast.makeText(context, "Budget has been created successfully!", Toast.LENGTH_LONG).show()
                 parentFragmentManager.popBackStack()
@@ -85,7 +75,7 @@ class AddBudgetFragment(private val budgetsAdapter: MyBudgetsAdapter): Fragment(
                 val selectedCategory = categories[categoryAdapter.rowIndex].categoryName
                 val budgetName = fragmentAddBudgetBinding.etBudgetName.text.toString()
                 val budgetAmount = fragmentAddBudgetBinding.etAmount.text.toString()
-                val newBudget = BudgetData(selectedCategory, budgetName, budgetAmount)
+                val newBudget = BudgetData(System.currentTimeMillis(), selectedCategory, budgetName, budgetAmount)
                 budgetsViewModel.addBudget(newBudget)
             }
         }

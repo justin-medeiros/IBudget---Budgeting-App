@@ -3,12 +3,11 @@ package com.example.app_expenses.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.app_expenses.data.BudgetData
-import com.example.app_expenses.data.MyBudgetData
 import com.example.app_expenses.repositories.BudgetsRepository
 
 class BudgetsViewModel: ViewModel() {
     private val budgetsRepository = BudgetsRepository()
-    private val myBudgetsLiveData: LiveData<List<MyBudgetData>> = budgetsRepository.getMyBudgetsLiveData()
+    private val myBudgetsLiveData: LiveData<List<BudgetData>> = budgetsRepository.getMyBudgetsLiveData()
     private val addBudgetsLiveData: LiveData<BudgetData?> = budgetsRepository.getAddBudgetLiveData()
     private val totalBudgetLiveData: LiveData<Float> = budgetsRepository.getTotalBudgetLiveData()
 
@@ -16,7 +15,7 @@ class BudgetsViewModel: ViewModel() {
         budgetsRepository.getMyBudgets()
     }
 
-    fun getMyBudgetsLiveData(): LiveData<List<MyBudgetData>>{
+    fun getMyBudgetsLiveData(): LiveData<List<BudgetData>>{
         return myBudgetsLiveData
     }
 
