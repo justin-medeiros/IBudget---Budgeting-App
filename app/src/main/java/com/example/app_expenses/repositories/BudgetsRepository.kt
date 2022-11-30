@@ -85,19 +85,9 @@ class BudgetsRepository {
         }
     }
 
-    fun addToTotalBudget(){
+    fun addToTotalBudget(budgetAmount: Float){
         CoroutineScope(Dispatchers.IO).launch {
-            firebaseDatabase
-                .child("users").child(auth.currentUser?.uid!!).child("budgets").limitToLast(1)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        for(data in dataSnapshot.children){
-                            val myBudgetData = data.getValue(MyBudgetData::class.java)
-                            totalBudgetAddSubtract(myBudgetData!!, true)
-                        }
-                    }
-                    override fun onCancelled(databaseError: DatabaseError) {}
-                })
+            totalBudgetAddSubtract(budgetAmount, true)
         }
     }
 
@@ -111,7 +101,7 @@ class BudgetsRepository {
 
                 override fun onChildRemoved(snapshot: DataSnapshot) {
                     val myBudgetData = snapshot.getValue(MyBudgetData::class.java)
-                    totalBudgetAddSubtract(myBudgetData!!, false)
+                    totalBudgetAddSubtract(myBudgetData!!.budgetAmount!!.toFloat(), false)
                 }
 
                 override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
@@ -141,18 +131,18 @@ class BudgetsRepository {
         return totalBudgetLiveData
     }
 
-    private fun totalBudgetAddSubtract(myBudgetData: MyBudgetData, isAdding: Boolean){
+    private fun totalBudgetAddSubtract(myBudgetAmount: Float, isAdding: Boolean){
         val totalBudget =  firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("total_budget")
         totalBudget.addListenerForSingleValueEvent(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 var newTotalBudget: Float
                 val oldTotalBudget = snapshot.value as String?
                 if(oldTotalBudget == null){
-                    newTotalBudget = myBudgetData!!.budgetAmount!!.toFloat()
+                    newTotalBudget = myBudgetAmount
                 } else{
-                    newTotalBudget = oldTotalBudget!!.toFloat() - myBudgetData!!.budgetAmount!!.toFloat()
+                    newTotalBudget = oldTotalBudget!!.toFloat() - myBudgetAmount
                     if(isAdding){
-                        newTotalBudget = oldTotalBudget!!.toFloat() + myBudgetData!!.budgetAmount!!.toFloat()
+                        newTotalBudget = oldTotalBudget!!.toFloat() + myBudgetAmount
                     }
                 }
                 totalBudget.setValue(newTotalBudget.toString())

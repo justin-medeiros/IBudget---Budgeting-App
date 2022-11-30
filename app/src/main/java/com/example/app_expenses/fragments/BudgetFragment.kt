@@ -88,6 +88,7 @@ class BudgetFragment: Fragment() {
                         myBudgetsCategoryAdapter.addItem(item, position)
                         myBudgetsViewModel.addBudget(BudgetData(item.category?.categoryName, item.budgetName, item.budgetAmount))
                         myBudgetsViewModel.addToTotalBudget()
+                        myBudgetsViewModel.addToTotalBudget(item.budgetAmount!!.toFloat())
                     }.show()
                 }
 

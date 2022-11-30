@@ -32,8 +32,8 @@ class BudgetsViewModel: ViewModel() {
         budgetsRepository.removeBudget(budgetName)
     }
 
-    fun addToTotalBudget(){
-        budgetsRepository.addToTotalBudget()
+    fun addToTotalBudget(budgetAmount: Float){
+        budgetsRepository.addToTotalBudget(budgetAmount)
     }
 
     fun removeFromTotalBudget(){
