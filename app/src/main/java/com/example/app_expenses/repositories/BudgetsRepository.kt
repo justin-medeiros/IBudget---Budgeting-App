@@ -85,14 +85,27 @@ class BudgetsRepository {
         }
     }
 
-    fun setTotalBudget(){
+    fun addToTotalBudget(){
+        CoroutineScope(Dispatchers.IO).launch {
+            firebaseDatabase
+                .child("users").child(auth.currentUser?.uid!!).child("budgets").limitToLast(1)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        for(data in dataSnapshot.children){
+                            val myBudgetData = data.getValue(MyBudgetData::class.java)
+                            totalBudgetAddSubtract(myBudgetData!!, true)
+                        }
+                    }
+                    override fun onCancelled(databaseError: DatabaseError) {}
+                })
+        }
+    }
+
+    fun removeFromTotalBudget(){
         CoroutineScope(Dispatchers.IO).launch {
             firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("budgets").addChildEventListener(object :
                 ChildEventListener {
-                override fun onChildAdded(dataSnapshot: DataSnapshot, prevChildKey: String?) {
-                    val myBudgetData = dataSnapshot.getValue(MyBudgetData::class.java)
-                    totalBudgetAddSubtract(myBudgetData!!, true)
-                }
+                override fun onChildAdded(dataSnapshot: DataSnapshot, prevChildKey: String?) {}
 
                 override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
 

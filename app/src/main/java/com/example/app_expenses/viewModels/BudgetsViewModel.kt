@@ -32,8 +32,12 @@ class BudgetsViewModel: ViewModel() {
         budgetsRepository.removeBudget(budgetName)
     }
 
-    fun setTotalBudget(){
-        budgetsRepository.setTotalBudget()
+    fun addToTotalBudget(){
+        budgetsRepository.addToTotalBudget()
+    }
+
+    fun removeFromTotalBudget(){
+        budgetsRepository.removeFromTotalBudget()
     }
 
     fun getTotalBudget(){
