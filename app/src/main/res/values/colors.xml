@@ -13,6 +13,6 @@
     <color name="blackCategory">#202020</color>
     <color name="greenCategory">#8BCC39</color>
     <color name="purpleCategory">#DB00FF</color>
-    <color name="yellowCategory">#F1E14A</color>
+    <color name="yellowCategory">#ECC437</color>
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">@color/background_secondary</color>
 </resources>

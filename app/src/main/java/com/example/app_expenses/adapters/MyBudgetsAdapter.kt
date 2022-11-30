@@ -21,10 +21,10 @@ class MyBudgetsAdapter(): RecyclerView.Adapter<MyBudgetsAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val categoryMyBudgetsIcon: ImageView = itemView.findViewById(R.id.ivCategoryIconMyBudgets)
-        val categoryMyBudgetsNameTitle = itemView.findViewById<TextView>(R.id.tvBudgetNameMyBudgets)
-        val categoryMyBudgetCategoryTitle = itemView.findViewById<TextView>(R.id.tvBudgetCategoryMyBudgets)
-        val categoryMyBudgetsAmount = itemView.findViewById<TextView>(R.id.tvBudgetAmountMyBudgets)
-        val categoryMyBudgetContainer = itemView.findViewById<RelativeLayout>(R.id.containerMyBudgets)
+        val categoryMyBudgetsNameTitle: TextView = itemView.findViewById(R.id.tvBudgetNameMyBudgets)
+        val categoryMyBudgetCategoryTitle: TextView = itemView.findViewById(R.id.tvBudgetCategoryMyBudgets)
+        val categoryMyBudgetsAmount: TextView = itemView.findViewById(R.id.tvBudgetAmountMyBudgets)
+        val categoryMyBudgetContainer: RelativeLayout = itemView.findViewById(R.id.containerMyBudgets)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyBudgetsAdapter.ViewHolder {
@@ -38,17 +38,19 @@ class MyBudgetsAdapter(): RecyclerView.Adapter<MyBudgetsAdapter.ViewHolder>() {
         holder.categoryMyBudgetsNameTitle.text = myBudget.budgetName
         holder.categoryMyBudgetCategoryTitle.text = myBudget.category?.categoryName ?: ""
         holder.categoryMyBudgetsAmount.text = myBudget.budgetAmount
-        holder.categoryMyBudgetsIcon.background = ContextCompat.getDrawable(context, R.drawable.ic_cash)
-        holder.categoryMyBudgetsIcon.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, myBudget.category?.categoryColor!!))
+        holder.categoryMyBudgetsIcon.background = ContextCompat.getDrawable(context, myBudget.category?.categoryIcon!!)
+        holder.categoryMyBudgetsIcon.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white))
 
         val relativeParams = RelativeLayout.LayoutParams(
             RelativeLayout.LayoutParams.MATCH_PARENT,
-            UtilitiesFunctions.convertDpToPixel(44.0F, context).toInt()
+            UtilitiesFunctions.convertDpToPixel(60.0F, context).toInt()
         )
         if(position != itemCount-1){
             relativeParams.setMargins(0, 0, 0, 10)
         }
         holder.categoryMyBudgetContainer.layoutParams = relativeParams
+        holder.categoryMyBudgetContainer.backgroundTintList = ColorStateList.valueOf(
+            ContextCompat.getColor(context, myBudget.category?.categoryColor!!))
         holder.categoryMyBudgetContainer.requestLayout()
     }
 
