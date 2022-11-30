@@ -2,7 +2,6 @@ package com.example.app_expenses.adapters
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +11,13 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.app_expenses.R
-import com.example.app_expenses.data.MyBudgetData
+import com.example.app_expenses.data.BudgetData
+import com.example.app_expenses.enums.CategoryEnum
 import com.example.app_expenses.utils.UtilitiesFunctions
 
 class MyBudgetsAdapter(): RecyclerView.Adapter<MyBudgetsAdapter.ViewHolder>() {
     private lateinit var context: Context
-    val listOfBudgets: MutableList<MyBudgetData> = mutableListOf()
+    val listOfBudgets: MutableList<BudgetData> = mutableListOf()
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val categoryMyBudgetsIcon: ImageView = itemView.findViewById(R.id.ivCategoryIconMyBudgets)
@@ -34,11 +34,12 @@ class MyBudgetsAdapter(): RecyclerView.Adapter<MyBudgetsAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MyBudgetsAdapter.ViewHolder, position: Int) {
-        val myBudget: MyBudgetData = listOfBudgets[position]
+        val myBudget: BudgetData = listOfBudgets[position]
+        val category: CategoryEnum? = UtilitiesFunctions.getCategoryEnum(myBudget.categoryName!!)
         holder.categoryMyBudgetsNameTitle.text = myBudget.budgetName
-        holder.categoryMyBudgetCategoryTitle.text = myBudget.category?.categoryName ?: ""
+        holder.categoryMyBudgetCategoryTitle.text = category?.categoryName ?: ""
         holder.categoryMyBudgetsAmount.text = myBudget.budgetAmount
-        holder.categoryMyBudgetsIcon.background = ContextCompat.getDrawable(context, myBudget.category?.categoryIcon!!)
+        holder.categoryMyBudgetsIcon.background = ContextCompat.getDrawable(context, category?.categoryIcon!!)
         holder.categoryMyBudgetsIcon.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white))
 
         val relativeParams = RelativeLayout.LayoutParams(
@@ -50,7 +51,7 @@ class MyBudgetsAdapter(): RecyclerView.Adapter<MyBudgetsAdapter.ViewHolder>() {
         }
         holder.categoryMyBudgetContainer.layoutParams = relativeParams
         holder.categoryMyBudgetContainer.backgroundTintList = ColorStateList.valueOf(
-            ContextCompat.getColor(context, myBudget.category?.categoryColor!!))
+            ContextCompat.getColor(context, category?.categoryColor!!))
         holder.categoryMyBudgetContainer.requestLayout()
     }
 
@@ -58,17 +59,17 @@ class MyBudgetsAdapter(): RecyclerView.Adapter<MyBudgetsAdapter.ViewHolder>() {
         return listOfBudgets.size
     }
 
-    fun getList(): List<MyBudgetData>{
+    fun getList(): List<BudgetData>{
         return listOfBudgets
     }
 
-    fun addAllItems(items: List<MyBudgetData>){
+    fun addAllItems(items: List<BudgetData>){
         this.listOfBudgets.removeAll(listOfBudgets)
         this.listOfBudgets.addAll(items)
         notifyDataSetChanged()
     }
 
-    fun addItem(item: MyBudgetData, position: Int){
+    fun addItem(item: BudgetData, position: Int){
         this.listOfBudgets.add(position, item)
         notifyItemInserted(position)
     }

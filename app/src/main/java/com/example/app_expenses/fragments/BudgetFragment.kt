@@ -4,7 +4,6 @@ import android.content.res.ColorStateList
 import android.graphics.*
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,11 +18,7 @@ import com.example.app_expenses.R
 import com.example.app_expenses.activities.MainActivity
 import com.example.app_expenses.adapters.MyBudgetsAdapter
 import com.example.app_expenses.data.BudgetData
-import com.example.app_expenses.data.MyBudgetData
 import com.example.app_expenses.databinding.FragmentBudgetBinding
-import com.example.app_expenses.enums.CategoryEnum
-import com.example.app_expenses.utils.PrefsHelper
-import com.example.app_expenses.utils.StringUtils
 import com.example.app_expenses.utils.UtilitiesFunctions
 import com.example.app_expenses.viewModels.BudgetsViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -86,8 +81,7 @@ class BudgetFragment: Fragment() {
                     Snackbar.make(fragmentBudgetBinding.root, "Budget deleted.", Snackbar.LENGTH_LONG).setAction(
                         "Undo") {
                         myBudgetsCategoryAdapter.addItem(item, position)
-                        myBudgetsViewModel.addBudget(BudgetData(item.category?.categoryName, item.budgetName, item.budgetAmount))
-                        myBudgetsViewModel.addToTotalBudget()
+                        myBudgetsViewModel.addBudget(item)
                         myBudgetsViewModel.addToTotalBudget(item.budgetAmount!!.toFloat())
                     }.show()
                 }

@@ -4,9 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.app_expenses.data.BudgetData
-import com.example.app_expenses.data.MyBudgetData
-import com.example.app_expenses.enums.CategoryEnum
-import com.example.app_expenses.utils.UtilitiesFunctions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
@@ -20,15 +17,16 @@ import kotlinx.coroutines.launch
 class BudgetsRepository {
     private val firebaseDatabase: DatabaseReference = Firebase.database.reference
     private val auth: FirebaseAuth = Firebase.auth
-    private val myBudgetsLiveData = MutableLiveData<List<MyBudgetData>>()
+    private val myBudgetsLiveData = MutableLiveData<List<BudgetData>>()
     private val addBudgetLiveData = MutableLiveData<BudgetData?>()
     private val totalBudgetLiveData = MutableLiveData<Float>()
 
     fun getMyBudgets() {
         CoroutineScope(Dispatchers.IO).launch {
-            val myBudgetsList: MutableList<MyBudgetData> = mutableListOf()
+            val myBudgetsList: MutableList<BudgetData> = mutableListOf()
+            // Want to order by timestamp so that the budgets are in the correct order every launch (most recent to oldest)
             firebaseDatabase
-                .child("users").child(auth.currentUser?.uid!!).child("budgets")
+                .child("users").child(auth.currentUser?.uid!!).child("budgets").orderByChild("timeStamp")
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         if (dataSnapshot.exists()) {
@@ -38,9 +36,8 @@ class BudgetsRepository {
                                     dataSnapshot1.child("budgetAmount").value as String
                                 val budgetCategory =
                                     dataSnapshot1.child("categoryName").value as String
-                                val category: CategoryEnum =
-                                    (UtilitiesFunctions.getCategoryEnum(budgetCategory) ?: null) as CategoryEnum
-                                myBudgetsList.add(MyBudgetData(category, budgetName, budgetAmount))
+                                val budgetTimeStamp = dataSnapshot1.child("timeStamp").value as Long
+                                myBudgetsList.add(0, BudgetData(budgetTimeStamp, budgetCategory, budgetName, budgetAmount))
                             }
                             myBudgetsLiveData.postValue(myBudgetsList)
                         }
@@ -49,7 +46,7 @@ class BudgetsRepository {
                 })
         }
     }
-    fun getMyBudgetsLiveData(): LiveData<List<MyBudgetData>>{
+    fun getMyBudgetsLiveData(): LiveData<List<BudgetData>>{
         return myBudgetsLiveData
     }
 
@@ -100,7 +97,7 @@ class BudgetsRepository {
                 override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
 
                 override fun onChildRemoved(snapshot: DataSnapshot) {
-                    val myBudgetData = snapshot.getValue(MyBudgetData::class.java)
+                    val myBudgetData = snapshot.getValue(BudgetData::class.java)
                     totalBudgetAddSubtract(myBudgetData!!.budgetAmount!!.toFloat(), false)
                 }
 
