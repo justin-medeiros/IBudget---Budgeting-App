@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.app_expenses.data.BudgetData
+import com.example.app_expenses.enums.CategoryEnum
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
@@ -21,12 +22,13 @@ class BudgetsRepository {
     private val addBudgetLiveData = MutableLiveData<BudgetData?>()
     private val totalBudgetLiveData = MutableLiveData<Float>()
 
-    fun getMyBudgets() {
+    fun getMyBudgets(category: CategoryEnum) {
         CoroutineScope(Dispatchers.IO).launch {
             val myBudgetsList: MutableList<BudgetData> = mutableListOf()
             // Want to order by timestamp so that the budgets are in the correct order every launch (most recent to oldest)
             firebaseDatabase
-                .child("users").child(auth.currentUser?.uid!!).child("budgets").orderByChild("timeStamp")
+                .child("users").child(auth.currentUser?.uid!!).child("categories").child(category.categoryName!!)
+                .child("budgets").orderByChild("timeStamp")
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         if (dataSnapshot.exists()) {
@@ -52,8 +54,9 @@ class BudgetsRepository {
 
     fun addBudget(newBudget: BudgetData){
         CoroutineScope(Dispatchers.IO).launch {
-            firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("budgets").push().setValue(newBudget).addOnCompleteListener { registerUser ->
-                if(registerUser.isSuccessful){
+            firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("categories").child(newBudget.categoryName!!)
+                .child("budgets").push().setValue(newBudget).addOnCompleteListener { budgetAddedSuccessfully ->
+                if(budgetAddedSuccessfully.isSuccessful){
                     addBudgetLiveData.postValue(newBudget)
                 }
                 else{
@@ -67,10 +70,10 @@ class BudgetsRepository {
         return addBudgetLiveData
     }
 
-    fun removeBudget(budgetName: String) {
+    fun removeBudget(budgetName: String, categoryName: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("budgets")
-                .orderByChild("budgetName").equalTo(budgetName)
+            firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("categories")
+                .child(categoryName).child("budgets").orderByChild("budgetName").equalTo(budgetName)
                 .addListenerForSingleValueEvent(object : ValueEventListener{
                     override fun onDataChange(snapshot: DataSnapshot) {
                         for(data in snapshot.children){
@@ -88,23 +91,9 @@ class BudgetsRepository {
         }
     }
 
-    fun removeFromTotalBudget(){
+    fun removeFromTotalBudget(budgetAmount: Float){
         CoroutineScope(Dispatchers.IO).launch {
-            firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("budgets").addChildEventListener(object :
-                ChildEventListener {
-                override fun onChildAdded(dataSnapshot: DataSnapshot, prevChildKey: String?) {}
-
-                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-
-                override fun onChildRemoved(snapshot: DataSnapshot) {
-                    val myBudgetData = snapshot.getValue(BudgetData::class.java)
-                    totalBudgetAddSubtract(myBudgetData!!.budgetAmount!!.toFloat(), false)
-                }
-
-                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-
-                override fun onCancelled(error: DatabaseError) {}
-            })
+            totalBudgetAddSubtract(budgetAmount, false)
         }
     }
 

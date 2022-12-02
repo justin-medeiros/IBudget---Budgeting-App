@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.DisplayMetrics
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import com.example.app_expenses.data.BudgetCategoryData
 import com.example.app_expenses.enums.CategoryEnum
 
 object UtilitiesFunctions{
@@ -33,5 +34,40 @@ object UtilitiesFunctions{
             CategoryEnum.PERSONAL_SPENDING.categoryName -> category = CategoryEnum.PERSONAL_SPENDING
         }
         return category
+    }
+
+    fun createCategories(): MutableList<CategoryEnum>{
+        val categories = mutableListOf<CategoryEnum>()
+        categories.add(CategoryEnum.GROCERIES)
+        categories.add(CategoryEnum.ENTERTAINMENT)
+        categories.add(CategoryEnum.TRANSPORTATION)
+        categories.add(CategoryEnum.SUBSCRIPTIONS)
+        categories.add(CategoryEnum.BILLS)
+        categories.add(CategoryEnum.PERSONAL_SPENDING)
+        return categories
+    }
+
+    fun createCategoriesBudgets(): MutableList<BudgetCategoryData>{
+        val categories = mutableListOf<BudgetCategoryData>()
+        categories.add(BudgetCategoryData(CategoryEnum.GROCERIES.categoryName, "0"))
+        categories.add(BudgetCategoryData(CategoryEnum.ENTERTAINMENT.categoryName, "0"))
+        categories.add(BudgetCategoryData(CategoryEnum.TRANSPORTATION.categoryName, "0"))
+        categories.add(BudgetCategoryData(CategoryEnum.SUBSCRIPTIONS.categoryName, "0"))
+        categories.add(BudgetCategoryData(CategoryEnum.BILLS.categoryName, "0"))
+        categories.add(BudgetCategoryData(CategoryEnum.PERSONAL_SPENDING.categoryName, "0"))
+        return categories
+    }
+
+    fun getCategoryBudgetsPosition(myBudgetCategory: String): Int{
+        var position = 0
+        when (myBudgetCategory){
+            CategoryEnum.GROCERIES.categoryName -> position = 0
+            CategoryEnum.ENTERTAINMENT.categoryName -> position = 1
+            CategoryEnum.TRANSPORTATION.categoryName -> position = 2
+            CategoryEnum.SUBSCRIPTIONS.categoryName -> position = 3
+            CategoryEnum.BILLS.categoryName -> position = 4
+            CategoryEnum.PERSONAL_SPENDING.categoryName -> position = 5
+        }
+        return position
     }
 }

@@ -17,10 +17,6 @@ import com.example.app_expenses.Transactions_List
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.ArrayAdapter
-import com.baoyz.swipemenulistview.SwipeMenuListView
-import com.baoyz.swipemenulistview.SwipeMenuCreator
-import com.baoyz.swipemenulistview.SwipeMenu
-import com.baoyz.swipemenulistview.SwipeMenuItem
 import android.graphics.drawable.ColorDrawable
 import android.content.DialogInterface
 import android.graphics.Color
@@ -59,13 +55,10 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding!!.root
 
-        // List view setup
-        val listView = root.findViewById<View>(R.id.listView) as SwipeMenuListView
 
         // Get array of items
         new_items = Add_Transaction.items
         adapter = ArrayAdapter(root.context, android.R.layout.simple_list_item_1, new_items!!)
-        listView.adapter = adapter
 
         // Budget Amount
         amount_budg = Add_Budget.budgAmount
@@ -92,8 +85,7 @@ class HomeFragment : Fragment() {
         expense_button?.show()
         expense_button?.setOnClickListener(View.OnClickListener { openAdd_transaction() })
 
-        // Swipe items in list and delete
-        swipeMenuCreated(root, listView, "Home")
+
         return root
     }
 
@@ -107,26 +99,6 @@ class HomeFragment : Fragment() {
         binding = null
     }
 
-    fun swipeMenuCreated(root: View, listView: SwipeMenuListView, choose_class: String) {
-        val creator = SwipeMenuCreator { menu -> // create "delete" item
-            val deleteItem = SwipeMenuItem(root.context)
-            // set item background
-            deleteItem.background = ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25))
-            // set item width
-            deleteItem.width = 170
-            // set a icon
-            deleteItem.setIcon(R.drawable.ic_trash_can)
-            // add to menu
-            menu.addMenuItem(deleteItem)
-        }
-        listView.setMenuCreator(creator)
-
-        // For touching the items in the list
-        listView.setOnMenuItemClickListener { position, menu, index ->
-            delete_list_item(root, position, choose_class)
-            false
-        }
-    }
 
     fun delete_list_item(view: View, position: Int, choose_class: String) {
         val adb = AlertDialog.Builder(view.context)
