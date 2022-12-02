@@ -54,8 +54,14 @@ class CategoryBudgetsRepository {
         return budgetCategoryLiveData
     }
 
+    fun subtractFromCategoryBudget(budgetCategoryData: BudgetCategoryData){
+        CoroutineScope(Dispatchers.Main).launch {
+            addSubtractCategoryBudget(budgetCategoryData, false)
+        }
+    }
+
     fun addToCategoryBudget(budgetCategoryData: BudgetCategoryData){
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             addSubtractCategoryBudget(budgetCategoryData, true)
         }
     }
@@ -84,7 +90,7 @@ class CategoryBudgetsRepository {
         }
 
     fun getCategoryTotalBudget(categoryName: String){
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             firebaseDatabase
                 .child("users").child(auth.currentUser?.uid!!).child("categories").child(categoryName).child("total_budget")
                 .addListenerForSingleValueEvent(object : ValueEventListener {

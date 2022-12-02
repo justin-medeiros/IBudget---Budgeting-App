@@ -71,13 +71,25 @@ class BudgetsAdapter(): RecyclerView.Adapter<BudgetsAdapter.ViewHolder>() {
         notifyItemChanged(position)
     }
 
+    fun addToBudgetAmount(position: Int, categoryBudgetAmount: String){
+        val newTotal = listOfCategoryBudgets[position].budgetAmount!!.toFloat() + categoryBudgetAmount.toFloat()
+        listOfCategoryBudgets[position].budgetAmount = newTotal.toString()
+        notifyItemChanged(position)
+    }
+
+    fun subtractBudgetAmount(position: Int, categoryBudgetAmount: String){
+        val newTotal = listOfCategoryBudgets[position].budgetAmount!!.toFloat() - categoryBudgetAmount.toFloat()
+        listOfCategoryBudgets[position].budgetAmount = newTotal.toString()
+        notifyItemChanged(position)
+    }
+
     fun addAll(categoryBudgetList: List<BudgetCategoryData>){
         listOfCategoryBudgets.addAll(categoryBudgetList)
         notifyDataSetChanged()
     }
 
     private fun loadFragment(view: View, category: CategoryEnum){
-        val fragment = BudgetCategoryListFragment(category)
+        val fragment = BudgetCategoryListFragment(category, this)
         (view.context as FragmentActivity).supportFragmentManager.beginTransaction()
             .replace(R.id.relativeLayoutMainActivity, fragment).addToBackStack(fragment.javaClass.name)
             .commit()

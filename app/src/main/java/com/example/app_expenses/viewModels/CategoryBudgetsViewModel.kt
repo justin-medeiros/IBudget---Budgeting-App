@@ -18,6 +18,10 @@ class CategoryBudgetsViewModel: ViewModel() {
         return categoryBudgetsLiveData
     }
 
+    fun subtractFromCategoryTotalBudget(budgetCategoryData: BudgetCategoryData){
+        categoryBudgetsListRepository.subtractFromCategoryBudget(budgetCategoryData)
+    }
+
     fun addToCategoryTotalBudget(budgetCategoryData: BudgetCategoryData){
         categoryBudgetsListRepository.addToCategoryBudget(budgetCategoryData)
     }

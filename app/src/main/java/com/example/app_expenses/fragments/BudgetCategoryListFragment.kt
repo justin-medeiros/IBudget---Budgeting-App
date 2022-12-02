@@ -31,7 +31,7 @@ import com.example.app_expenses.viewModels.BudgetsViewModel
 import com.example.app_expenses.viewModels.CategoryBudgetsViewModel
 import com.google.android.material.snackbar.Snackbar
 
-class BudgetCategoryListFragment(private val category: CategoryEnum): Fragment() {
+class BudgetCategoryListFragment(private val category: CategoryEnum, private val budgetsAdapter: BudgetsAdapter): Fragment() {
     private lateinit var fragmentBudgetCategoryListBinding: FragmentMybudgetListBinding
     private var mainActivity: MainActivity = MainActivity()
     var myBudgetsCategoryAdapter = MyBudgetsListAdapter()
@@ -83,14 +83,25 @@ class BudgetCategoryListFragment(private val category: CategoryEnum): Fragment()
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     val position = viewHolder.adapterPosition
                     val item = myBudgetsCategoryAdapter.getList()[position]
+                    val myBudgetCategoryData = BudgetCategoryData(item.categoryName, item.budgetAmount)
+                    val categoryPosition = UtilitiesFunctions.getCategoryBudgetsPosition(item.categoryName!!)
+
+                    // Swipe to remove budget from database, subtract amount from category total budget amount and subtract amount
+                    // all budgets total amount
                     myBudgetsCategoryAdapter.removeItem(position)
+                    budgetsAdapter.subtractBudgetAmount(categoryPosition, item.budgetAmount!!)
                     myBudgetsViewModel.removeBudget(item.budgetName!!, item.categoryName!!)
                     myBudgetsViewModel.removeFromTotalBudget(item.budgetAmount!!.toFloat())
+                    categoryBudgetsViewModel.subtractFromCategoryTotalBudget(myBudgetCategoryData)
+
+                    // When click undo add budget back to database, add amount to category total budget amount and add amount
+                    // to all budgets total amount
                     Snackbar.make(fragmentBudgetCategoryListBinding.root, "Budget deleted.", Snackbar.LENGTH_LONG).setAction(
                         "Undo") {
                         myBudgetsCategoryAdapter.addItem(item, position)
+                        budgetsAdapter.addToBudgetAmount(categoryPosition, item.budgetAmount!!)
                         myBudgetsViewModel.addBudget(item)
-                        categoryBudgetsViewModel.addToCategoryTotalBudget(BudgetCategoryData(item.categoryName, item.budgetAmount))
+                        categoryBudgetsViewModel.addToCategoryTotalBudget(myBudgetCategoryData)
                         myBudgetsViewModel.addToTotalBudget(item.budgetAmount!!.toFloat())
                     }.show()
                 }
