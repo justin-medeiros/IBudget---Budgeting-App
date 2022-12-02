@@ -9,36 +9,38 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.app_expenses.R
-import com.example.app_expenses.data.BudgetData
+import com.example.app_expenses.activities.MainActivity
+import com.example.app_expenses.data.BudgetCategoryData
 import com.example.app_expenses.enums.CategoryEnum
+import com.example.app_expenses.fragments.BudgetCategoryListFragment
 import com.example.app_expenses.utils.UtilitiesFunctions
 
-class MyBudgetsAdapter(): RecyclerView.Adapter<MyBudgetsAdapter.ViewHolder>() {
+class BudgetsAdapter(): RecyclerView.Adapter<BudgetsAdapter.ViewHolder>() {
     private lateinit var context: Context
-    val listOfBudgets: MutableList<BudgetData> = mutableListOf()
+    private val listOfCategoryBudgets: MutableList<BudgetCategoryData> = mutableListOf()
+    private val mainActivity = MainActivity()
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val categoryMyBudgetsIcon: ImageView = itemView.findViewById(R.id.ivCategoryIconMyBudgets)
         val categoryMyBudgetsNameTitle: TextView = itemView.findViewById(R.id.tvBudgetNameMyBudgets)
-        val categoryMyBudgetCategoryTitle: TextView = itemView.findViewById(R.id.tvBudgetCategoryMyBudgets)
         val categoryMyBudgetsAmount: TextView = itemView.findViewById(R.id.tvBudgetAmountMyBudgets)
         val categoryMyBudgetContainer: RelativeLayout = itemView.findViewById(R.id.containerMyBudgets)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyBudgetsAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BudgetsAdapter.ViewHolder {
         context = parent.context
         val categoryView = LayoutInflater.from(context).inflate(R.layout.categories_budget, parent, false)
         return ViewHolder(categoryView)
     }
 
-    override fun onBindViewHolder(holder: MyBudgetsAdapter.ViewHolder, position: Int) {
-        val myBudget: BudgetData = listOfBudgets[position]
-        val category: CategoryEnum? = UtilitiesFunctions.getCategoryEnum(myBudget.categoryName!!)
-        holder.categoryMyBudgetsNameTitle.text = myBudget.budgetName
-        holder.categoryMyBudgetCategoryTitle.text = category?.categoryName ?: ""
-        holder.categoryMyBudgetsAmount.text = myBudget.budgetAmount
+    override fun onBindViewHolder(holder: BudgetsAdapter.ViewHolder, position: Int) {
+        val categoryBudget: BudgetCategoryData = listOfCategoryBudgets[position]
+        val category = UtilitiesFunctions.getCategoryEnum(categoryBudget.categoryName!!)
+        holder.categoryMyBudgetsNameTitle.text = category?.categoryName
+        holder.categoryMyBudgetsAmount.text = "$%.2f".format(categoryBudget.budgetAmount!!.toFloat())
         holder.categoryMyBudgetsIcon.background = ContextCompat.getDrawable(context, category?.categoryIcon!!)
         holder.categoryMyBudgetsIcon.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white))
 
@@ -53,29 +55,31 @@ class MyBudgetsAdapter(): RecyclerView.Adapter<MyBudgetsAdapter.ViewHolder>() {
         holder.categoryMyBudgetContainer.backgroundTintList = ColorStateList.valueOf(
             ContextCompat.getColor(context, category?.categoryColor!!))
         holder.categoryMyBudgetContainer.requestLayout()
+
+        holder.categoryMyBudgetContainer.setOnClickListener { view ->
+            loadFragment(view, category)
+            mainActivity.hideTabBarVisibility()
+        }
     }
 
     override fun getItemCount(): Int {
-        return listOfBudgets.size
+        return listOfCategoryBudgets.size
     }
 
-    fun getList(): List<BudgetData>{
-        return listOfBudgets
+    fun replaceBudgetAmount(position: Int, categoryBudgetAmount: String){
+        listOfCategoryBudgets[position].budgetAmount = categoryBudgetAmount
+        notifyItemChanged(position)
     }
 
-    fun addAllItems(items: List<BudgetData>){
-        this.listOfBudgets.removeAll(listOfBudgets)
-        this.listOfBudgets.addAll(items)
+    fun addAll(categoryBudgetList: List<BudgetCategoryData>){
+        listOfCategoryBudgets.addAll(categoryBudgetList)
         notifyDataSetChanged()
     }
 
-    fun addItem(item: BudgetData, position: Int){
-        this.listOfBudgets.add(position, item)
-        notifyItemInserted(position)
-    }
-
-    fun removeItem(position: Int){
-        this.listOfBudgets.removeAt(position)
-        notifyItemRemoved(position)
+    private fun loadFragment(view: View, category: CategoryEnum){
+        val fragment = BudgetCategoryListFragment(category)
+        (view.context as FragmentActivity).supportFragmentManager.beginTransaction()
+            .replace(R.id.relativeLayoutMainActivity, fragment).addToBackStack(fragment.javaClass.name)
+            .commit()
     }
 }

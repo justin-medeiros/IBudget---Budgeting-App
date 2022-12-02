@@ -16,10 +16,6 @@ import com.example.app_expenses.Transactions_List
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.ArrayAdapter
-import com.baoyz.swipemenulistview.SwipeMenuListView
-import com.baoyz.swipemenulistview.SwipeMenuCreator
-import com.baoyz.swipemenulistview.SwipeMenu
-import com.baoyz.swipemenulistview.SwipeMenuItem
 import android.graphics.drawable.ColorDrawable
 import android.content.DialogInterface
 import android.view.View

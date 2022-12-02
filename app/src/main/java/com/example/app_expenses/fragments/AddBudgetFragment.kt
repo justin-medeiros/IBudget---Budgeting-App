@@ -3,6 +3,7 @@ package com.example.app_expenses.fragments
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,22 +17,26 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_expenses.R
 import com.example.app_expenses.activities.MainActivity
 import com.example.app_expenses.adapters.CategoryAdapter
-import com.example.app_expenses.adapters.MyBudgetsAdapter
+import com.example.app_expenses.adapters.BudgetsAdapter
+import com.example.app_expenses.data.BudgetCategoryData
 import com.example.app_expenses.data.BudgetData
 import com.example.app_expenses.databinding.FragmentAddBudgetBinding
 import com.example.app_expenses.enums.CategoryEnum
 import com.example.app_expenses.utils.PrefsHelper
 import com.example.app_expenses.utils.StringUtils
+import com.example.app_expenses.utils.UtilitiesFunctions
 import com.example.app_expenses.viewModels.BudgetsViewModel
+import com.example.app_expenses.viewModels.CategoryBudgetsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AddBudgetFragment(private val budgetsAdapter: MyBudgetsAdapter): Fragment() {
+class AddBudgetFragment(private val budgetsAdapter: BudgetsAdapter): Fragment() {
     private lateinit var fragmentAddBudgetBinding: FragmentAddBudgetBinding
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var categories: MutableList<CategoryEnum>
     private var mainActivity: MainActivity = MainActivity()
     private val budgetsViewModel: BudgetsViewModel by viewModels()
+    private val categoryBudgetsViewModel: CategoryBudgetsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -40,7 +45,7 @@ class AddBudgetFragment(private val budgetsAdapter: MyBudgetsAdapter): Fragment(
             inflater, R.layout.fragment_add_budget,
             container, false
         )
-        categories = createCategories()
+        categories = UtilitiesFunctions.createCategories()
         categoryAdapter = CategoryAdapter(categories)
         fragmentAddBudgetBinding.recyclerViewAddBudget.adapter = categoryAdapter
         fragmentAddBudgetBinding.recyclerViewAddBudget.layoutManager =
@@ -53,14 +58,19 @@ class AddBudgetFragment(private val budgetsAdapter: MyBudgetsAdapter): Fragment(
             if(newBudget != null){
                 val total = newBudget.budgetAmount!!.toFloat() + PrefsHelper.readFloat(StringUtils.TOTAL_BUDGET)!!
                 PrefsHelper.writeFloat(StringUtils.TOTAL_BUDGET, total)
-                budgetsAdapter.addItem(newBudget, 0)
                 budgetsViewModel.addToTotalBudget(newBudget.budgetAmount!!.toFloat())
+                categoryBudgetsViewModel.getCategoryTotalBudget(newBudget.categoryName!!)
                 Toast.makeText(context, "Budget has been created successfully!", Toast.LENGTH_LONG).show()
-                parentFragmentManager.popBackStack()
-                mainActivity.visibleTabBarVisibility()
             } else{
                 Toast.makeText(context, "Error. User not registered.", Toast.LENGTH_LONG).show()
             }
+        }
+
+        categoryBudgetsViewModel.getCategoryTotalBudgetLiveData().observe(viewLifecycleOwner){ categoryTotalBudget ->
+            val position = UtilitiesFunctions.getCategoryBudgetsPosition(categoryTotalBudget.categoryName!!)
+            budgetsAdapter.replaceBudgetAmount(position, categoryTotalBudget.budgetAmount!!)
+            parentFragmentManager.popBackStack()
+            mainActivity.visibleTabBarVisibility()
         }
 
         fragmentAddBudgetBinding.addBudgetBackButton.setOnClickListener {
@@ -77,19 +87,9 @@ class AddBudgetFragment(private val budgetsAdapter: MyBudgetsAdapter): Fragment(
                 val budgetAmount = fragmentAddBudgetBinding.etAmount.text.toString()
                 val newBudget = BudgetData(System.currentTimeMillis(), selectedCategory, budgetName, budgetAmount)
                 budgetsViewModel.addBudget(newBudget)
+                categoryBudgetsViewModel.addToCategoryTotalBudget(BudgetCategoryData(selectedCategory, budgetAmount))
             }
         }
-    }
-
-    private fun createCategories(): MutableList<CategoryEnum>{
-        val categories = mutableListOf<CategoryEnum>()
-        categories.add(CategoryEnum.GROCERIES)
-        categories.add(CategoryEnum.ENTERTAINMENT)
-        categories.add(CategoryEnum.TRANSPORTATION)
-        categories.add(CategoryEnum.SUBSCRIPTIONS)
-        categories.add(CategoryEnum.BILLS)
-        categories.add(CategoryEnum.PERSONAL_SPENDING)
-        return categories
     }
 
     private fun validateFields(): Boolean{
@@ -145,12 +145,12 @@ class AddBudgetFragment(private val budgetsAdapter: MyBudgetsAdapter): Fragment(
 
     private fun validateUniqueName(typedBudgetName: String): Boolean{
         var isUnique = true
-        for(budget in budgetsAdapter.listOfBudgets){
-            if(budget.budgetName!! == typedBudgetName){
-                isUnique = false
-                break
-            }
-        }
+//        for(budget in budgetsAdapter.listOfBudgets){
+//            if(budget.budgetName!! == typedBudgetName){
+//                isUnique = false
+//                break
+//            }
+//        }
         return isUnique
     }
 

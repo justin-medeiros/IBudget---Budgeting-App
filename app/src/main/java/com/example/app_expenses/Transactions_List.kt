@@ -16,10 +16,6 @@ import com.example.app_expenses.Transactions_List
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.ArrayAdapter
-import com.baoyz.swipemenulistview.SwipeMenuListView
-import com.baoyz.swipemenulistview.SwipeMenuCreator
-import com.baoyz.swipemenulistview.SwipeMenu
-import com.baoyz.swipemenulistview.SwipeMenuItem
 import android.graphics.drawable.ColorDrawable
 import android.content.DialogInterface
 import android.view.View
@@ -47,13 +43,10 @@ class Transactions_List : Fragment() {
         Add_Transaction.amount = 0.0
         Add_Budget.budgAmount = 0.0
 
-        // List view setup
-        val listView = root.findViewById<View>(R.id.listView) as SwipeMenuListView
 
         // Display the list of transactions
         new_items_big = Add_Transaction.items
         adapter_big = ArrayAdapter(root.context, android.R.layout.simple_list_item_1, new_items_big!!)
-        listView.adapter = adapter_big
 
         // Add transaction button
         add_exp_button = root.findViewById(R.id.plus_button_list)
