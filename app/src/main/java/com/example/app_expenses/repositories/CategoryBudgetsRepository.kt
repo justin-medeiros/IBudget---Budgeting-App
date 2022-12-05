@@ -29,7 +29,7 @@ class CategoryBudgetsRepository {
         // Using a tree map to pass the correct position of each category in descending order to display in the budgets page
         val newBudgetCategoryList: TreeMap<Int, BudgetCategoryData> = TreeMap()
         val budgetCategoryDefaultList = UtilitiesFunctions.createCategoriesBudgets()
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             for (category in budgetCategoryDefaultList) {
                 val currentBudget = firebaseDatabase.child("users").child(auth.currentUser?.uid!!)
                     .child("categories")
@@ -63,20 +63,20 @@ class CategoryBudgetsRepository {
     }
 
     fun subtractFromCategoryBudget(budgetCategoryData: BudgetCategoryData){
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             addSubtractCategoryBudget(budgetCategoryData, false)
         }
     }
 
     fun addToCategoryBudget(budgetCategoryData: BudgetCategoryData){
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             addSubtractCategoryBudget(budgetCategoryData, true)
         }
     }
 
     fun validateUniqueBudgetName(categoryName: String){
         val categoryNameList = mutableListOf<String>()
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("categories")
                 .child(categoryName).child("budgets").addListenerForSingleValueEvent(object: ValueEventListener{
                     override fun onDataChange(snapshot: DataSnapshot) {
@@ -121,7 +121,7 @@ class CategoryBudgetsRepository {
         }
 
     fun getCategoryTotalBudget(categoryName: String){
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             firebaseDatabase
                 .child("users").child(auth.currentUser?.uid!!).child("categories").child(categoryName).child("total_budget")
                 .addListenerForSingleValueEvent(object : ValueEventListener {

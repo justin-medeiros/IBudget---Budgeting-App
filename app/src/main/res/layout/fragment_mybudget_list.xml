@@ -77,6 +77,19 @@
                 android:layout_marginRight="20dp"
                 android:padding="20dp"/>
 
+            <TextView
+                android:id="@+id/tvRvNoBudgets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/figerona_semibold"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/no_items_budget_list"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                />
+
         </LinearLayout>
     </ScrollView>
 

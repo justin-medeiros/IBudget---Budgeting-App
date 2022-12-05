@@ -62,7 +62,14 @@ class BudgetCategoryListFragment(private val category: CategoryEnum, private val
         fragmentBudgetCategoryListBinding.mybudgetsListNavBar.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), category.categoryColor!!))
 
         myBudgetsViewModel.getMyBudgetsLiveData().observe(viewLifecycleOwner){ categoryBudgetsList ->
-            myBudgetsCategoryAdapter.addAllItems(categoryBudgetsList)
+            if(categoryBudgetsList.isEmpty()){
+                fragmentBudgetCategoryListBinding.tvRvNoBudgets.visibility = View.VISIBLE
+                fragmentBudgetCategoryListBinding.rvMyBudgets.visibility = View.GONE
+            } else{
+                fragmentBudgetCategoryListBinding.rvMyBudgets.visibility = View.VISIBLE
+                fragmentBudgetCategoryListBinding.tvRvNoBudgets.visibility = View.GONE
+                myBudgetsCategoryAdapter.addAllItems(categoryBudgetsList)
+            }
         }
 
         fragmentBudgetCategoryListBinding.mybudgetsListBackButton.setOnClickListener {
