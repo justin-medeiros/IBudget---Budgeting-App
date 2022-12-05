@@ -9,6 +9,7 @@ class CategoryBudgetsViewModel: ViewModel() {
     private val categoryBudgetsListRepository = CategoryBudgetsRepository()
     private val categoryTotalBudgetLiveData: LiveData<BudgetCategoryData> = categoryBudgetsListRepository.getCategoryTotalBudgetLiveData()
     private val categoryBudgetsLiveData:  LiveData<List<BudgetCategoryData>> = categoryBudgetsListRepository.getCategoryBudgetsLiveData()
+    private val budgetListLiveData: LiveData<List<String>> = categoryBudgetsListRepository.getBudgetListLiveData()
 
     fun getCategoryBudgets(){
         categoryBudgetsListRepository.getCategoryBudgets()
@@ -16,6 +17,14 @@ class CategoryBudgetsViewModel: ViewModel() {
 
     fun getCategoryBudgetsLiveData(): LiveData<List<BudgetCategoryData>> {
         return categoryBudgetsLiveData
+    }
+
+    fun validateBudgetNames(categoryName: String){
+        categoryBudgetsListRepository.validateUniqueBudgetName(categoryName)
+    }
+
+    fun getBudgetsListLiveData(): LiveData<List<String>>{
+        return budgetListLiveData
     }
 
     fun subtractFromCategoryTotalBudget(budgetCategoryData: BudgetCategoryData){

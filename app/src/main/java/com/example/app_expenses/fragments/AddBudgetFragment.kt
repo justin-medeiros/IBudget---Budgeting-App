@@ -34,6 +34,7 @@ class AddBudgetFragment(private val budgetsAdapter: BudgetsAdapter): Fragment() 
     private lateinit var fragmentAddBudgetBinding: FragmentAddBudgetBinding
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var categories: MutableList<CategoryEnum>
+    private var selectedCategoryName: String? = ""
     private var mainActivity: MainActivity = MainActivity()
     private val budgetsViewModel: BudgetsViewModel by viewModels()
     private val categoryBudgetsViewModel: CategoryBudgetsViewModel by viewModels()
@@ -81,18 +82,25 @@ class AddBudgetFragment(private val budgetsAdapter: BudgetsAdapter): Fragment() 
         fragmentAddBudgetBinding.btnConfirmAddBudget.setOnClickListener {
             fragmentAddBudgetBinding.etBudgetName.clearFocus()
             fragmentAddBudgetBinding.etAmount.clearFocus()
-            if(validateFields() && categoryAdapter.isCategorySelected.value == true){
-                val selectedCategory = categories[categoryAdapter.rowIndex].categoryName
-                val budgetName = fragmentAddBudgetBinding.etBudgetName.text.toString()
+            if(categoryAdapter.isCategorySelected.value == true){
+                selectedCategoryName = categories[categoryAdapter.rowIndex].categoryName
+            }
+            categoryBudgetsViewModel.validateBudgetNames(selectedCategoryName!!)
+        }
+
+        // Used to validate all fields and make sure that the budget name is unique.
+        categoryBudgetsViewModel.getBudgetsListLiveData().observe(viewLifecycleOwner){ budgetList ->
+            val budgetName = fragmentAddBudgetBinding.etBudgetName.text.toString()
+            if(validateFields(budgetList.contains(budgetName.lowercase())) && categoryAdapter.isCategorySelected.value == true){
                 val budgetAmount = fragmentAddBudgetBinding.etAmount.text.toString()
-                val newBudget = BudgetData(System.currentTimeMillis(), selectedCategory, budgetName, budgetAmount)
+                val newBudget = BudgetData(System.currentTimeMillis(), selectedCategoryName, budgetName, budgetAmount)
                 budgetsViewModel.addBudget(newBudget)
-                categoryBudgetsViewModel.addToCategoryTotalBudget(BudgetCategoryData(selectedCategory, budgetAmount))
+                categoryBudgetsViewModel.addToCategoryTotalBudget(BudgetCategoryData(selectedCategoryName, budgetAmount))
             }
         }
     }
 
-    private fun validateFields(): Boolean{
+    private fun validateFields(isEmailUnique: Boolean): Boolean{
         var isValidName = false
         var isValidAmount = false
         if(TextUtils.isEmpty(fragmentAddBudgetBinding.etBudgetName.text.toString())){
@@ -103,17 +111,13 @@ class AddBudgetFragment(private val budgetsAdapter: BudgetsAdapter): Fragment() 
                 requireContext(), R.color.red_bright))
             fragmentAddBudgetBinding.tvBudgetNameTitle.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
             fragmentAddBudgetBinding.tvInvalidBudgetName.text = resources.getString(R.string.invalid_budget_name)
-        } else if(!validateUniqueName(fragmentAddBudgetBinding.etBudgetName.text.toString())){
-            fragmentAddBudgetBinding.tvInvalidBudgetName.visibility = View.VISIBLE
-            fragmentAddBudgetBinding.etBudgetName.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
-            fragmentAddBudgetBinding.etBudgetName.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
-            fragmentAddBudgetBinding.etBudgetName.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(
-                requireContext(), R.color.red_bright))
-            fragmentAddBudgetBinding.tvBudgetNameTitle.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
-            fragmentAddBudgetBinding.tvInvalidBudgetName.text = resources.getString(R.string.duplicate_budget_name)
-        } else{
+        } else if (isEmailUnique){
+            invalidBudgetName()
+        }
+        else{
             isValidName = true
         }
+
         if (TextUtils.isEmpty(fragmentAddBudgetBinding.etAmount.text.toString()) || !validateAmount(
                 fragmentAddBudgetBinding.etAmount.text.toString())) {
             fragmentAddBudgetBinding.tvInvalidBudgetAmount.visibility = View.VISIBLE
@@ -143,15 +147,15 @@ class AddBudgetFragment(private val budgetsAdapter: BudgetsAdapter): Fragment() 
         } ?: return false
     }
 
-    private fun validateUniqueName(typedBudgetName: String): Boolean{
-        var isUnique = true
-//        for(budget in budgetsAdapter.listOfBudgets){
-//            if(budget.budgetName!! == typedBudgetName){
-//                isUnique = false
-//                break
-//            }
-//        }
-        return isUnique
+    private fun invalidBudgetName(){
+        fragmentAddBudgetBinding.tvInvalidBudgetName.visibility = View.VISIBLE
+        fragmentAddBudgetBinding.etBudgetName.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
+        fragmentAddBudgetBinding.etBudgetName.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
+        fragmentAddBudgetBinding.etBudgetName.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(
+            requireContext(), R.color.red_bright))
+        fragmentAddBudgetBinding.tvBudgetNameTitle.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
+        fragmentAddBudgetBinding.tvInvalidBudgetName.text = resources.getString(R.string.duplicate_budget_name)
+        return
     }
 
     private fun resetInvalidFields(){
