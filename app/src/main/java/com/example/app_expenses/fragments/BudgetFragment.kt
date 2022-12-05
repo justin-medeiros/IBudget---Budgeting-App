@@ -44,7 +44,7 @@ class BudgetFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         categoryBudgetsViewModel.getCategoryBudgetsLiveData().observe(viewLifecycleOwner){ categoryBudgetsList ->
-            myBudgetsCategoryAdapter.addAll(categoryBudgetsList)
+            myBudgetsCategoryAdapter.addAll(categoryBudgetsList.values)
         }
 
         myBudgetsViewModel.getTotalBudgetLiveData().observe(viewLifecycleOwner){ totalBudget ->

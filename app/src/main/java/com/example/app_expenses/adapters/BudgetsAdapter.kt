@@ -83,7 +83,7 @@ class BudgetsAdapter(): RecyclerView.Adapter<BudgetsAdapter.ViewHolder>() {
         notifyItemChanged(position)
     }
 
-    fun addAll(categoryBudgetList: List<BudgetCategoryData>){
+    fun addAll(categoryBudgetList: MutableCollection<BudgetCategoryData>){
         listOfCategoryBudgets.addAll(categoryBudgetList)
         notifyDataSetChanged()
     }

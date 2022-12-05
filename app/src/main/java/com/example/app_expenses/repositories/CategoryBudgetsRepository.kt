@@ -16,16 +16,18 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 class CategoryBudgetsRepository {
     private val firebaseDatabase: DatabaseReference = Firebase.database.reference
     private val auth: FirebaseAuth = Firebase.auth
     private val categoryTotalBudgetLiveData = MutableLiveData<BudgetCategoryData>()
-    private val budgetCategoryLiveData = MutableLiveData<List<BudgetCategoryData>>()
+    private val budgetCategoryLiveData = MutableLiveData<TreeMap<Int, BudgetCategoryData>>()
     private val budgetListLiveData = MutableLiveData<List<String>>()
 
     fun getCategoryBudgets(){
-        val newBudgetCategoryList: MutableList<BudgetCategoryData> = mutableListOf()
+        // Using a tree map to pass the correct position of each category in descending order to display in the budgets page
+        val newBudgetCategoryList: TreeMap<Int, BudgetCategoryData> = TreeMap()
         val budgetCategoryDefaultList = UtilitiesFunctions.createCategoriesBudgets()
         CoroutineScope(Dispatchers.Main).launch {
             for (category in budgetCategoryDefaultList) {
@@ -34,32 +36,29 @@ class CategoryBudgetsRepository {
                     .child(category.categoryName!!).child("total_budget")
                 currentBudget.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val categoryPosition = UtilitiesFunctions.getCategoryBudgetsPosition(category.categoryName)
                         if (dataSnapshot.value != null) {
                             val newTotalBudget = dataSnapshot.value as String?
-                            newBudgetCategoryList.add(
-                                BudgetCategoryData(
-                                    category.categoryName,
-                                    newTotalBudget
-                                )
-                            )
+                            newBudgetCategoryList[categoryPosition] =
+                                BudgetCategoryData(category.categoryName, newTotalBudget)
+
                         } else {
                             currentBudget.setValue("0")
-                            newBudgetCategoryList.add(category)
+                            newBudgetCategoryList[categoryPosition] =
+                                category
                         }
-                        if (category.categoryName == "Personal Spending") {
+                        if (categoryPosition == budgetCategoryDefaultList.size-1) {
                             budgetCategoryLiveData.postValue(newBudgetCategoryList)
                         }
 
                     }
-
                     override fun onCancelled(databaseError: DatabaseError) {}
-
                 })
             }
         }
     }
 
-    fun getCategoryBudgetsLiveData(): LiveData<List<BudgetCategoryData>>{
+    fun getCategoryBudgetsLiveData(): LiveData<TreeMap<Int, BudgetCategoryData>>{
         return budgetCategoryLiveData
     }
 
