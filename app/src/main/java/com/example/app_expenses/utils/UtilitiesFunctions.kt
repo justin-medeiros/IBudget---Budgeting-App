@@ -58,6 +58,7 @@ object UtilitiesFunctions{
         return categories
     }
 
+    // To get the position of the categories in the "My Budgets" section of the budget page
     fun getCategoryBudgetsPosition(myBudgetCategory: String): Int{
         var position = 0
         when (myBudgetCategory){

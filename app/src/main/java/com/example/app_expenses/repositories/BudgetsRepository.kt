@@ -41,8 +41,8 @@ class BudgetsRepository {
                                 val budgetTimeStamp = dataSnapshot1.child("timeStamp").value as Long
                                 myBudgetsList.add(0, BudgetData(budgetTimeStamp, budgetCategory, budgetName, budgetAmount))
                             }
-                            myBudgetsLiveData.postValue(myBudgetsList)
                         }
+                        myBudgetsLiveData.postValue(myBudgetsList)
                     }
                     override fun onCancelled(databaseError: DatabaseError) {}
                 })
