@@ -1,12 +1,10 @@
 package com.example.app_expenses.fragments
 
 import android.content.res.ColorStateList
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
+import android.graphics.*
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,16 +12,15 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.app_expenses.CustomItemAnimator
 import com.example.app_expenses.R
 import com.example.app_expenses.activities.MainActivity
 import com.example.app_expenses.adapters.BudgetsAdapter
 import com.example.app_expenses.adapters.MyBudgetsListAdapter
 import com.example.app_expenses.data.BudgetCategoryData
-import com.example.app_expenses.data.BudgetData
 import com.example.app_expenses.databinding.FragmentMybudgetListBinding
 import com.example.app_expenses.enums.CategoryEnum
 import com.example.app_expenses.utils.UtilitiesFunctions
@@ -49,7 +46,6 @@ class BudgetCategoryListFragment(private val category: CategoryEnum, private val
                 return false
             }
         }
-        fragmentBudgetCategoryListBinding.rvMyBudgets.itemAnimator = CustomItemAnimator()
         fragmentBudgetCategoryListBinding.rvMyBudgets.layoutManager = myLinearLayoutManager
         fragmentBudgetCategoryListBinding.rvMyBudgets.adapter = myBudgetsCategoryAdapter
         setSwipeToDelete()
@@ -101,6 +97,15 @@ class BudgetCategoryListFragment(private val category: CategoryEnum, private val
                     myBudgetsViewModel.removeFromTotalBudget(item.budgetAmount!!.toFloat())
                     categoryBudgetsViewModel.subtractFromCategoryTotalBudget(myBudgetCategoryData)
 
+
+                    if(myBudgetsCategoryAdapter.getList().isEmpty()){
+                        fragmentBudgetCategoryListBinding.tvRvNoBudgets.visibility = View.VISIBLE
+                        fragmentBudgetCategoryListBinding.rvMyBudgets.visibility = View.GONE
+                        fragmentBudgetCategoryListBinding.rvMyBudgets.itemAnimator = null
+                    } else{
+                        fragmentBudgetCategoryListBinding.rvMyBudgets.itemAnimator = DefaultItemAnimator()
+                    }
+
                     // When click undo add budget back to database, add amount to category total budget amount and add amount
                     // to all budgets total amount
                     Snackbar.make(fragmentBudgetCategoryListBinding.root, "Budget deleted.", Snackbar.LENGTH_LONG).setAction(
@@ -110,6 +115,8 @@ class BudgetCategoryListFragment(private val category: CategoryEnum, private val
                         myBudgetsViewModel.addBudget(item)
                         categoryBudgetsViewModel.addToCategoryTotalBudget(myBudgetCategoryData)
                         myBudgetsViewModel.addToTotalBudget(item.budgetAmount!!.toFloat())
+                        fragmentBudgetCategoryListBinding.rvMyBudgets.visibility = View.VISIBLE
+                        fragmentBudgetCategoryListBinding.tvRvNoBudgets.visibility = View.GONE
                     }.show()
                 }
 
