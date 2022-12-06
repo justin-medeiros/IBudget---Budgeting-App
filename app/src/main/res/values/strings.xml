@@ -11,6 +11,7 @@
     <string name="invalid_last_name">Field empty. Please enter your last name.</string>
     <string name="invalid_email">Please enter a valid email address.</string>
     <string name="invalid_password">Please enter a valid password.</string>
+    <string name="invalid_transaction_name">Field empty. Please enter a transaction name.</string>
     <string name="invalid_budget_name">Field empty. Please enter a budget name.</string>
     <string name="duplicate_budget_name">This budget name is already in use. Please enter a new name.</string>
     <string name="invalid_budget_amount">Please enter a valid amount. (e.g "200.00")</string>

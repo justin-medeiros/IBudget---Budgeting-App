@@ -4,6 +4,7 @@
     <color name="background_secondary">#2D4971</color>
     <color name="background_tertiary">#3D587E</color>
     <color name="foreground_primary">#44C7E4</color>
+    <color name="foreground_primary_50">#8044C7E4</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#712D2D</color>
