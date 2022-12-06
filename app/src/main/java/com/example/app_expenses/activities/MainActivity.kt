@@ -3,6 +3,8 @@ package com.example.app_expenses.activities
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -12,6 +14,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.app_expenses.R
 import com.example.app_expenses.adapters.TabBarAdapter
 import com.example.app_expenses.databinding.ActivityMainBinding
+import com.example.app_expenses.fragments.AddTransactionFragment
 import com.example.app_expenses.utils.PrefsHelper
 import com.google.android.material.tabs.TabLayout
 
@@ -26,6 +29,10 @@ class MainActivity : AppCompatActivity() {
         showTabBar()
         setTabBarMargins()
         PrefsHelper.init(context = this)
+
+        binding.tabBarButton.setOnClickListener {
+            AddTransactionFragment().show(supportFragmentManager, "")
+        }
     }
 
     fun visibleTabBarVisibility(){
@@ -107,7 +114,6 @@ class MainActivity : AppCompatActivity() {
         }
         binding.tabLayoutMain.requestLayout()
     }
-
 
     // Override the back pressed so users can't press the backspace button when on home menu
     override fun onBackPressed() {}

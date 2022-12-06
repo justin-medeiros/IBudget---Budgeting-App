@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollViewAddTransaction"
+        android:background="@color/white">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:orientation="vertical"
+            android:background="@color/white">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/background_secondary">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/addTransactionCloseButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:icon="@drawable/ic_chevron_down"
+                    app:iconTint="@color/white"
+                    android:background="@android:color/transparent"
+                    android:backgroundTint="@color/foreground_primary"
+                    app:cornerRadius="12dp"
+                    android:shadowRadius="0"
+                    app:rippleColor="@color/white"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginLeft="10dp" />
+                <TextView
+                    android:id="@+id/tvAddTransactionTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Transaction"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/figerona_bold"
+                    android:textSize="18sp"
+                    android:layout_centerInParent="true"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp">
+
+                <RelativeLayout
+                    android:id="@+id/addTransactionAmountContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="14dp"
+                    android:background="@drawable/add_transaction_amount_container"
+                    tools:ignore="MissingConstraints">
+
+                    <EditText
+                        android:id="@+id/etTransactionAmount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="30dp"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/figerona_bold"
+                        android:hint="0.00"
+                        android:inputType="numberDecimal"
+                        android:textColor="@color/foreground_primary"
+                        android:textColorHint="@color/foreground_primary_50"
+                        android:textSize="50sp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/monthlyBudgetTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:background="@color/white"
+                    android:fontFamily="@font/figerona_semibold"
+                    android:text="Transaction Amount"
+                    android:textColor="@color/background_secondary"
+                    android:textSize="22sp" />
+            </RelativeLayout>
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose a category"
+                android:textSize="18sp"
+                android:textColor="@color/background_secondary"
+                android:fontFamily="@font/figerona_bold"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="30dp"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvAddTransaction"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                />
+
+            <TextView
+                android:id="@+id/tvInvalidRvAddTransaction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/invalid_category"
+                android:textSize="10sp"
+                android:textColor="@color/red_bright"
+                android:fontFamily="@font/figerona_bold"
+                android:layout_gravity="left"
+                android:layout_marginLeft="40dp"
+                android:drawablePadding="5dp"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/ic_close_circle" />
+
+            <TextView
+                android:id="@+id/tvTransactionName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transaction Name"
+                android:textColor="@color/background_secondary"
+                android:fontFamily="@font/figerona_semibold"
+                android:textSize="16sp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="20dp"/>
+
+            <EditText
+                android:id="@+id/etTransactionName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Transaction"
+                android:textColorHint="@color/foreground_primary_50"
+                android:background="@drawable/text_line"
+                android:textColor="@color/foreground_primary"
+                android:fontFamily="@font/figerona_semibold"
+                android:textSize="18sp"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:paddingBottom="10dp"/>
+
+            <TextView
+                android:id="@+id/tvInvalidTransactionName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/invalid_budget_name"
+                android:textSize="10sp"
+                android:textColor="@color/red_bright"
+                android:fontFamily="@font/figerona_light"
+                android:layout_gravity="left"
+                android:layout_marginLeft="40dp"
+                android:drawablePadding="5dp"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/ic_close_circle" />
+
+            <Button
+                android:id="@+id/addNewTransactionButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="60dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/alert_box_background"
+                android:text="Add Transaction"
+                android:textColor="@color/white"
+                android:fontFamily="@font/figerona_bold"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:backgroundTint="@color/background_secondary" />
+        </LinearLayout>
+    </ScrollView>
+</layout>
