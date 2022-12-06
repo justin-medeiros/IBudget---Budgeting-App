@@ -47,11 +47,11 @@ class CategoryAddTransactionAdapter(private val listCategories: MutableList<Cate
         holder.categoryTitle.text = category.categoryName
         holder.categoryIcon.background = ContextCompat.getDrawable(context, category.categoryIcon!!)
 
-        holder.categoryContainer.setOnClickListener(View.OnClickListener {
+        holder.categoryContainer.setOnClickListener{
             isCategorySelected.value = true
             rowIndex = position
             notifyDataSetChanged()
-        })
+        }
         if (rowIndex === position) {
             holder.categoryContainer.backgroundTintList =
                 ColorStateList.valueOf(ContextCompat.getColor(context, category.categoryColor!!))

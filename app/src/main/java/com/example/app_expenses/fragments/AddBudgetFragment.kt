@@ -118,7 +118,7 @@ class AddBudgetFragment(private val budgetsAdapter: BudgetsAdapter): Fragment() 
             isValidName = true
         }
 
-        if (TextUtils.isEmpty(fragmentAddBudgetBinding.etAmount.text.toString()) || !validateAmount(
+        if (TextUtils.isEmpty(fragmentAddBudgetBinding.etAmount.text.toString()) || !UtilitiesFunctions.validateAmount(
                 fragmentAddBudgetBinding.etAmount.text.toString())) {
             fragmentAddBudgetBinding.tvInvalidBudgetAmount.visibility = View.VISIBLE
             fragmentAddBudgetBinding.etAmount.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
@@ -137,14 +137,6 @@ class AddBudgetFragment(private val budgetsAdapter: BudgetsAdapter): Fragment() 
         resetInvalidFields()
 
         return isValidAmount && isValidName
-    }
-
-    private fun validateAmount(amount: String?): Boolean{
-        amount?.let {
-            val amountPattern = "^[0-9]+[.][0-9][0-9]\$"
-            val amountMatcher = Regex(amountPattern)
-            return amountMatcher.find(it) != null
-        } ?: return false
     }
 
     private fun invalidBudgetName(){
