@@ -91,7 +91,7 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/monthlyBudgetTitle"
+                    android:id="@+id/transactionAmountTitleAddTransaction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
@@ -105,9 +105,23 @@
                     android:textSize="22sp" />
             </RelativeLayout>
 
-
+            <TextView
+                android:id="@+id/tvInvalidAddTransactionAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/invalid_budget_amount"
+                android:textSize="10sp"
+                android:textColor="@color/red_bright"
+                android:fontFamily="@font/figerona_bold"
+                android:layout_gravity="left"
+                android:layout_marginLeft="40dp"
+                android:drawablePadding="5dp"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/ic_close_circle" />
 
             <TextView
+                android:id="@+id/tvCategoryTitleAddTransaction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Choose a category"
@@ -144,7 +158,7 @@
                 android:drawableLeft="@drawable/ic_close_circle" />
 
             <TextView
-                android:id="@+id/tvTransactionName"
+                android:id="@+id/tvTransactionNameTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Transaction Name"
@@ -174,7 +188,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                android:text="@string/invalid_budget_name"
+                android:text="@string/invalid_transaction_name"
                 android:textSize="10sp"
                 android:textColor="@color/red_bright"
                 android:fontFamily="@font/figerona_light"

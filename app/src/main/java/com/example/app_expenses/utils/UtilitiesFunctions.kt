@@ -71,4 +71,13 @@ object UtilitiesFunctions{
         }
         return position
     }
+
+    // To validate money amount that is typed in. Has to be of form -> 200.00
+    fun validateAmount(amount: String?): Boolean{
+        amount?.let {
+            val amountPattern = "^[0-9]+[.][0-9][0-9]\$"
+            val amountMatcher = Regex(amountPattern)
+            return amountMatcher.find(it) != null
+        } ?: return false
+    }
 }
