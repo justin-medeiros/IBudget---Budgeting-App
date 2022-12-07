@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.example.app_expenses.data.BudgetCategoryData
 import com.example.app_expenses.enums.CategoryEnum
+import java.text.SimpleDateFormat
+import java.util.*
 
 object UtilitiesFunctions{
     fun replaceFragment(activity: FragmentActivity, fragment: Fragment, id: Int, addToBackStack: Boolean){
@@ -79,5 +81,10 @@ object UtilitiesFunctions{
             val amountMatcher = Regex(amountPattern)
             return amountMatcher.find(it) != null
         } ?: return false
+    }
+
+    fun timestampToDate(timestamp: Long): String {
+        val formatter = SimpleDateFormat("dd/MM/yyyy")
+        return formatter.format(Date(timestamp))
     }
 }

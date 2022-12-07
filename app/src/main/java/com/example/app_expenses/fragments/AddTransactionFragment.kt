@@ -11,13 +11,16 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_expenses.R
 import com.example.app_expenses.adapters.CategoryAddTransactionAdapter
+import com.example.app_expenses.data.TransactionData
 import com.example.app_expenses.databinding.FragmentAddTransactionBinding
 import com.example.app_expenses.enums.CategoryEnum
 import com.example.app_expenses.utils.UtilitiesFunctions
+import com.example.app_expenses.viewModels.TransactionsViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -29,6 +32,7 @@ class AddTransactionFragment: BottomSheetDialogFragment() {
     private lateinit var fragmentAddTransactionBinding: FragmentAddTransactionBinding
     private lateinit var categoryAddTransactionAdapter: CategoryAddTransactionAdapter
     private lateinit var categories: MutableList<CategoryEnum>
+    private val transactionsViewModel: TransactionsViewModel by viewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
@@ -62,9 +66,20 @@ class AddTransactionFragment: BottomSheetDialogFragment() {
         }
 
         fragmentAddTransactionBinding.addNewTransactionButton.setOnClickListener {
+            fragmentAddTransactionBinding.etTransactionName.clearFocus()
+            fragmentAddTransactionBinding.etTransactionAmount.clearFocus()
             if(validateFields() && categoryAddTransactionAdapter.isCategorySelected.value == true){
-                dialog?.dismiss()
+                val categorySelected = categories[categoryAddTransactionAdapter.rowIndex].categoryName
+                val transactionName = fragmentAddTransactionBinding.etTransactionName.text.toString()
+                val transactionAmount = fragmentAddTransactionBinding.etTransactionAmount.text.toString()
+                val transactionData =
+                    TransactionData(System.currentTimeMillis(), categorySelected, transactionName, transactionAmount)
+                transactionsViewModel.addTransaction(transactionData)
             }
+        }
+
+        transactionsViewModel.getAddTransactionLiveData().observe(viewLifecycleOwner){
+            dialog?.dismiss()
         }
     }
 
