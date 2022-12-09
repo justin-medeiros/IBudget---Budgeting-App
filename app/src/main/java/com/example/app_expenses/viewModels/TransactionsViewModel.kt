@@ -8,6 +8,15 @@ import com.example.app_expenses.repositories.TransactionsRepository
 class TransactionsViewModel: ViewModel() {
     private val transactionsRepository = TransactionsRepository()
     private val addTransactionLiveData = transactionsRepository.getAddTransactionLiveData()
+    private val allTransactionLiveData = transactionsRepository.getMyTransactionsLiveData()
+
+    fun getMyTransactions(){
+        transactionsRepository.getMyTransactions()
+    }
+
+    fun getMyTransactionsLiveData(): LiveData<List<TransactionData>>{
+        return allTransactionLiveData
+    }
 
     fun addTransaction(transactionData: TransactionData){
         transactionsRepository.addTransaction(transactionData)
