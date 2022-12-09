@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/dateTitleTransactionList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/figerona_bold"
+            android:text="March 21, 2022"
+            android:textColor="@color/foreground_primary"
+            android:textSize="14sp" />
+
+        <RelativeLayout
+            android:id="@+id/topBorderTransactionList"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/alert_box_background"
+            android:backgroundTint="@color/foreground_primary"/>
+
+
+        <RelativeLayout
+            android:id="@+id/containerTransactionListItem"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/alert_box_background"
+            android:orientation="horizontal"
+            android:layout_marginBottom="5dp">
+
+            <ImageView
+                android:id="@+id/ivCategoryTransactionList"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_gravity="left|center"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/ic_chart_box"
+                android:backgroundTint="@color/white" />
+
+            <TextView
+                android:id="@+id/tvTransactionNameTransactionList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/ivCategoryTransactionList"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="40dp"
+                android:fontFamily="@font/figerona_bold"
+                android:text="Groceries"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvTransactionAmountTransactionList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="20dp"
+                android:fontFamily="@font/figerona_bold"
+                android:text="$200.00"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</layout>

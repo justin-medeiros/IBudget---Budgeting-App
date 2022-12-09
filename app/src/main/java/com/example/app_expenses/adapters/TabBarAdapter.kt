@@ -6,6 +6,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.app_expenses.Add_Budget
 import com.example.app_expenses.HomeFragment
 import com.example.app_expenses.fragments.BudgetFragment
+import com.example.app_expenses.fragments.TransactionListFragment
 
 class TabBarAdapter(activity: FragmentActivity, private val tabCount: Int): FragmentStateAdapter(activity) {
     override fun getItemCount() = tabCount
@@ -13,7 +14,7 @@ class TabBarAdapter(activity: FragmentActivity, private val tabCount: Int): Frag
     override fun createFragment(position: Int): Fragment {
         return when(position){
             0-> HomeFragment()
-            1-> Add_Budget()
+            1-> TransactionListFragment()
             2 -> HomeFragment()
             3-> BudgetFragment()
             else -> HomeFragment()

@@ -1,11 +1,22 @@
 package com.example.app_expenses.utils
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
+import android.graphics.drawable.GradientDrawable
 import android.util.DisplayMetrics
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.RecyclerView
+import com.example.app_expenses.R
 import com.example.app_expenses.data.BudgetCategoryData
 import com.example.app_expenses.enums.CategoryEnum
+import java.text.SimpleDateFormat
+import java.util.*
 
 object UtilitiesFunctions{
     fun replaceFragment(activity: FragmentActivity, fragment: Fragment, id: Int, addToBackStack: Boolean){
@@ -79,5 +90,45 @@ object UtilitiesFunctions{
             val amountMatcher = Regex(amountPattern)
             return amountMatcher.find(it) != null
         } ?: return false
+    }
+
+    fun timestampToDate(timestamp: Long): String {
+        val formatter = SimpleDateFormat("MMMM dd, yyyy")
+        return formatter.format(Date(timestamp))
+    }
+
+    fun setDeleteIcon(c: Canvas, viewHolder: RecyclerView.ViewHolder,
+                                  dX: Float, context: Context){
+        val clearPaint = Paint()
+        clearPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+        val background = GradientDrawable()
+        val deleteDrawable = ContextCompat.getDrawable(context, R.drawable.ic_trash_can)
+        val itemView = viewHolder.itemView
+
+        if(dX == 0F){
+            c.drawRoundRect(itemView.right + dX, itemView.top.toFloat(), itemView.right.toFloat(), itemView.bottom.toFloat(), 10F, 10F, clearPaint)
+            return
+        }
+
+        background.color = ColorStateList.valueOf(
+            ContextCompat.getColor(context, R.color.red_bright))
+        background.cornerRadius = UtilitiesFunctions.convertDpToPixel(10F, context)
+
+        if(dX <= -540.0F){
+            background.setBounds(itemView.left, itemView.top, itemView.right, itemView.bottom)
+        } else{
+            background.setBounds(itemView.right + dX.toInt() - 20, itemView.top, itemView.right, itemView.bottom)
+        }
+
+        background.draw(c)
+
+        val deleteIconTop = itemView.top + (itemView.height - deleteDrawable!!.intrinsicHeight) / 2
+        val deleteIconMargin = (itemView.height - deleteDrawable!!.intrinsicHeight) / 2
+        val deleteIconLeft = itemView.right - deleteIconMargin - deleteDrawable!!.intrinsicHeight
+        val deleteIconRight = itemView.right - deleteIconMargin
+        val deleteIconBottom = deleteIconTop + deleteDrawable!!.intrinsicHeight
+
+        deleteDrawable.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom)
+        deleteDrawable.draw(c)
     }
 }

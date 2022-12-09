@@ -24,4 +24,14 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+
+    <string-array name="categories">
+        <item>All</item>
+        <item>Groceries</item>
+        <item>Entertainment</item>
+        <item>Transportation</item>
+        <item>Subscriptions</item>
+        <item>Bills</item>
+        <item>Personal Spending</item>
+    </string-array>
 </resources>
