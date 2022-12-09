@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -73,21 +73,28 @@
                 android:id="@+id/tvTitleTransactionList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Transaction List"
+                android:text="Recent Transactions"
                 android:textColor="@color/white"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/figerona_bold"
-                android:textSize="14sp" />
+                android:textSize="18sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvTransactionList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:background="@drawable/category_inactive"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="20dp"
                 android:layout_marginBottom="60dp"/>
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </layout>

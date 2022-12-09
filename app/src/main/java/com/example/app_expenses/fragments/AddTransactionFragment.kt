@@ -12,6 +12,7 @@ import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_expenses.R
@@ -19,6 +20,8 @@ import com.example.app_expenses.adapters.CategoryAddTransactionAdapter
 import com.example.app_expenses.data.TransactionData
 import com.example.app_expenses.databinding.FragmentAddTransactionBinding
 import com.example.app_expenses.enums.CategoryEnum
+import com.example.app_expenses.utils.PrefsHelper
+import com.example.app_expenses.utils.StringUtils
 import com.example.app_expenses.utils.UtilitiesFunctions
 import com.example.app_expenses.viewModels.TransactionsViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -32,7 +35,7 @@ class AddTransactionFragment: BottomSheetDialogFragment() {
     private lateinit var fragmentAddTransactionBinding: FragmentAddTransactionBinding
     private lateinit var categoryAddTransactionAdapter: CategoryAddTransactionAdapter
     private lateinit var categories: MutableList<CategoryEnum>
-    private val transactionsViewModel: TransactionsViewModel by viewModels()
+    private lateinit var transactionsViewModel: TransactionsViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
@@ -50,6 +53,7 @@ class AddTransactionFragment: BottomSheetDialogFragment() {
     ): View? {
         fragmentAddTransactionBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_transaction,
             container, false)
+        transactionsViewModel = ViewModelProvider(requireActivity())[TransactionsViewModel::class.java]
         categories = UtilitiesFunctions.createCategories()
         categoryAddTransactionAdapter = CategoryAddTransactionAdapter(categories)
         fragmentAddTransactionBinding.rvAddTransaction.adapter = categoryAddTransactionAdapter
@@ -75,11 +79,9 @@ class AddTransactionFragment: BottomSheetDialogFragment() {
                 val transactionData =
                     TransactionData(System.currentTimeMillis(), categorySelected, transactionName, transactionAmount)
                 transactionsViewModel.addTransaction(transactionData)
+                PrefsHelper.writeString(StringUtils.TRANSACTION_LATEST_DATE, UtilitiesFunctions.timestampToDate(transactionData.timeStamp))
+                dialog?.dismiss()
             }
-        }
-
-        transactionsViewModel.getAddTransactionLiveData().observe(viewLifecycleOwner){
-            dialog?.dismiss()
         }
     }
 

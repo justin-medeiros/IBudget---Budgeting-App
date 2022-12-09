@@ -29,27 +29,12 @@ object PrefsHelper {
         }
     }
 
-    fun writeFloat(key: String, value: Float){
-        with(sharedPreferences.edit()){
-            this.putFloat(key, value)
-            apply()
-        }
-    }
+    fun readString(key: String) : String? = sharedPreferences.getString(key, DEF_STR)
 
     fun deleteAll(){
         sharedPreferences.edit().clear().commit()
     }
 
-    fun readString(key: String) : String? = sharedPreferences.getString(key, DEF_STR)
 
-    fun readFloat(key: String): Float? = sharedPreferences.getFloat(key, DEF_FLOAT)
 
-    fun onBudgetChangeListener(textView: TextView){
-        val listener =
-            OnSharedPreferenceChangeListener { sharedPreferences, key ->
-                val newBudget = sharedPreferences.getFloat(key, DEF_FLOAT)
-                textView.text = "$%.2f".format(newBudget)
-            }
-        sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
-    }
 }

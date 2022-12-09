@@ -57,8 +57,6 @@ class AddBudgetFragment(private val budgetsAdapter: BudgetsAdapter): Fragment() 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         budgetsViewModel.getAddBudgetLiveData().observe(viewLifecycleOwner){ newBudget ->
             if(newBudget != null){
-                val total = newBudget.budgetAmount!!.toFloat() + PrefsHelper.readFloat(StringUtils.TOTAL_BUDGET)!!
-                PrefsHelper.writeFloat(StringUtils.TOTAL_BUDGET, total)
                 budgetsViewModel.addToTotalBudget(newBudget.budgetAmount!!.toFloat())
                 categoryBudgetsViewModel.getCategoryTotalBudget(newBudget.categoryName!!)
                 Toast.makeText(context, "Budget has been created successfully!", Toast.LENGTH_LONG).show()

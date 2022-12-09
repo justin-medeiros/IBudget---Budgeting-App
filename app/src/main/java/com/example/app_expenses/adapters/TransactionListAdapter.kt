@@ -15,11 +15,15 @@ import com.example.app_expenses.R
 import com.example.app_expenses.data.BudgetData
 import com.example.app_expenses.data.TransactionData
 import com.example.app_expenses.enums.CategoryEnum
+import com.example.app_expenses.utils.PrefsHelper
+import com.example.app_expenses.utils.StringUtils
 import com.example.app_expenses.utils.UtilitiesFunctions
 
 class TransactionListAdapter(): RecyclerView.Adapter<TransactionListAdapter.ViewHolder>() {
     private lateinit var context: Context
     private val listOfTransactions: MutableList<TransactionData> = mutableListOf()
+    private var latestDate: String? = null
+    private var isAdded: Boolean? = null
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val transactionName: TextView = itemView.findViewById(R.id.tvTransactionNameTransactionList)
@@ -28,7 +32,6 @@ class TransactionListAdapter(): RecyclerView.Adapter<TransactionListAdapter.View
         val transactionIcon: ImageView = itemView.findViewById(R.id.ivCategoryTransactionList)
         val dateText: TextView = itemView.findViewById(R.id.dateTitleTransactionList)
         val borderTop: RelativeLayout = itemView.findViewById(R.id.topBorderTransactionList)
-        val borderBottom: RelativeLayout = itemView.findViewById(R.id.bottomBorderTransactionList)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionListAdapter.ViewHolder {
@@ -38,20 +41,27 @@ class TransactionListAdapter(): RecyclerView.Adapter<TransactionListAdapter.View
     }
 
     override fun onBindViewHolder(holder: TransactionListAdapter.ViewHolder, position: Int) {
-        Log.e("HELLO", "YES")
         val myTransaction: TransactionData = listOfTransactions[position]
         val category: CategoryEnum? = UtilitiesFunctions.getCategoryEnum(myTransaction.categoryName!!)
+        val transactionDate = UtilitiesFunctions.timestampToDate(myTransaction.timeStamp)
         holder.transactionName.text = myTransaction.transactionName
         holder.transactionAmount.text = myTransaction.transactionAmount
         holder.transactionIcon.background = ContextCompat.getDrawable(context, category?.categoryIcon!!)
-
-        val relativeParams = RelativeLayout.LayoutParams(
-            RelativeLayout.LayoutParams.MATCH_PARENT,
-            UtilitiesFunctions.convertDpToPixel(48.0F, context).toInt()
-        )
-        if(position == itemCount-1){
-            holder.borderBottom.visibility = View.GONE
+        if(latestDate == null){
+            latestDate = transactionDate
+        } else {
+            if(isAdded == true){
+                if(position != 0 && latestDate == transactionDate){
+                    holder.dateText.visibility = View.GONE
+                    holder.borderTop.visibility = View.GONE
+                }else{
+                    latestDate = transactionDate
+                }
+            }
         }
+        holder.dateText.text = latestDate
+
+
     }
 
     override fun getItemCount(): Int {
@@ -63,18 +73,20 @@ class TransactionListAdapter(): RecyclerView.Adapter<TransactionListAdapter.View
     }
 
     fun addAllItems(items: List<TransactionData>){
-        this.listOfTransactions.removeAll(listOfTransactions)
+        this.listOfTransactions.clear()
         this.listOfTransactions.addAll(items)
-        Log.e("HELLO", items.toString())
         notifyDataSetChanged()
     }
 
     fun addItem(item: TransactionData, position: Int){
+        isAdded = true
         this.listOfTransactions.add(position, item)
         notifyItemInserted(position)
+        notifyItemChanged(position+1)
     }
 
     fun removeItem(position: Int){
+        isAdded = false
         this.listOfTransactions.removeAt(position)
         notifyItemRemoved(position)
     }

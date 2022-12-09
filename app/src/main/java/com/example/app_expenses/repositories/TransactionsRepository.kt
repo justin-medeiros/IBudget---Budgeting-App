@@ -36,16 +36,9 @@ class TransactionsRepository {
                         if (dataSnapshot.exists()) {
                             for (dataSnapshot1 in dataSnapshot.children) {
                                 val transactionData = dataSnapshot1.getValue(TransactionData::class.java)
-//                                val transactionName = dataSnapshot1.child("transactionName").value as String
-//                                val transactionAmount =
-//                                    dataSnapshot1.child("transactionAmount").value as String
-//                                val transactionCategory =
-//                                    dataSnapshot1.child("categoryName").value as String
-//                                val budgetTimeStamp = dataSnapshot1.child("timeStamp").value as Long
                                 myTransactionsList.add(0, transactionData!!)
                             }
                         }
-                        Log.e("SIZE", myTransactionsList.size.toString())
                         allTransactionLiveData.postValue(myTransactionsList)
                     }
                     override fun onCancelled(databaseError: DatabaseError) {}
@@ -69,6 +62,33 @@ class TransactionsRepository {
                 }
         }
     }
+
+//    fun removeTransaction(budgetName: String) {
+//        CoroutineScope(Dispatchers.IO).launch {
+//            firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("categories")
+//                .child(categoryName).child("budgets").orderByChild("budgetName").equalTo(budgetName)
+//                .addListenerForSingleValueEvent(object : ValueEventListener{
+//                    override fun onDataChange(snapshot: DataSnapshot) {
+//                        for(data in snapshot.children){
+//                            data.ref.removeValue()
+//                        }
+//                    }
+//                    override fun onCancelled(error: DatabaseError) {}
+//                })
+//        }
+//    }
+
+//    fun subtractFromCategoryBudget(budgetCategoryData: BudgetCategoryData){
+//        CoroutineScope(Dispatchers.IO).launch {
+//            addSubtractCategoryBudget(budgetCategoryData, false)
+//        }
+//    }
+//
+//    fun addToCategoryBudget(budgetCategoryData: BudgetCategoryData){
+//        CoroutineScope(Dispatchers.IO).launch {
+//            addSubtractCategoryBudget(budgetCategoryData, true)
+//        }
+//    }
 
     fun getAddTransactionLiveData(): LiveData<TransactionData?> {
         return addTransactionLiveData

@@ -126,7 +126,7 @@ class BudgetCategoryListFragment(private val category: CategoryEnum, private val
 
                 override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
                                          dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
-                    setDeleteIcon(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    UtilitiesFunctions.setDeleteIcon(c, viewHolder, dX, requireContext())
                     super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                 }
 
@@ -136,38 +136,4 @@ class BudgetCategoryListFragment(private val category: CategoryEnum, private val
         itemTouchHelper.attachToRecyclerView(fragmentBudgetCategoryListBinding.rvMyBudgets)
     }
 
-    private fun setDeleteIcon(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
-                              dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean){
-        val clearPaint = Paint()
-        clearPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
-        val background = GradientDrawable()
-        val deleteDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_trash_can)
-        val itemView = viewHolder.itemView
-
-        if(dX == 0F){
-            c.drawRoundRect(itemView.right + dX, itemView.top.toFloat(), itemView.right.toFloat(), itemView.bottom.toFloat(), 10F, 10F, clearPaint)
-            return
-        }
-
-        background.color = ColorStateList.valueOf(
-            ContextCompat.getColor(requireContext(), R.color.red_bright))
-        background.cornerRadius = UtilitiesFunctions.convertDpToPixel(10F, requireContext())
-
-        if(dX <= -540.0F){
-            background.setBounds(itemView.left, itemView.top, itemView.right, itemView.bottom)
-        } else{
-            background.setBounds(itemView.right + dX.toInt() - 20, itemView.top, itemView.right, itemView.bottom)
-        }
-
-        background.draw(c)
-
-        val deleteIconTop = itemView.top + (itemView.height - deleteDrawable!!.intrinsicHeight) / 2
-        val deleteIconMargin = (itemView.height - deleteDrawable!!.intrinsicHeight) / 2
-        val deleteIconLeft = itemView.right - deleteIconMargin - deleteDrawable!!.intrinsicHeight
-        val deleteIconRight = itemView.right - deleteIconMargin
-        val deleteIconBottom = deleteIconTop + deleteDrawable!!.intrinsicHeight
-
-        deleteDrawable.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom)
-        deleteDrawable.draw(c)
-    }
 }
