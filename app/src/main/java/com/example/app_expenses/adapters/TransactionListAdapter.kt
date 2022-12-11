@@ -44,17 +44,30 @@ class TransactionListAdapter(): RecyclerView.Adapter<TransactionListAdapter.View
         val myTransaction: TransactionData = listOfTransactions[position]
         val category: CategoryEnum? = UtilitiesFunctions.getCategoryEnum(myTransaction.categoryName!!)
         val transactionDate = UtilitiesFunctions.timestampToDate(myTransaction.timeStamp)
+        val sharedPrefTransactionDate = PrefsHelper.readString(StringUtils.TRANSACTION_LATEST_DATE)
         holder.transactionName.text = myTransaction.transactionName
         holder.transactionAmount.text = myTransaction.transactionAmount
         holder.transactionIcon.background = ContextCompat.getDrawable(context, category?.categoryIcon!!)
         if(latestDate == null){
             latestDate = transactionDate
         } else {
-            if(isAdded == true){
-                if(position != 0 && latestDate == transactionDate){
+            // If a value was added or removed
+            if (isAdded != null) {
+                if (isAdded == true) {
+                    if (position != 0 && sharedPrefTransactionDate == transactionDate) {
+                        holder.dateText.visibility = View.GONE
+                        holder.borderTop.visibility = View.GONE
+                    } else {
+                        latestDate = transactionDate
+                    }
+                } else {
+
+                }
+            } else{ // For when app first launches
+                if (latestDate == transactionDate) {
                     holder.dateText.visibility = View.GONE
                     holder.borderTop.visibility = View.GONE
-                }else{
+                } else {
                     latestDate = transactionDate
                 }
             }
