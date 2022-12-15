@@ -10,21 +10,25 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.app_expenses.R
 import com.example.app_expenses.adapters.TabBarAdapter
 import com.example.app_expenses.databinding.ActivityMainBinding
 import com.example.app_expenses.fragments.AddTransactionFragment
 import com.example.app_expenses.utils.PrefsHelper
+import com.example.app_expenses.viewModels.TransactionsViewModel
 import com.google.android.material.tabs.TabLayout
 
 private lateinit var binding: ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var transactionViewModel: TransactionsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        transactionViewModel = ViewModelProvider(this)[TransactionsViewModel::class.java]
         setContentView(binding!!.root)
         showTabBar()
         setTabBarMargins()
@@ -32,6 +36,14 @@ class MainActivity : AppCompatActivity() {
 
         binding.tabBarButton.setOnClickListener {
             AddTransactionFragment().show(supportFragmentManager, "")
+        }
+
+        transactionViewModel.amountOfItemsSelected.observe(this){ numberOfItems ->
+            binding.buttonDeleteMain.text = "Delete ${numberOfItems} items"
+        }
+
+        binding.buttonDeleteMain.setOnClickListener {
+            transactionViewModel.deleteButtonClicked.postValue(true)
         }
     }
 
@@ -113,6 +125,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.tabLayoutMain.requestLayout()
+    }
+
+    fun showDeleteButton(){
+        binding.buttonDeleteMain.visibility = View.VISIBLE
+    }
+
+    fun hideDeleteButton(){
+        binding.buttonDeleteMain.visibility = View.INVISIBLE
+        binding.buttonDeleteMain.text = "Delete 0 items"
     }
 
     // Override the back pressed so users can't press the backspace button when on home menu

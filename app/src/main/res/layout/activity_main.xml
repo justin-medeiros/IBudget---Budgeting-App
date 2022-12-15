@@ -1,71 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/background_primary"
-    android:id="@+id/relativeLayoutMainActivity">
-
-   <androidx.viewpager2.widget.ViewPager2
-       android:id="@+id/viewPagerMain"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+   <RelativeLayout
        android:layout_width="match_parent"
-       android:layout_height="match_parent" />
-
-
-   <com.google.android.material.button.MaterialButton
-       android:id="@+id/tabBarButton"
-       android:layout_width="50dp"
-       android:layout_height="50dp"
-       android:layout_alignParentBottom="true"
-       android:layout_centerInParent="true"
-       android:layout_marginBottom="15dp"
-       android:gravity="center"
-       android:insetLeft="0dp"
-       android:insetTop="0dp"
-       android:insetRight="0dp"
-       android:insetBottom="0dp"
-       app:iconGravity="textStart"
-       app:iconPadding="0dp"
-       app:icon="@android:drawable/ic_input_add"
-       app:iconTint="@color/foreground_primary"
-       app:cornerRadius="12dp"
-       app:backgroundTint="@color/background_tertiary"
-       app:rippleColor="@color/white" />
-
-   <com.google.android.material.tabs.TabLayout
-       android:id="@+id/tabLayoutMain"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_alignParentBottom="true"
+       android:layout_height="match_parent"
        android:background="@color/background_primary"
-       app:tabGravity="fill"
-       app:tabIconTint="@color/background_tertiary"
-       app:tabIndicatorColor="@color/foreground_primary"
-       app:tabMode="fixed">
+       android:id="@+id/relativeLayoutMainActivity">
 
-      <com.google.android.material.tabs.TabItem
+
+      <androidx.viewpager2.widget.ViewPager2
+          android:id="@+id/viewPagerMain"
           android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:layout_gravity="center"
-          android:icon="@drawable/ic_home" />
+          android:layout_height="match_parent" />
 
-      <com.google.android.material.tabs.TabItem
+
+      <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+          android:id="@+id/buttonDeleteMain"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:visibility="invisible"
+          android:layout_alignParentBottom="true"
+          android:layout_centerInParent="true"
+          android:layout_marginBottom="80dp"
+          android:backgroundTint="@color/foreground_primary"
+          android:fontFamily="@font/figerona_bold"
+          android:text="Delete 0 items"
+          android:paddingStart="20dp"
+          android:paddingEnd="20dp"
+          android:textColor="@color/white"
+          app:cornerRadius="10dp"
+          app:rippleColor="@color/background_primary"/>
+
+      <com.google.android.material.button.MaterialButton
+          android:id="@+id/tabBarButton"
+          android:layout_width="50dp"
+          android:layout_height="50dp"
+          android:layout_alignParentBottom="true"
+          android:layout_centerInParent="true"
+          android:layout_marginBottom="15dp"
+          android:gravity="center"
+          android:insetLeft="0dp"
+          android:insetTop="0dp"
+          android:insetRight="0dp"
+          android:insetBottom="0dp"
+          app:iconGravity="textStart"
+          app:iconPadding="0dp"
+          app:icon="@android:drawable/ic_input_add"
+          app:iconTint="@color/foreground_primary"
+          app:cornerRadius="12dp"
+          app:backgroundTint="@color/background_tertiary"
+          app:rippleColor="@color/white" />
+
+      <com.google.android.material.tabs.TabLayout
+          android:id="@+id/tabLayoutMain"
           android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:icon="@drawable/ic_list_box" />
+          android:layout_height="wrap_content"
+          android:layout_alignParentBottom="true"
+          android:background="@color/background_primary"
+          app:tabGravity="fill"
+          app:tabIconTint="@color/background_tertiary"
+          app:tabIndicatorColor="@color/foreground_primary"
+          app:tabMode="fixed">
 
-      <com.google.android.material.tabs.TabItem
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:icon="@drawable/ic_chart_box"/>
+         <com.google.android.material.tabs.TabItem
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_gravity="center"
+             android:icon="@drawable/ic_home" />
 
-      <com.google.android.material.tabs.TabItem
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:icon="@drawable/money_icon" />
+         <com.google.android.material.tabs.TabItem
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:icon="@drawable/ic_list_box" />
 
-   </com.google.android.material.tabs.TabLayout>
+         <com.google.android.material.tabs.TabItem
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:icon="@drawable/ic_chart_box"/>
+
+         <com.google.android.material.tabs.TabItem
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:icon="@drawable/money_icon" />
+
+      </com.google.android.material.tabs.TabLayout>
 
 
 
-</RelativeLayout>
+   </RelativeLayout>
+</layout>
