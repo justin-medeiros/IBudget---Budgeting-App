@@ -167,12 +167,14 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
 
     private fun showSnackbar(view: View){
         val tempList = itemsToRemove.clone() as TreeMap<Int, TransactionData>
+        transactionViewModel.removeTransactions(itemsToRemove.values)
         itemsToRemove.clear()
         val snackBar = Snackbar.make(view, "${tempList.size} transactions deleted.", Snackbar.LENGTH_LONG).setAction(
             "Undo") {
             for(item in tempList){
                 listOfTransactions.add(item.key, item.value)
             }
+            transactionViewModel.addAllTransactions(tempList.values)
             notifyDataSetChanged()
         }
         val snackbarView = snackBar.view
