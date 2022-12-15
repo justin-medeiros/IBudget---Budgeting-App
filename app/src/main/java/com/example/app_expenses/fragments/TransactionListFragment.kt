@@ -64,7 +64,7 @@ class TransactionListFragment: Fragment() {
         }
 
         transactionViewModel.deleteButtonClicked.observe(viewLifecycleOwner){ clicked ->
-            if(clicked){
+            if(clicked && transactionViewModel.amountOfItemsSelected.value ?: 0 > 0){
                 fragmentTransactionListBinding.tvSelectToDeleteTransactionList.text = "Select"
                 fragmentTransactionListBinding.tvSelectToDeleteTransactionList.backgroundTintList =
                     ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.foreground_primary))
@@ -92,7 +92,6 @@ class TransactionListFragment: Fragment() {
 
             selectTvCLicked = !selectTvCLicked
             transactionViewModel.selectButtonClicked.postValue(selectTvCLicked)
-
         }
     }
 }
