@@ -167,6 +167,7 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
         this.listOfTransactions.add(position, item)
         // Will notify item changed of the item that was previously at the top (position+1) to make sure the item does not show the date. Instead the
         // newly added transaction will show the date for the section.
+        transactionViewModel.addToTransactionsTotal(item.transactionAmount!!.toFloat())
         notifyItemInserted(position)
         notifyItemChanged(position+1)
     }
@@ -174,13 +175,13 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
     private fun showSnackbar(view: View){
         val tempList = itemsToRemove.clone() as TreeMap<Int, TransactionData>
         transactionViewModel.removeTransactions(itemsToRemove.values)
+        removeTotalTransactionsAmount()
         itemsToRemove.clear()
         val snackBar = Snackbar.make(view, "${tempList.size} transactions deleted.", Snackbar.LENGTH_LONG).setAction(
             "Undo") {
-            for(item in tempList){
-                listOfTransactions.add(item.key, item.value)
-            }
+            tempList.forEach { item ->  listOfTransactions.add(item.key, item.value) }
             transactionViewModel.addAllTransactions(tempList.values)
+            addTotalTransactionsAmount(tempList.values)
             notifyDataSetChanged()
         }
         val snackbarView = snackBar.view
@@ -189,5 +190,17 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
         params.gravity = Gravity.TOP
         snackbarView.layoutParams = params
         snackBar.show()
+    }
+
+    private fun removeTotalTransactionsAmount(){
+        var total = 0F
+        itemsToRemove.forEach { item-> total += item.value.transactionAmount!!.toFloat() }
+        transactionViewModel.subtractFromTransactionsTotal(total)
+    }
+
+    private fun addTotalTransactionsAmount(tempList: MutableCollection<TransactionData>){
+        var total = 0F
+        tempList.forEach { item -> total += item.transactionAmount!!.toFloat() }
+        transactionViewModel.addToTransactionsTotal(total)
     }
 }
