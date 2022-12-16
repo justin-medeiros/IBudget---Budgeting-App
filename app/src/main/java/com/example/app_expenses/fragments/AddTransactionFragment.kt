@@ -78,8 +78,8 @@ class AddTransactionFragment: BottomSheetDialogFragment() {
                 val transactionAmount = fragmentAddTransactionBinding.etTransactionAmount.text.toString()
                 val transactionData =
                     TransactionData(System.currentTimeMillis(), categorySelected, transactionName, transactionAmount)
-                transactionsViewModel.addTransaction(transactionData)
                 PrefsHelper.writeString(StringUtils.TRANSACTION_LATEST_DATE, UtilitiesFunctions.timestampToDate(transactionData.timeStamp))
+                transactionsViewModel.addTransaction(transactionData)
                 dialog?.dismiss()
             }
         }

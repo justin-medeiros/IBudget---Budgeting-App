@@ -33,7 +33,7 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
     private val listOfTransactions: MutableList<TransactionData> = mutableListOf()
     private var itemsToRemove: TreeMap<Int, TransactionData> = TreeMap()
     private var latestDate: String? = null
-    private var isAdded: Boolean? = null
+    private var isAdded: Boolean = false
     private var isSelectButtonClicked = false
     private var itemsSelected = 0
 
@@ -50,7 +50,7 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
 
         // When the delete button is clicked in main activity, delete the transactions from database and adapter
         transactionViewModel.deleteButtonClicked.observe(activity){ clicked ->
-            if(clicked){
+            if(clicked && itemsToRemove.values.isNotEmpty()){
                 transactionViewModel.amountOfItemsSelected.postValue(0)
                 listOfTransactions.removeAll(itemsToRemove.values)
                 mainActivity.hideDeleteButton()
@@ -131,12 +131,18 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
             holder.borderTop.visibility = View.VISIBLE
             latestDate = transactionDate
         } else {
-            // If a value was added and it matches the latest transaction date, do not show the date for that item. Instead the date will be pushed to the top
-            if (isAdded == true && position != 0 && sharedPrefTransactionDate == transactionDate) {
-                holder.dateText.visibility = View.GONE
-                holder.borderTop.visibility = View.GONE
-                latestDate = transactionDate
-            } else{ // For when app first launches or when transactions are removed from list
+            // If a value was added
+            if(isAdded) {
+                //If item transaction date matches the latest transaction date, do not show the date for that item. Instead the date will be pushed to the top
+                if(sharedPrefTransactionDate == transactionDate){
+                    holder.dateText.visibility = View.GONE
+                    holder.borderTop.visibility = View.GONE
+                    latestDate = transactionDate
+                } else{
+                    holder.dateText.visibility = View.VISIBLE
+                    holder.borderTop.visibility = View.VISIBLE
+                }
+            } else{ // For when app first launches, select button is clicked or when transactions are removed from list
                 if (latestDate == transactionDate) {
                     holder.dateText.visibility = View.GONE
                     holder.borderTop.visibility = View.GONE
@@ -159,20 +165,22 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
     fun addItem(item: TransactionData, position: Int){
         isAdded = true
         this.listOfTransactions.add(position, item)
-        // Will notify item changed of the item that was previously at the top to make sure the item does not show the date. Instead the
+        // Will notify item changed of the item that was previously at the top (position+1) to make sure the item does not show the date. Instead the
         // newly added transaction will show the date for the section.
-        notifyItemChanged(position+1)
         notifyItemInserted(position)
+        notifyItemChanged(position+1)
     }
 
     private fun showSnackbar(view: View){
         val tempList = itemsToRemove.clone() as TreeMap<Int, TransactionData>
+        transactionViewModel.removeTransactions(itemsToRemove.values)
         itemsToRemove.clear()
         val snackBar = Snackbar.make(view, "${tempList.size} transactions deleted.", Snackbar.LENGTH_LONG).setAction(
             "Undo") {
             for(item in tempList){
                 listOfTransactions.add(item.key, item.value)
             }
+            transactionViewModel.addAllTransactions(tempList.values)
             notifyDataSetChanged()
         }
         val snackbarView = snackBar.view
