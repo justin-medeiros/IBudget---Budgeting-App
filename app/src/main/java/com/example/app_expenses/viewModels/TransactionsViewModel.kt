@@ -49,6 +49,14 @@ class TransactionsViewModel: ViewModel() {
         transactionsRepository.subtractFromTransactionsTotalAmount(transactionAmount)
     }
 
+    fun addToCategoryTransactionsTotal(categoryName: String, transactionDataAmount: Float){
+        transactionsRepository.addToCategoryTransactionsTotal(categoryName, transactionDataAmount)
+    }
+
+    fun subtractFromCategoryTransactionsTotal(categoryName: String, transactionDataAmount: Float){
+        transactionsRepository.subtractFromCategoryTransactionsTotal(categoryName, transactionDataAmount)
+    }
+
     fun getTransactionsTotalAmount(){
         transactionsRepository.getTransactionsTotalAmount()
     }
