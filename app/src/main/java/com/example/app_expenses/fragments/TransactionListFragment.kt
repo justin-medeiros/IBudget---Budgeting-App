@@ -1,7 +1,6 @@
 package com.example.app_expenses.fragments
 
 import android.content.res.ColorStateList
-import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -13,17 +12,11 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.app_expenses.R
-import com.example.app_expenses.activities.MainActivity
 import com.example.app_expenses.adapters.TransactionListAdapter
 import com.example.app_expenses.databinding.FragmentTransactionListBinding
-import com.example.app_expenses.utils.UtilitiesFunctions
 import com.example.app_expenses.viewModels.TransactionsViewModel
-import com.google.android.material.snackbar.Snackbar
 
 class TransactionListFragment: Fragment() {
     private lateinit var fragmentTransactionListBinding: FragmentTransactionListBinding
@@ -41,6 +34,15 @@ class TransactionListFragment: Fragment() {
         val categoriesArray = resources.getStringArray(R.array.categories)
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, categoriesArray)
 
+        transactionViewModel.getMyTransactionsLiveData().observe(viewLifecycleOwner){ transactionsList ->
+            if(transactionsList.isEmpty()){
+                fragmentTransactionListBinding.rvTransactionList.visibility = View.GONE
+                fragmentTransactionListBinding.tvRvNoTransactions.visibility = View.VISIBLE
+            } else{
+                myTransactionsListAdapter.addAllItems(transactionsList)
+            }
+        }
+
         fragmentTransactionListBinding.tvAutoCompleteTransactionList.setAdapter(arrayAdapter)
         val myLinearLayoutManager = object : LinearLayoutManager(requireContext()) {
             override fun canScrollVertically(): Boolean {
@@ -55,12 +57,20 @@ class TransactionListFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        transactionViewModel.getMyTransactionsLiveData().observe(viewLifecycleOwner){ transactionsList ->
-            myTransactionsListAdapter.addAllItems(transactionsList)
-        }
-
         transactionViewModel.getAddTransactionLiveData().observe(viewLifecycleOwner){ transactionData ->
             myTransactionsListAdapter.addItem(transactionData!!, 0)
+            fragmentTransactionListBinding.rvTransactionList.visibility = View.VISIBLE
+            fragmentTransactionListBinding.tvRvNoTransactions.visibility = View.GONE
+        }
+
+        transactionViewModel.numberOfTransactions.observe(viewLifecycleOwner){ numberOfTransactions ->
+            if(numberOfTransactions > 0){
+                fragmentTransactionListBinding.rvTransactionList.visibility = View.VISIBLE
+                fragmentTransactionListBinding.tvRvNoTransactions.visibility = View.GONE
+            } else{
+                fragmentTransactionListBinding.rvTransactionList.visibility = View.GONE
+                fragmentTransactionListBinding.tvRvNoTransactions.visibility = View.VISIBLE
+            }
         }
 
         transactionViewModel.deleteButtonClicked.observe(viewLifecycleOwner){ clicked ->
