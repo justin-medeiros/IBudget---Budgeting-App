@@ -174,19 +174,30 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
     }
 
     private fun showSnackbar(view: View){
+        val totalAmountsMap: MutableMap<String, Float> = mutableMapOf()
         val tempList = itemsToRemove.clone() as TreeMap<Int, TransactionData>
+        transactionViewModel.numberOfTransactions.postValue(listOfTransactions.size)
+
+        // Removing transactions and transactions total amounts from database
         transactionViewModel.removeTransactions(itemsToRemove.values)
         removeTotalTransactionsAmount()
         removeFromCategoryTransactionTotalAmount()
+
         itemsToRemove.clear()
         val snackBar = Snackbar.make(view, "${tempList.size} transactions deleted.", Snackbar.LENGTH_LONG).setAction(
             "Undo") {
+            // Add all transactions back after clicking undo
             tempList.forEach { item ->
+                val categoryName = item.value.categoryName!!
+                val value = if (totalAmountsMap.containsKey(categoryName)) totalAmountsMap.getValue(categoryName) else 0F
+                totalAmountsMap[item.value.categoryName!!] = value + item.value.transactionAmount!!.toFloat()
                 listOfTransactions.add(item.key, item.value)
                 transactionViewModel.addToCategoryTransactionsTotal(item.value.categoryName!!, item.value.transactionAmount!!.toFloat())
             }
             transactionViewModel.addAllTransactions(tempList.values)
             addTotalTransactionsAmount(tempList.values)
+            addToCategoryTransactionTotalAmount(totalAmountsMap)
+            transactionViewModel.numberOfTransactions.postValue(listOfTransactions.size)
             notifyDataSetChanged()
         }
         val snackbarView = snackBar.view
@@ -199,7 +210,7 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
 
     private fun removeTotalTransactionsAmount(){
         var total = 0F
-        itemsToRemove.forEach { item-> total += item.value.transactionAmount!!.toFloat() }
+        itemsToRemove.forEach { item -> total += item.value.transactionAmount!!.toFloat() }
         transactionViewModel.subtractFromTransactionsTotal(total)
     }
 
@@ -210,7 +221,18 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
     }
 
     private fun removeFromCategoryTransactionTotalAmount(){
-        itemsToRemove.forEach { item-> transactionViewModel.subtractFromCategoryTransactionsTotal(item.value.categoryName!!,
-            item.value.transactionAmount!!.toFloat()) }
+        val removeValuesMap: MutableMap<String, Float> = mutableMapOf()
+        itemsToRemove.forEach { item->
+            val categoryName = item.value.categoryName!!
+            val value = if (removeValuesMap.containsKey(categoryName)) removeValuesMap.getValue(categoryName) else 0F
+            removeValuesMap[categoryName] = value + item.value.transactionAmount!!.toFloat()
+        }
+        removeValuesMap.forEach { removeItem -> transactionViewModel.subtractFromCategoryTransactionsTotal(removeItem.key,
+            removeItem.value)}
     }
+
+    private fun addToCategoryTransactionTotalAmount(map: Map<String, Float>){
+        map.forEach { item -> transactionViewModel.addToCategoryTransactionsTotal(item.key, item.value) }
+    }
+
 }

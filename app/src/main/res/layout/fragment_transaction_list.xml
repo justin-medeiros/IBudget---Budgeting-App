@@ -103,6 +103,18 @@
                     android:textSize="14sp" />
             </RelativeLayout>
 
+            <TextView
+                android:id="@+id/tvRvNoTransactions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/figerona_semibold"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/no_items_transactions_list"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvTransactionList"

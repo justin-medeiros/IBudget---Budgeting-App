@@ -22,9 +22,7 @@ class LoginFragment: Fragment() {
     private lateinit var password: String
     private lateinit var email: String
     private lateinit var fragmentLoginBinding: FragmentLoginBinding
-    private var forgetPasswordSent = false
     private val authViewModel: AuthViewModel by viewModels()
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {

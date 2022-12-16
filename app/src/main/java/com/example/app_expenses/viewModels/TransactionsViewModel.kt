@@ -16,6 +16,7 @@ class TransactionsViewModel: ViewModel() {
     val selectButtonClicked = MutableLiveData<Boolean>()
     val amountOfItemsSelected = MutableLiveData<Int>()
     val deleteButtonClicked = MutableLiveData<Boolean>()
+    val numberOfTransactions = MutableLiveData<Int>()
 
     fun getMyTransactions(){
         transactionsRepository.getMyTransactions()
