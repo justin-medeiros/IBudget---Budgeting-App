@@ -114,9 +114,21 @@ class TransactionsRepository {
         }
     }
 
+    fun addToCategoryTransactionsTotal(categoryName: String, transactionDataAmount: Float){
+        CoroutineScope(Dispatchers.IO).launch {
+            addSubtractCategoryTransactionsTotal(categoryName, transactionDataAmount, true)
+        }
+    }
+
+    fun subtractFromCategoryTransactionsTotal(categoryName: String, transactionDataAmount: Float){
+        CoroutineScope(Dispatchers.IO).launch {
+            addSubtractCategoryTransactionsTotal(categoryName, transactionDataAmount, false)
+        }
+    }
+
     private fun addSubtractTransactionsTotal(transactionDataAmount: Float, isAdding: Boolean) {
         val transactionsTotalBudget =
-            firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("transactions/transactions_total")
+            firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("transactions_total")
         transactionsTotalBudget.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 var newTotalBudget: Float
@@ -130,6 +142,29 @@ class TransactionsRepository {
                     }
                 }
                 transactionsTotalBudget.setValue(newTotalBudget.toString())
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
+    private fun addSubtractCategoryTransactionsTotal(categoryName: String, transactionAmount: Float, isAdding: Boolean) {
+        val categoryTotalBudget =
+            firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("categories")
+                .child(categoryName).child("category_transactions_total")
+        categoryTotalBudget.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var newTotalBudget: Float
+                val oldTotalBudget = snapshot.value as String?
+                if (oldTotalBudget == null) {
+                    newTotalBudget = transactionAmount
+                } else {
+                    newTotalBudget = oldTotalBudget!!.toFloat() - transactionAmount
+                    if (isAdding) {
+                        newTotalBudget = oldTotalBudget!!.toFloat() + transactionAmount
+                    }
+                }
+                categoryTotalBudget.setValue(newTotalBudget.toString())
             }
 
             override fun onCancelled(error: DatabaseError) {}

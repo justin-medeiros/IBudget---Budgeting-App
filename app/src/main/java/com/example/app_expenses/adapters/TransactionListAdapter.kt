@@ -168,6 +168,7 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
         // Will notify item changed of the item that was previously at the top (position+1) to make sure the item does not show the date. Instead the
         // newly added transaction will show the date for the section.
         transactionViewModel.addToTransactionsTotal(item.transactionAmount!!.toFloat())
+        transactionViewModel.addToCategoryTransactionsTotal(item.categoryName!!, item.transactionAmount!!.toFloat())
         notifyItemInserted(position)
         notifyItemChanged(position+1)
     }
@@ -176,10 +177,14 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
         val tempList = itemsToRemove.clone() as TreeMap<Int, TransactionData>
         transactionViewModel.removeTransactions(itemsToRemove.values)
         removeTotalTransactionsAmount()
+        removeFromCategoryTransactionTotalAmount()
         itemsToRemove.clear()
         val snackBar = Snackbar.make(view, "${tempList.size} transactions deleted.", Snackbar.LENGTH_LONG).setAction(
             "Undo") {
-            tempList.forEach { item ->  listOfTransactions.add(item.key, item.value) }
+            tempList.forEach { item ->
+                listOfTransactions.add(item.key, item.value)
+                transactionViewModel.addToCategoryTransactionsTotal(item.value.categoryName!!, item.value.transactionAmount!!.toFloat())
+            }
             transactionViewModel.addAllTransactions(tempList.values)
             addTotalTransactionsAmount(tempList.values)
             notifyDataSetChanged()
@@ -202,5 +207,10 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
         var total = 0F
         tempList.forEach { item -> total += item.transactionAmount!!.toFloat() }
         transactionViewModel.addToTransactionsTotal(total)
+    }
+
+    private fun removeFromCategoryTransactionTotalAmount(){
+        itemsToRemove.forEach { item-> transactionViewModel.subtractFromCategoryTransactionsTotal(item.value.categoryName!!,
+            item.value.transactionAmount!!.toFloat()) }
     }
 }
