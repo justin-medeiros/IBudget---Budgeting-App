@@ -18,17 +18,19 @@
             app:tabTextColor="@color/foreground_primary"
             app:tabIndicatorGravity="stretch"
             app:tabIndicatorAnimationMode="elastic"
-            app:tabIndicatorColor="@color/foreground_primary">
+            app:tabIndicatorColor="@color/foreground_primary"
+            app:tabTextAppearance="@style/tab_text">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Budget"/>
+                android:text="Budgets"
+                />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Transaction" />
+                android:text="Transactions" />
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.viewpager2.widget.ViewPager2
