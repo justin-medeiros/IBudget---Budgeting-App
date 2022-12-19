@@ -131,4 +131,8 @@ object UtilitiesFunctions{
         deleteDrawable.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom)
         deleteDrawable.draw(c)
     }
+
+    fun calculateTotalPercentage(amount: Float, totalAmount: Float): Float{
+        return "%.2f".format(amount/totalAmount).toFloat()
+    }
 }
