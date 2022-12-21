@@ -19,6 +19,7 @@ class BudgetsRepository {
     private val firebaseDatabase: DatabaseReference = Firebase.database.reference
     private val auth: FirebaseAuth = Firebase.auth
     private val myBudgetsLiveData = MutableLiveData<List<BudgetData>>()
+    private val latestBudgetsLiveData = MutableLiveData<List<BudgetData>>()
     private val addBudgetLiveData = MutableLiveData<BudgetData?>()
     private val totalBudgetLiveData = MutableLiveData<Float>()
 
@@ -50,6 +51,37 @@ class BudgetsRepository {
     }
     fun getMyBudgetsLiveData(): LiveData<List<BudgetData>>{
         return myBudgetsLiveData
+    }
+
+    fun getLatestBudgets(){
+        CoroutineScope(Dispatchers.IO).launch {
+            val myBudgetsList: MutableList<BudgetData> = mutableListOf()
+            // Want to order by timestamp so that the budgets are in the correct order every launch (most recent to oldest)
+            firebaseDatabase
+                .child("users").child(auth.currentUser?.uid!!).child("categories").child("budgets")
+                .orderByChild("timeStamp").limitToFirst(5)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (dataSnapshot1 in dataSnapshot.children) {
+                                val budgetName = dataSnapshot1.child("budgetName").value as String
+                                val budgetAmount =
+                                    dataSnapshot1.child("budgetAmount").value as String
+                                val budgetCategory =
+                                    dataSnapshot1.child("categoryName").value as String
+                                val budgetTimeStamp = dataSnapshot1.child("timeStamp").value as Long
+                                myBudgetsList.add(0, BudgetData(budgetTimeStamp, budgetCategory, budgetName, budgetAmount))
+                            }
+                        }
+                        //myBudgetsLiveData.postValue(myBudgetsList)
+                    }
+                    override fun onCancelled(databaseError: DatabaseError) {}
+                })
+        }
+    }
+
+    fun getLatestBudgetsLiveData(): LiveData<List<BudgetData>>{
+        return latestBudgetsLiveData
     }
 
     fun addBudget(newBudget: BudgetData){
@@ -106,6 +138,8 @@ class BudgetsRepository {
                         if (dataSnapshot.exists()) {
                             val totalBudget = dataSnapshot.getValue(String::class.java)!!.toFloat()
                             totalBudgetLiveData.postValue(totalBudget)
+                        } else{
+                            totalBudgetLiveData.postValue(0F)
                         }
                     }
                     override fun onCancelled(databaseError: DatabaseError) {}

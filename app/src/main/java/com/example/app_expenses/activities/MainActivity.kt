@@ -136,6 +136,12 @@ class MainActivity : AppCompatActivity() {
         binding.buttonDeleteMain.text = "Delete 0 items"
     }
 
+    fun switchToTab(position: Int){
+        val tab = binding.tabLayoutMain.getTabAt(position)
+        binding.tabLayoutMain.selectTab(tab)
+        binding.viewPagerMain.currentItem = position
+    }
+
     // Override the back pressed so users can't press the backspace button when on home menu
     override fun onBackPressed() {}
 }
