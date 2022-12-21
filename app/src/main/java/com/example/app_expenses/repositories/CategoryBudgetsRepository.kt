@@ -1,9 +1,12 @@
 package com.example.app_expenses.repositories
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.app_expenses.data.BudgetCategoryData
+import com.example.app_expenses.data.BudgetData
 import com.example.app_expenses.utils.UtilitiesFunctions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -11,17 +14,21 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.core.utilities.Tree
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
+import java.util.stream.Collectors
+import kotlin.collections.ArrayList
 
 class CategoryBudgetsRepository {
     private val firebaseDatabase: DatabaseReference = Firebase.database.reference
     private val auth: FirebaseAuth = Firebase.auth
     private val categoryTotalBudgetLiveData = MutableLiveData<BudgetCategoryData>()
+    private val latestBudgetsLiveData = MutableLiveData<List<BudgetData>>()
     private val budgetCategoryLiveData = MutableLiveData<TreeMap<Int, BudgetCategoryData>>()
     private val budgetListLiveData = MutableLiveData<List<String>>()
 
@@ -60,6 +67,59 @@ class CategoryBudgetsRepository {
 
     fun getCategoryBudgetsLiveData(): LiveData<TreeMap<Int, BudgetCategoryData>>{
         return budgetCategoryLiveData
+    }
+
+    fun getLatestCategoryBudgets(){
+        CoroutineScope(Dispatchers.IO).launch {
+            // Using a tree map to pass the correct position of each category in descending order to display in the budgets page
+            val latestBudgetsList: TreeMap<Int, BudgetData> = TreeMap()
+            val budgetCategoryDefaultList = UtilitiesFunctions.createCategoriesBudgets()
+
+
+            for (category in budgetCategoryDefaultList) {
+                val currentBudget = firebaseDatabase.child("users").child(auth.currentUser?.uid!!)
+                    .child("categories")
+                    .child(category.categoryName!!).child("budgets")
+                currentBudget.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if(dataSnapshot.exists()){
+                            for (dataSnapshot1 in dataSnapshot.children) {
+                                val budgetName = dataSnapshot1.child("budgetName").value as String
+                                val budgetAmount =
+                                    dataSnapshot1.child("budgetAmount").value as String
+                                val budgetCategory =
+                                    dataSnapshot1.child("categoryName").value as String
+                                val budgetTimeStamp = dataSnapshot1.child("timeStamp").value as Long
+                                val budgetData = BudgetData(budgetTimeStamp, budgetCategory, budgetName, budgetAmount)
+                                latestBudgetsList[budgetTimeStamp.toInt()] = budgetData
+                            }
+                        }
+                        if(category.categoryName == "Personal Spending"){
+                            latestBudgetsLiveData.postValue(getFiveLatestBudgets(latestBudgetsList))
+                        }
+                    }
+                    override fun onCancelled(databaseError: DatabaseError) {}
+                })
+            }
+        }
+    }
+
+    fun getLatestBudgetsLiveData(): LiveData<List<BudgetData>>{
+        return latestBudgetsLiveData
+    }
+
+    private fun getFiveLatestBudgets(map: TreeMap<Int, BudgetData>): List<BudgetData>{
+        var tempList = arrayListOf<BudgetData>()
+        var i = 0
+        for(item in map.values){
+            if(i < 5){
+                tempList.add(item)
+                i++
+            } else{
+                break
+            }
+        }
+        return tempList
     }
 
     fun subtractFromCategoryBudget(budgetCategoryData: BudgetCategoryData){

@@ -18,18 +18,18 @@
           android:id="@+id/buttonDeleteMain"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:visibility="invisible"
           android:layout_alignParentBottom="true"
           android:layout_centerInParent="true"
           android:layout_marginBottom="80dp"
           android:backgroundTint="@color/foreground_primary"
           android:fontFamily="@font/figerona_bold"
-          android:text="Delete 0 items"
           android:paddingStart="20dp"
           android:paddingEnd="20dp"
+          android:text="Delete 0 items"
           android:textColor="@color/white"
+          android:visibility="invisible"
           app:cornerRadius="10dp"
-          app:rippleColor="@color/background_primary"/>
+          app:rippleColor="@color/background_primary" />
 
       <com.google.android.material.button.MaterialButton
           android:id="@+id/tabBarButton"

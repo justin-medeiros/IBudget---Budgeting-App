@@ -28,6 +28,7 @@ import com.example.app_expenses.utils.UtilitiesFunctions
 import com.example.app_expenses.viewModels.BudgetsViewModel
 import com.example.app_expenses.viewModels.CategoryBudgetsViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class AddBudgetFragment(private val budgetsAdapter: BudgetsAdapter): Fragment() {
@@ -58,7 +59,10 @@ class AddBudgetFragment(private val budgetsAdapter: BudgetsAdapter): Fragment() 
         budgetsViewModel.getAddBudgetLiveData().observe(viewLifecycleOwner){ newBudget ->
             if(newBudget != null){
                 budgetsViewModel.addToTotalBudget(newBudget.budgetAmount!!.toFloat())
-                categoryBudgetsViewModel.getCategoryTotalBudget(newBudget.categoryName!!)
+                lifecycleScope.launch {
+                    delay(100)
+                    categoryBudgetsViewModel.getCategoryTotalBudget(newBudget.categoryName!!)
+                }
                 Toast.makeText(context, "Budget has been created successfully!", Toast.LENGTH_LONG).show()
             } else{
                 Toast.makeText(context, "Error. User not registered.", Toast.LENGTH_LONG).show()

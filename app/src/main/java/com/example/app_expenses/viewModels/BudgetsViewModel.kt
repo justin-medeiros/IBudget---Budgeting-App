@@ -1,6 +1,7 @@
 package com.example.app_expenses.viewModels
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.app_expenses.data.BudgetData
 import com.example.app_expenses.enums.CategoryEnum
@@ -9,6 +10,7 @@ import com.example.app_expenses.repositories.BudgetsRepository
 class BudgetsViewModel: ViewModel() {
     private val budgetsRepository = BudgetsRepository()
     private val myBudgetsLiveData: LiveData<List<BudgetData>> = budgetsRepository.getMyBudgetsLiveData()
+    private val latestBudgetsLiveData: LiveData<List<BudgetData>> = budgetsRepository.getLatestBudgetsLiveData()
     private val addBudgetsLiveData: LiveData<BudgetData?> = budgetsRepository.getAddBudgetLiveData()
     private val totalBudgetLiveData: LiveData<Float> = budgetsRepository.getTotalBudgetLiveData()
 
@@ -18,6 +20,14 @@ class BudgetsViewModel: ViewModel() {
 
     fun getMyBudgetsLiveData(): LiveData<List<BudgetData>>{
         return myBudgetsLiveData
+    }
+
+    fun getLatestBudgets(){
+        budgetsRepository.getLatestBudgets()
+    }
+
+    fun getLatestBudgetsLiveData(): LiveData<List<BudgetData>>{
+        return latestBudgetsLiveData
     }
 
     fun addBudget(newBudget: BudgetData){
