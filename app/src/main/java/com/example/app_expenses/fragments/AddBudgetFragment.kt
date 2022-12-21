@@ -18,8 +18,8 @@ import com.example.app_expenses.R
 import com.example.app_expenses.activities.MainActivity
 import com.example.app_expenses.adapters.CategoryAdapter
 import com.example.app_expenses.adapters.BudgetsAdapter
-import com.example.app_expenses.data.BudgetCategoryData
 import com.example.app_expenses.data.BudgetData
+import com.example.app_expenses.data.CategoryData
 import com.example.app_expenses.databinding.FragmentAddBudgetBinding
 import com.example.app_expenses.enums.CategoryEnum
 import com.example.app_expenses.utils.PrefsHelper
@@ -71,7 +71,7 @@ class AddBudgetFragment(private val budgetsAdapter: BudgetsAdapter): Fragment() 
 
         categoryBudgetsViewModel.getCategoryTotalBudgetLiveData().observe(viewLifecycleOwner){ categoryTotalBudget ->
             val position = UtilitiesFunctions.getCategoryBudgetsPosition(categoryTotalBudget.categoryName!!)
-            budgetsAdapter.replaceBudgetAmount(position, categoryTotalBudget.budgetAmount!!)
+            budgetsAdapter.replaceBudgetAmount(position, categoryTotalBudget.totalAmount!!)
             parentFragmentManager.popBackStack()
             mainActivity.visibleTabBarVisibility()
         }
@@ -97,7 +97,7 @@ class AddBudgetFragment(private val budgetsAdapter: BudgetsAdapter): Fragment() 
                 val budgetAmount = fragmentAddBudgetBinding.etAmount.text.toString()
                 val newBudget = BudgetData(System.currentTimeMillis(), selectedCategoryName, budgetName, budgetAmount)
                 budgetsViewModel.addBudget(newBudget)
-                categoryBudgetsViewModel.addToCategoryTotalBudget(BudgetCategoryData(selectedCategoryName, budgetAmount))
+                categoryBudgetsViewModel.addToCategoryTotalBudget(CategoryData(selectedCategoryName, budgetAmount))
             }
         }
     }

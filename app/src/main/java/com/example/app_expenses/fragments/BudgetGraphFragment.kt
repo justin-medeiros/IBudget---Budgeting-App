@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_expenses.R
 import com.example.app_expenses.activities.MainActivity
 import com.example.app_expenses.adapters.LatestBudgetsAdapter
-import com.example.app_expenses.data.BudgetCategoryData
+import com.example.app_expenses.data.CategoryData
 import com.example.app_expenses.databinding.FragmentBudgetGraphBinding
 import com.example.app_expenses.utils.UtilitiesFunctions
 import com.example.app_expenses.viewModels.BudgetsViewModel
@@ -38,7 +38,7 @@ class BudgetGraphFragment: Fragment() {
     private lateinit var fragmentBudgetGraphBinding: FragmentBudgetGraphBinding
     private var totalCategoryBudget: Float = 0F
     var latestBudgetsAdapter = LatestBudgetsAdapter()
-    var budgetMap: TreeMap<Int, BudgetCategoryData> = TreeMap()
+    var budgetMap: TreeMap<Int, CategoryData> = TreeMap()
     private val mainActivity = MainActivity()
     private val categoryBudgetsViewModel: CategoryBudgetsViewModel by viewModels()
     private val budgetsViewModel: BudgetsViewModel by viewModels()
@@ -111,10 +111,10 @@ class BudgetGraphFragment: Fragment() {
         var colors: ArrayList<Int> = ArrayList()
 
         budgetMap.forEach { item ->
-            if(item.value.budgetAmount?.toFloat() != 0F){
+            if(item.value.totalAmount?.toFloat() != 0F){
                 val category = UtilitiesFunctions.getCategoryEnum(item.value.categoryName!!)
                 colors.add(ContextCompat.getColor(requireContext(), category?.categoryColor!!))
-                pieEntries.add(PieEntry(UtilitiesFunctions.calculateTotalPercentage(item.value.budgetAmount!!.toFloat(), totalCategoryBudget),
+                pieEntries.add(PieEntry(UtilitiesFunctions.calculateTotalPercentage(item.value.totalAmount!!.toFloat(), totalCategoryBudget),
                     item.value.categoryName!!))
             }
         }
