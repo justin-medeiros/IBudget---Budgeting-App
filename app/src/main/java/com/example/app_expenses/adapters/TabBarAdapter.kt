@@ -3,8 +3,8 @@ package com.example.app_expenses.adapters
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.app_expenses.HomeFragment
 import com.example.app_expenses.fragments.BudgetFragment
+import com.example.app_expenses.fragments.HomeFragment
 import com.example.app_expenses.fragments.ResultsFragment
 import com.example.app_expenses.fragments.TransactionListFragment
 
