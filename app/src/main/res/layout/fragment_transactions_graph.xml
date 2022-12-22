@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_primary"
+            android:orientation="vertical">
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChartTransactionGraph"
+                android:layout_width="match_parent"
+                android:layout_height="500dp" />
+
+            <TextView
+                android:id="@+id/transactionTotalValuesTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transaction Total's For All Categories"
+                android:textColor="@color/foreground_primary"
+                android:fontFamily="@font/figerona_bold"
+                android:textSize="20dp"
+                android:layout_marginTop="-100dp"
+                android:layout_marginLeft="20dp" />
+
+            <LinearLayout
+                android:id="@+id/containerTransactionsTotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/alert_box_background"
+                android:backgroundTint="@color/background_secondary"
+                android:padding="20dp"
+                android:layout_margin="20dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvTransactionTotals"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:nestedScrollingEnabled="false"
+                    android:layout_gravity="center" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonSeeAllTransactionTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/figerona_bold"
+                    android:textAllCaps="false"
+                    android:text="See All..."
+                    android:textColor="@color/white"
+                    app:rippleColor="@color/white"
+                    app:background="@drawable/alert_box_background" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvNoTransactions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/figerona_semibold"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/no_items_transactions_list"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:visibility="gone" />
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</layout>

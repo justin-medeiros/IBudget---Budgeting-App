@@ -3,7 +3,7 @@ package com.example.app_expenses.repositories
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.app_expenses.data.BudgetCategoryData
+import com.example.app_expenses.data.CategoryData
 import com.example.app_expenses.data.BudgetData
 import com.example.app_expenses.data.TransactionData
 import com.example.app_expenses.enums.CategoryEnum
@@ -19,6 +19,8 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 
 class TransactionsRepository {
     private val firebaseDatabase: DatabaseReference = Firebase.database.reference
@@ -26,6 +28,8 @@ class TransactionsRepository {
     private val addTransactionLiveData = MutableLiveData<TransactionData?>()
     private val allTransactionLiveData = MutableLiveData<List<TransactionData>>()
     private val transactionsTotalAmountLiveData = MutableLiveData<Float>()
+    private val totalCategoryTransactionLiveData = MutableLiveData<ArrayList<CategoryData>>()
+
     fun getMyTransactions() {
         CoroutineScope(Dispatchers.IO).launch {
             val myTransactionsList: MutableList<TransactionData> = mutableListOf()
@@ -174,8 +178,8 @@ class TransactionsRepository {
     fun getTransactionsTotalAmount(){
         CoroutineScope(Dispatchers.IO).launch {
             firebaseDatabase
-                .child("users").child(auth.currentUser?.uid!!).child("transactions/transactions_total")
-                .addListenerForSingleValueEvent(object : ValueEventListener {
+                .child("users").child(auth.currentUser?.uid!!).child("transactions_total")
+                .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         if (dataSnapshot.exists()) {
                             val transactionsTotal = dataSnapshot.getValue(String::class.java)
@@ -189,6 +193,40 @@ class TransactionsRepository {
 
     fun getTransactionsTotalAmountLiveData(): LiveData<Float>{
         return transactionsTotalAmountLiveData
+    }
+
+    fun getCategoryTransactionsTotal() {
+        val newCategoryTransactionList: ArrayList<CategoryData> = ArrayList()
+        val budgetCategoryDefaultList = UtilitiesFunctions.createCategoriesBudgets()
+        CoroutineScope(Dispatchers.IO).launch {
+            for (category in budgetCategoryDefaultList) {
+                val currentBudget = firebaseDatabase.child("users").child(auth.currentUser?.uid!!)
+                    .child("categories")
+                    .child(category.categoryName!!).child("category_transactions_total")
+                currentBudget.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val categoryPosition =
+                            UtilitiesFunctions.getCategoryBudgetsPosition(category.categoryName)
+                        if (dataSnapshot.value != null) {
+                            val newCategoryTransactionTotal = dataSnapshot.value as String?
+                            if(newCategoryTransactionTotal?.toFloat() != 0F){
+                                newCategoryTransactionList.add(CategoryData(category.categoryName, newCategoryTransactionTotal))
+                            }
+                        }
+                        if (categoryPosition == budgetCategoryDefaultList.size - 1) {
+                            totalCategoryTransactionLiveData.postValue(newCategoryTransactionList)
+                        }
+
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {}
+                })
+            }
+        }
+    }
+
+    fun getCategoryTransactionsTotalLiveData(): LiveData<ArrayList<CategoryData>>{
+        return totalCategoryTransactionLiveData
     }
 
 }
