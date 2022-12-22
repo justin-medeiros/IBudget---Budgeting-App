@@ -6,8 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import com.example.app_expenses.data.UserData
 import com.example.app_expenses.enums.SignUpEnum
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
@@ -20,6 +24,7 @@ class AuthRepository(){
     private val signInLiveData = MutableLiveData<Boolean>()
     private val sendPasswordLiveData = MutableLiveData<Boolean>()
     private val createUserLiveData = MutableLiveData<SignUpEnum>()
+    private val currentUserName = MutableLiveData<String>()
 
     fun signInAuthenticate(email: String, password: String){
         CoroutineScope(Dispatchers.IO).launch {
@@ -82,5 +87,24 @@ class AuthRepository(){
 
     fun currentUserExists(): Boolean{
         return auth.currentUser != null
+    }
+    fun getCurrentUserName(){
+        CoroutineScope(Dispatchers.IO).launch {
+            firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("profile/firstName")
+                .addListenerForSingleValueEvent(object :
+                    ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if(snapshot.exists()){
+                            val name = snapshot.value as String
+                            currentUserName.postValue(name)
+                        }
+                    }
+                    override fun onCancelled(error: DatabaseError) {}
+                })
+        }
+    }
+
+    fun getCurrentUserNameLiveData(): LiveData<String>{
+        return currentUserName
     }
 }

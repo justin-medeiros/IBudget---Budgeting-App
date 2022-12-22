@@ -1,8 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+        <variable
+            name="currentDate"
+            type="String" />
+        <variable
+            name="name"
+            type="String" />
 
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_primary">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp">
+
+            <TextView
+                android:id="@+id/titleGreeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{name}"
+                android:textSize="24sp"
+                android:fontFamily="@font/figerona_bold"
+                android:textColor="@color/white"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{currentDate}"
+                android:layout_marginTop="40dp"
+                android:textSize="16sp"
+                android:fontFamily="@font/figerona_regular"
+                android:textColor="@color/foreground_primary"
+                android:layout_alignTop="@+id/titleGreeting"
+                />
+
+            <ImageView
+                android:id="@+id/signOutButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:background="@drawable/ic_logout" />
+
+        </RelativeLayout>
+    </LinearLayout>
+</layout>
