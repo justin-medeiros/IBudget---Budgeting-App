@@ -1,13 +1,11 @@
 package com.example.app_expenses.viewModels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.app_expenses.data.CategoryData
 import com.example.app_expenses.data.TransactionData
 import com.example.app_expenses.repositories.TransactionsRepository
-import java.util.TreeMap
 
 class TransactionsViewModel: ViewModel() {
     private val transactionsRepository = TransactionsRepository()
