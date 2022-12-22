@@ -30,6 +30,9 @@ class ResultsFragment: Fragment() {
     private fun setupTabLayout(){
         val resultsAdapter = ResultsTabLayoutAdapter(requireActivity(), fragmentResultsBinding.resultsTabLayout.tabCount)
         fragmentResultsBinding.resultsViewPager.adapter = resultsAdapter
+        // Set current page to Transactions and then set back to Budgets to make sure both tab fragments views are created before user goes to the Results page
+        fragmentResultsBinding.resultsViewPager.currentItem = 1
+        fragmentResultsBinding.resultsViewPager.currentItem = 0
         fragmentResultsBinding.resultsViewPager.isUserInputEnabled = false
         fragmentResultsBinding.resultsTabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
