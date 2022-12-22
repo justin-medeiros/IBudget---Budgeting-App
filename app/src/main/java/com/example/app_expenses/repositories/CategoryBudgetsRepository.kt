@@ -109,7 +109,7 @@ class CategoryBudgetsRepository {
     private fun getFiveLatestBudgets(map: TreeMap<Int, BudgetData>): List<BudgetData>{
         var tempList = arrayListOf<BudgetData>()
         var i = 0
-        for(item in map.values){
+        for(item in map.descendingMap().values){
             if(i < 5){
                 tempList.add(item)
                 i++
