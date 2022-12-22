@@ -13,14 +13,14 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.app_expenses.R
 import com.example.app_expenses.activities.MainActivity
-import com.example.app_expenses.data.BudgetCategoryData
+import com.example.app_expenses.data.CategoryData
 import com.example.app_expenses.enums.CategoryEnum
 import com.example.app_expenses.fragments.BudgetCategoryListFragment
 import com.example.app_expenses.utils.UtilitiesFunctions
 
 class BudgetsAdapter(): RecyclerView.Adapter<BudgetsAdapter.ViewHolder>() {
     private lateinit var context: Context
-    private val listOfCategoryBudgets: MutableList<BudgetCategoryData> = mutableListOf()
+    private val listOfCategoryBudgets: MutableList<CategoryData> = mutableListOf()
     private val mainActivity = MainActivity()
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -37,10 +37,10 @@ class BudgetsAdapter(): RecyclerView.Adapter<BudgetsAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: BudgetsAdapter.ViewHolder, position: Int) {
-        val categoryBudget: BudgetCategoryData = listOfCategoryBudgets[position]
+        val categoryBudget: CategoryData = listOfCategoryBudgets[position]
         val category = UtilitiesFunctions.getCategoryEnum(categoryBudget.categoryName!!)
         holder.categoryMyBudgetsNameTitle.text = category?.categoryName
-        holder.categoryMyBudgetsAmount.text = "$%.2f".format(categoryBudget.budgetAmount!!.toFloat())
+        holder.categoryMyBudgetsAmount.text = "$%.2f".format(categoryBudget.totalAmount!!.toFloat())
         holder.categoryMyBudgetsIcon.background = ContextCompat.getDrawable(context, category?.categoryIcon!!)
         holder.categoryMyBudgetsIcon.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white))
 
@@ -67,23 +67,23 @@ class BudgetsAdapter(): RecyclerView.Adapter<BudgetsAdapter.ViewHolder>() {
     }
 
     fun replaceBudgetAmount(position: Int, categoryBudgetAmount: String){
-        listOfCategoryBudgets[position].budgetAmount = categoryBudgetAmount
+        listOfCategoryBudgets[position].totalAmount = categoryBudgetAmount
         notifyItemChanged(position)
     }
 
     fun addToBudgetAmount(position: Int, categoryBudgetAmount: String){
-        val newTotal = listOfCategoryBudgets[position].budgetAmount!!.toFloat() + categoryBudgetAmount.toFloat()
-        listOfCategoryBudgets[position].budgetAmount = newTotal.toString()
+        val newTotal = listOfCategoryBudgets[position].totalAmount!!.toFloat() + categoryBudgetAmount.toFloat()
+        listOfCategoryBudgets[position].totalAmount = newTotal.toString()
         notifyItemChanged(position)
     }
 
     fun subtractBudgetAmount(position: Int, categoryBudgetAmount: String){
-        val newTotal = listOfCategoryBudgets[position].budgetAmount!!.toFloat() - categoryBudgetAmount.toFloat()
-        listOfCategoryBudgets[position].budgetAmount = newTotal.toString()
+        val newTotal = listOfCategoryBudgets[position].totalAmount!!.toFloat() - categoryBudgetAmount.toFloat()
+        listOfCategoryBudgets[position].totalAmount = newTotal.toString()
         notifyItemChanged(position)
     }
 
-    fun addAll(categoryBudgetList: MutableCollection<BudgetCategoryData>){
+    fun addAll(categoryBudgetList: MutableCollection<CategoryData>){
         listOfCategoryBudgets.addAll(categoryBudgetList)
         notifyDataSetChanged()
     }

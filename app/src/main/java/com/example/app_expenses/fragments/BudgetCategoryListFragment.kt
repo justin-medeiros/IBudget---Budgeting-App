@@ -2,7 +2,6 @@ package com.example.app_expenses.fragments
 
 import android.content.res.ColorStateList
 import android.graphics.*
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,7 +19,7 @@ import com.example.app_expenses.R
 import com.example.app_expenses.activities.MainActivity
 import com.example.app_expenses.adapters.BudgetsAdapter
 import com.example.app_expenses.adapters.MyBudgetsListAdapter
-import com.example.app_expenses.data.BudgetCategoryData
+import com.example.app_expenses.data.CategoryData
 import com.example.app_expenses.databinding.FragmentMybudgetListBinding
 import com.example.app_expenses.enums.CategoryEnum
 import com.example.app_expenses.utils.UtilitiesFunctions
@@ -86,7 +85,7 @@ class BudgetCategoryListFragment(private val category: CategoryEnum, private val
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     val position = viewHolder.adapterPosition
                     val item = myBudgetsCategoryAdapter.getList()[position]
-                    val myBudgetCategoryData = BudgetCategoryData(item.categoryName, item.budgetAmount)
+                    val myCategoryData = CategoryData(item.categoryName, item.budgetAmount)
                     val categoryPosition = UtilitiesFunctions.getCategoryBudgetsPosition(item.categoryName!!)
 
                     // Swipe to remove budget from database, subtract amount from category total budget amount and subtract amount
@@ -95,7 +94,7 @@ class BudgetCategoryListFragment(private val category: CategoryEnum, private val
                     budgetsAdapter.subtractBudgetAmount(categoryPosition, item.budgetAmount!!)
                     myBudgetsViewModel.removeBudget(item.budgetName!!, item.categoryName!!)
                     myBudgetsViewModel.removeFromTotalBudget(item.budgetAmount!!.toFloat())
-                    categoryBudgetsViewModel.subtractFromCategoryTotalBudget(myBudgetCategoryData)
+                    categoryBudgetsViewModel.subtractFromCategoryTotalBudget(myCategoryData)
 
 
                     if(myBudgetsCategoryAdapter.getList().isEmpty()){
@@ -113,7 +112,7 @@ class BudgetCategoryListFragment(private val category: CategoryEnum, private val
                         myBudgetsCategoryAdapter.addItem(item, position)
                         budgetsAdapter.addToBudgetAmount(categoryPosition, item.budgetAmount!!)
                         myBudgetsViewModel.addBudget(item)
-                        categoryBudgetsViewModel.addToCategoryTotalBudget(myBudgetCategoryData)
+                        categoryBudgetsViewModel.addToCategoryTotalBudget(myCategoryData)
                         myBudgetsViewModel.addToTotalBudget(item.budgetAmount!!.toFloat())
                         fragmentBudgetCategoryListBinding.rvMyBudgets.visibility = View.VISIBLE
                         fragmentBudgetCategoryListBinding.tvRvNoBudgets.visibility = View.GONE

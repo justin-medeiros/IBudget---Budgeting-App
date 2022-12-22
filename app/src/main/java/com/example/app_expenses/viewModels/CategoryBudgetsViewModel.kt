@@ -2,23 +2,23 @@ package com.example.app_expenses.viewModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.example.app_expenses.data.BudgetCategoryData
+import com.example.app_expenses.data.CategoryData
 import com.example.app_expenses.data.BudgetData
 import com.example.app_expenses.repositories.CategoryBudgetsRepository
 import java.util.*
 
 class CategoryBudgetsViewModel: ViewModel() {
     private val categoryBudgetsListRepository = CategoryBudgetsRepository()
-    private val categoryTotalBudgetLiveData: LiveData<BudgetCategoryData> = categoryBudgetsListRepository.getCategoryTotalBudgetLiveData()
+    private val categoryTotalBudgetLiveData: LiveData<CategoryData> = categoryBudgetsListRepository.getCategoryTotalBudgetLiveData()
     private val latestBudgetsLiveData: LiveData<List<BudgetData>> = categoryBudgetsListRepository.getLatestBudgetsLiveData()
-    private val categoryBudgetsLiveData:  LiveData<TreeMap<Int, BudgetCategoryData>> = categoryBudgetsListRepository.getCategoryBudgetsLiveData()
+    private val categoryBudgetsLiveData:  LiveData<TreeMap<Int, CategoryData>> = categoryBudgetsListRepository.getCategoryBudgetsLiveData()
     private val budgetListLiveData: LiveData<List<String>> = categoryBudgetsListRepository.getBudgetListLiveData()
 
     fun getCategoryBudgets(){
         categoryBudgetsListRepository.getCategoryBudgets()
     }
 
-    fun getCategoryBudgetsLiveData(): LiveData<TreeMap<Int, BudgetCategoryData>> {
+    fun getCategoryBudgetsLiveData(): LiveData<TreeMap<Int, CategoryData>> {
         return categoryBudgetsLiveData
     }
 
@@ -38,19 +38,19 @@ class CategoryBudgetsViewModel: ViewModel() {
         return budgetListLiveData
     }
 
-    fun subtractFromCategoryTotalBudget(budgetCategoryData: BudgetCategoryData){
-        categoryBudgetsListRepository.subtractFromCategoryBudget(budgetCategoryData)
+    fun subtractFromCategoryTotalBudget(CategoryData: CategoryData){
+        categoryBudgetsListRepository.subtractFromCategoryBudget(CategoryData)
     }
 
-    fun addToCategoryTotalBudget(budgetCategoryData: BudgetCategoryData){
-        categoryBudgetsListRepository.addToCategoryBudget(budgetCategoryData)
+    fun addToCategoryTotalBudget(CategoryData: CategoryData){
+        categoryBudgetsListRepository.addToCategoryBudget(CategoryData)
     }
 
     fun getCategoryTotalBudget(categoryName: String){
         categoryBudgetsListRepository.getCategoryTotalBudget(categoryName)
     }
 
-    fun getCategoryTotalBudgetLiveData(): LiveData<BudgetCategoryData>{
+    fun getCategoryTotalBudgetLiveData(): LiveData<CategoryData>{
         return categoryTotalBudgetLiveData
     }
 

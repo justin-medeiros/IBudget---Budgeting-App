@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.app_expenses.R
-import com.example.app_expenses.data.BudgetCategoryData
+import com.example.app_expenses.data.CategoryData
 import com.example.app_expenses.enums.CategoryEnum
 import java.text.SimpleDateFormat
 import java.util.*
@@ -58,14 +58,14 @@ object UtilitiesFunctions{
         return categories
     }
 
-    fun createCategoriesBudgets(): MutableList<BudgetCategoryData>{
-        val categories = mutableListOf<BudgetCategoryData>()
-        categories.add(BudgetCategoryData(CategoryEnum.GROCERIES.categoryName, "0"))
-        categories.add(BudgetCategoryData(CategoryEnum.ENTERTAINMENT.categoryName, "0"))
-        categories.add(BudgetCategoryData(CategoryEnum.TRANSPORTATION.categoryName, "0"))
-        categories.add(BudgetCategoryData(CategoryEnum.SUBSCRIPTIONS.categoryName, "0"))
-        categories.add(BudgetCategoryData(CategoryEnum.BILLS.categoryName, "0"))
-        categories.add(BudgetCategoryData(CategoryEnum.PERSONAL_SPENDING.categoryName, "0"))
+    fun createCategoriesBudgets(): MutableList<CategoryData>{
+        val categories = mutableListOf<CategoryData>()
+        categories.add(CategoryData(CategoryEnum.GROCERIES.categoryName, "0"))
+        categories.add(CategoryData(CategoryEnum.ENTERTAINMENT.categoryName, "0"))
+        categories.add(CategoryData(CategoryEnum.TRANSPORTATION.categoryName, "0"))
+        categories.add(CategoryData(CategoryEnum.SUBSCRIPTIONS.categoryName, "0"))
+        categories.add(CategoryData(CategoryEnum.BILLS.categoryName, "0"))
+        categories.add(CategoryData(CategoryEnum.PERSONAL_SPENDING.categoryName, "0"))
         return categories
     }
 

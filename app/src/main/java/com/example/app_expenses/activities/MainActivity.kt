@@ -76,6 +76,14 @@ class MainActivity : AppCompatActivity() {
                 binding.viewPagerMain.currentItem = tab?.position!!
                 tab?.icon?.colorFilter =
                     PorterDuffColorFilter(ContextCompat.getColor(this@MainActivity, R.color.foreground_primary), PorterDuff.Mode.SRC_IN)
+
+                if(tab?.position!! != 1){
+                    binding.buttonDeleteMain.visibility = View.INVISIBLE
+                } else{
+                    if(transactionViewModel.selectButtonClicked.value == true){
+                        binding.buttonDeleteMain.visibility = View.VISIBLE
+                    }
+                }
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {}

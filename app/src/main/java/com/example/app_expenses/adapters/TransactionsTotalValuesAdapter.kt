@@ -9,19 +9,14 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.app_expenses.R
-import com.example.app_expenses.activities.MainActivity
 import com.example.app_expenses.data.CategoryData
-import com.example.app_expenses.data.BudgetData
-import com.example.app_expenses.enums.CategoryEnum
-import com.example.app_expenses.fragments.BudgetCategoryListFragment
 import com.example.app_expenses.utils.UtilitiesFunctions
 
-class LatestBudgetsAdapter(): RecyclerView.Adapter<LatestBudgetsAdapter.ViewHolder>() {
+class TransactionsTotalValuesAdapter(): RecyclerView.Adapter<TransactionsTotalValuesAdapter.ViewHolder>() {
     private lateinit var context: Context
-    private val listOfLatestBudgets: MutableList<BudgetData> = mutableListOf()
+    private val listOfTransactions: MutableList<CategoryData> = mutableListOf()
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val graphItemIcon: ImageView = itemView.findViewById(R.id.ivIconItemGraph)
@@ -31,21 +26,23 @@ class LatestBudgetsAdapter(): RecyclerView.Adapter<LatestBudgetsAdapter.ViewHold
         val borderItemContainer: RelativeLayout = itemView.findViewById(R.id.borderContainerItemGraph)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LatestBudgetsAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionsTotalValuesAdapter.ViewHolder {
         context = parent.context
         val categoryView = LayoutInflater.from(context).inflate(R.layout.categories_graph, parent, false)
         return ViewHolder(categoryView)
     }
 
-    override fun onBindViewHolder(holder: LatestBudgetsAdapter.ViewHolder, position: Int) {
-        val latestBudget: BudgetData = listOfLatestBudgets[position]
-        val category = UtilitiesFunctions.getCategoryEnum(latestBudget.categoryName!!)
-        holder.graphItemTitle.text = latestBudget.budgetName
-        holder.graphItemAmount.text = "$%.2f".format(latestBudget.budgetAmount!!.toFloat())
+    override fun onBindViewHolder(holder: TransactionsTotalValuesAdapter.ViewHolder, position: Int) {
+        val transaction: CategoryData = listOfTransactions[position]
+        val category = UtilitiesFunctions.getCategoryEnum(transaction.categoryName!!)
+        holder.graphItemTitle.text = transaction.categoryName
+        holder.graphItemAmount.text = "$%.2f".format(transaction.totalAmount!!.toFloat())
         holder.graphItemTitle.setTextColor(ContextCompat.getColor(context, R.color.white))
         holder.graphItemAmount.setTextColor(ContextCompat.getColor(context, R.color.white))
         holder.graphItemIcon.background = ContextCompat.getDrawable(context, category?.categoryIcon!!)
-        holder.graphItemIcon.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context,R.color.white))
+        holder.graphItemIcon.backgroundTintList = ColorStateList.valueOf(
+            ContextCompat.getColor(context,
+                R.color.white))
 
         val relativeParams = RelativeLayout.LayoutParams(
             RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -63,12 +60,12 @@ class LatestBudgetsAdapter(): RecyclerView.Adapter<LatestBudgetsAdapter.ViewHold
     }
 
     override fun getItemCount(): Int {
-        return listOfLatestBudgets.size
+        return listOfTransactions.size
     }
 
-    fun replaceAll(latestBudgetsList: List<BudgetData>){
-        listOfLatestBudgets.clear()
-        listOfLatestBudgets.addAll(latestBudgetsList)
+    fun replaceAll(latestTransactionsList: Collection<CategoryData>){
+        listOfTransactions.clear()
+        listOfTransactions.addAll(latestTransactionsList)
         notifyDataSetChanged()
     }
 }

@@ -5,8 +5,8 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.app_expenses.data.BudgetCategoryData
 import com.example.app_expenses.data.BudgetData
+import com.example.app_expenses.data.CategoryData
 import com.example.app_expenses.utils.UtilitiesFunctions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -27,14 +27,14 @@ import kotlin.collections.ArrayList
 class CategoryBudgetsRepository {
     private val firebaseDatabase: DatabaseReference = Firebase.database.reference
     private val auth: FirebaseAuth = Firebase.auth
-    private val categoryTotalBudgetLiveData = MutableLiveData<BudgetCategoryData>()
+    private val categoryTotalBudgetLiveData = MutableLiveData<CategoryData>()
     private val latestBudgetsLiveData = MutableLiveData<List<BudgetData>>()
-    private val budgetCategoryLiveData = MutableLiveData<TreeMap<Int, BudgetCategoryData>>()
+    private val budgetCategoryLiveData = MutableLiveData<TreeMap<Int, CategoryData>>()
     private val budgetListLiveData = MutableLiveData<List<String>>()
 
     fun getCategoryBudgets(){
         // Using a tree map to pass the correct position of each category in descending order to display in the budgets page
-        val newBudgetCategoryList: TreeMap<Int, BudgetCategoryData> = TreeMap()
+        val newBudgetCategoryList: TreeMap<Int, CategoryData> = TreeMap()
         val budgetCategoryDefaultList = UtilitiesFunctions.createCategoriesBudgets()
         CoroutineScope(Dispatchers.IO).launch {
             for (category in budgetCategoryDefaultList) {
@@ -47,10 +47,10 @@ class CategoryBudgetsRepository {
                         if (dataSnapshot.value != null) {
                             val newTotalBudget = dataSnapshot.value as String?
                             newBudgetCategoryList[categoryPosition] =
-                                BudgetCategoryData(category.categoryName, newTotalBudget)
+                                CategoryData(category.categoryName, newTotalBudget)
 
                         } else {
-                            currentBudget.setValue("0")
+                            currentBudget.setValue("0.0")
                             newBudgetCategoryList[categoryPosition] =
                                 category
                         }
@@ -65,7 +65,7 @@ class CategoryBudgetsRepository {
         }
     }
 
-    fun getCategoryBudgetsLiveData(): LiveData<TreeMap<Int, BudgetCategoryData>>{
+    fun getCategoryBudgetsLiveData(): LiveData<TreeMap<Int, CategoryData>>{
         return budgetCategoryLiveData
     }
 
@@ -74,8 +74,6 @@ class CategoryBudgetsRepository {
             // Using a tree map to pass the correct position of each category in descending order to display in the budgets page
             val latestBudgetsList: TreeMap<Int, BudgetData> = TreeMap()
             val budgetCategoryDefaultList = UtilitiesFunctions.createCategoriesBudgets()
-
-
             for (category in budgetCategoryDefaultList) {
                 val currentBudget = firebaseDatabase.child("users").child(auth.currentUser?.uid!!)
                     .child("categories")
@@ -122,15 +120,15 @@ class CategoryBudgetsRepository {
         return tempList
     }
 
-    fun subtractFromCategoryBudget(budgetCategoryData: BudgetCategoryData){
+    fun subtractFromCategoryBudget(CategoryData: CategoryData){
         CoroutineScope(Dispatchers.IO).launch {
-            addSubtractCategoryBudget(budgetCategoryData, false)
+            addSubtractCategoryBudget(CategoryData, false)
         }
     }
 
-    fun addToCategoryBudget(budgetCategoryData: BudgetCategoryData){
+    fun addToCategoryBudget(CategoryData: CategoryData){
         CoroutineScope(Dispatchers.IO).launch {
-            addSubtractCategoryBudget(budgetCategoryData, true)
+            addSubtractCategoryBudget(CategoryData, true)
         }
     }
 
@@ -157,20 +155,20 @@ class CategoryBudgetsRepository {
     }
 
 
-    private fun addSubtractCategoryBudget(budgetCategoryData: BudgetCategoryData, isAdding: Boolean) {
+    private fun addSubtractCategoryBudget(CategoryData: CategoryData, isAdding: Boolean) {
             val categoryTotalBudget =
                 firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("categories")
-                    .child(budgetCategoryData.categoryName!!).child("total_budget")
+                    .child(CategoryData.categoryName!!).child("total_budget")
             categoryTotalBudget.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     var newTotalBudget: Float
                     val oldTotalBudget = snapshot.value as String?
                     if (oldTotalBudget == null) {
-                        newTotalBudget = budgetCategoryData.budgetAmount!!.toFloat()
+                        newTotalBudget = CategoryData.totalAmount!!.toFloat()
                     } else {
-                        newTotalBudget = oldTotalBudget!!.toFloat() - budgetCategoryData.budgetAmount!!.toFloat()
+                        newTotalBudget = oldTotalBudget!!.toFloat() - CategoryData.totalAmount!!.toFloat()
                         if (isAdding) {
-                            newTotalBudget = oldTotalBudget!!.toFloat() + budgetCategoryData.budgetAmount!!.toFloat()
+                            newTotalBudget = oldTotalBudget!!.toFloat() + CategoryData.totalAmount!!.toFloat()
                         }
                     }
                     categoryTotalBudget.setValue(newTotalBudget.toString())
@@ -188,7 +186,7 @@ class CategoryBudgetsRepository {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         if (dataSnapshot.exists()) {
                             val totalBudget = dataSnapshot.getValue(String::class.java)
-                            categoryTotalBudgetLiveData.postValue(BudgetCategoryData(categoryName, totalBudget))
+                            categoryTotalBudgetLiveData.postValue(CategoryData(categoryName, totalBudget))
                         }
                     }
                     override fun onCancelled(databaseError: DatabaseError) {}
@@ -196,7 +194,8 @@ class CategoryBudgetsRepository {
         }
     }
 
-    fun getCategoryTotalBudgetLiveData(): LiveData<BudgetCategoryData>{
+    fun getCategoryTotalBudgetLiveData(): LiveData<CategoryData>{
         return categoryTotalBudgetLiveData
     }
+
 }

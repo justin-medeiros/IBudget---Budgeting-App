@@ -6,6 +6,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.app_expenses.HomeFragment
 import com.example.app_expenses.fragments.BudgetFragment
 import com.example.app_expenses.fragments.BudgetGraphFragment
+import com.example.app_expenses.fragments.TransactionGraphFragment
 import com.example.app_expenses.fragments.TransactionListFragment
 
 class ResultsTabLayoutAdapter(activity: FragmentActivity, private val tabCount: Int): FragmentStateAdapter(activity) {
@@ -14,7 +15,7 @@ class ResultsTabLayoutAdapter(activity: FragmentActivity, private val tabCount: 
     override fun createFragment(position: Int): Fragment {
         return when(position){
             0-> BudgetGraphFragment()
-            else -> HomeFragment()
+            else -> TransactionGraphFragment()
         }
     }
 }
