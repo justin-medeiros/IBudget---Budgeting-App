@@ -9,14 +9,9 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.app_expenses.R
-import com.example.app_expenses.activities.MainActivity
-import com.example.app_expenses.data.CategoryData
 import com.example.app_expenses.data.BudgetData
-import com.example.app_expenses.enums.CategoryEnum
-import com.example.app_expenses.fragments.BudgetCategoryListFragment
 import com.example.app_expenses.utils.UtilitiesFunctions
 
 class LatestBudgetsAdapter(): RecyclerView.Adapter<LatestBudgetsAdapter.ViewHolder>() {

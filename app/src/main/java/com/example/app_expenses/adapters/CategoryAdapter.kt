@@ -3,7 +3,6 @@ package com.example.app_expenses.adapters
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View

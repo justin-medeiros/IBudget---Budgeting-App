@@ -4,9 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.app_expenses.data.CategoryData
-import com.example.app_expenses.data.BudgetData
 import com.example.app_expenses.data.TransactionData
-import com.example.app_expenses.enums.CategoryEnum
 import com.example.app_expenses.utils.UtilitiesFunctions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth

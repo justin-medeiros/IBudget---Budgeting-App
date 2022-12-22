@@ -53,37 +53,6 @@ class BudgetsRepository {
         return myBudgetsLiveData
     }
 
-    fun getLatestBudgets(){
-        CoroutineScope(Dispatchers.IO).launch {
-            val myBudgetsList: MutableList<BudgetData> = mutableListOf()
-            // Want to order by timestamp so that the budgets are in the correct order every launch (most recent to oldest)
-            firebaseDatabase
-                .child("users").child(auth.currentUser?.uid!!).child("categories").child("budgets")
-                .orderByChild("timeStamp").limitToFirst(5)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            for (dataSnapshot1 in dataSnapshot.children) {
-                                val budgetName = dataSnapshot1.child("budgetName").value as String
-                                val budgetAmount =
-                                    dataSnapshot1.child("budgetAmount").value as String
-                                val budgetCategory =
-                                    dataSnapshot1.child("categoryName").value as String
-                                val budgetTimeStamp = dataSnapshot1.child("timeStamp").value as Long
-                                myBudgetsList.add(0, BudgetData(budgetTimeStamp, budgetCategory, budgetName, budgetAmount))
-                            }
-                        }
-                        //myBudgetsLiveData.postValue(myBudgetsList)
-                    }
-                    override fun onCancelled(databaseError: DatabaseError) {}
-                })
-        }
-    }
-
-    fun getLatestBudgetsLiveData(): LiveData<List<BudgetData>>{
-        return latestBudgetsLiveData
-    }
-
     fun addBudget(newBudget: BudgetData){
         CoroutineScope(Dispatchers.IO).launch {
             firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("categories").child(newBudget.categoryName!!)

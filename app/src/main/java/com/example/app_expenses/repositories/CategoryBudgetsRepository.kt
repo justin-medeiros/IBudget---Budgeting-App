@@ -1,8 +1,5 @@
 package com.example.app_expenses.repositories
 
-import android.os.Build
-import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.app_expenses.data.BudgetData
@@ -14,15 +11,12 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.core.utilities.Tree
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
-import java.util.stream.Collectors
-import kotlin.collections.ArrayList
 
 class CategoryBudgetsRepository {
     private val firebaseDatabase: DatabaseReference = Firebase.database.reference
@@ -109,7 +103,7 @@ class CategoryBudgetsRepository {
     private fun getFiveLatestBudgets(map: TreeMap<Int, BudgetData>): List<BudgetData>{
         var tempList = arrayListOf<BudgetData>()
         var i = 0
-        for(item in map.values){
+        for(item in map.descendingMap().values){
             if(i < 5){
                 tempList.add(item)
                 i++

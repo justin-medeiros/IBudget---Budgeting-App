@@ -19,7 +19,7 @@
                 android:id="@+id/transactionTotalValuesTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Transaction Total's For All Categories"
+                android:text="Transaction Totals"
                 android:textColor="@color/foreground_primary"
                 android:fontFamily="@font/figerona_bold"
                 android:textSize="20dp"
