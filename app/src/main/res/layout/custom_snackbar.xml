@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@drawable/alert_box_background"
+    android:backgroundTint="@color/background_tertiary">
+
+    <ImageView
+        android:id="@+id/snackbarIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_check"
+        android:backgroundTint="@color/foreground_primary"
+        android:layout_centerInParent="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dp"/>
+
+    <TextView
+        android:id="@+id/snackbarText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="This is a snackbar"
+        android:textColor="@color/foreground_primary"
+        android:fontFamily="@font/figerona_bold"
+        android:layout_centerInParent="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="60dp"
+        android:textSize="16sp">
+
+    </TextView>
+</RelativeLayout>

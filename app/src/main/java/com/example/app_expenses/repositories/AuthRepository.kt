@@ -25,6 +25,7 @@ class AuthRepository(){
     private val sendPasswordLiveData = MutableLiveData<Boolean>()
     private val createUserLiveData = MutableLiveData<SignUpEnum>()
     private val currentUserName = MutableLiveData<String>()
+    private val signOutLiveData = MutableLiveData<Boolean>()
 
     fun signInAuthenticate(email: String, password: String){
         CoroutineScope(Dispatchers.IO).launch {
@@ -106,5 +107,19 @@ class AuthRepository(){
 
     fun getCurrentUserNameLiveData(): LiveData<String>{
         return currentUserName
+    }
+
+    fun signOut(){
+        if(currentUserExists()){
+            auth.signOut().also {
+                signOutLiveData.postValue(true)
+            }
+        } else{
+            signOutLiveData.postValue(false)
+        }
+    }
+
+    fun getSignOutLiveData(): LiveData<Boolean>{
+        return signOutLiveData
     }
 }

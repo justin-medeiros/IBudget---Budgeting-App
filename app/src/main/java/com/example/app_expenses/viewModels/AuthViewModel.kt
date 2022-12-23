@@ -14,6 +14,7 @@ class AuthViewModel(): ViewModel() {
     private val passwordSend: LiveData<Boolean> = authRepository.getSendPasswordLiveData()
     private val createUserLiveData: LiveData<SignUpEnum> = authRepository.getCreateUserLiveData()
     private val getCurrentUserNameLiveData: LiveData<String> = authRepository.getCurrentUserNameLiveData()
+    private val signOutLiveData: LiveData<Boolean> = authRepository.getSignOutLiveData()
 
     fun signInAuth(email: String, password: String){
         authRepository.signInAuthenticate(email, password)
@@ -50,4 +51,13 @@ class AuthViewModel(): ViewModel() {
     fun getCurrentUserNameLiveData(): LiveData<String>{
         return getCurrentUserNameLiveData
     }
+
+    fun signOut(){
+        authRepository.signOut()
+    }
+
+    fun signOutLiveData(): LiveData<Boolean>{
+        return signOutLiveData
+    }
+
 }

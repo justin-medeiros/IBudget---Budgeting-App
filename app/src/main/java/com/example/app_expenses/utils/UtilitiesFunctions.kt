@@ -2,12 +2,16 @@ package com.example.app_expenses.utils
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
+import android.graphics.*
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.util.DisplayMetrics
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -15,8 +19,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.app_expenses.R
 import com.example.app_expenses.data.CategoryData
 import com.example.app_expenses.enums.CategoryEnum
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.Snackbar.SnackbarLayout
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 object UtilitiesFunctions{
     fun replaceFragment(activity: FragmentActivity, fragment: Fragment, id: Int, addToBackStack: Boolean){
@@ -134,5 +141,31 @@ object UtilitiesFunctions{
 
     fun calculateTotalPercentage(amount: Float, totalAmount: Float): Float{
         return "%.2f".format(amount/totalAmount).toFloat()
+    }
+
+    fun createSimpleSnackbar(myView: View, myText: String, myIcon: Drawable, duration: Int, context: Context, onTop: Boolean): Snackbar{
+        val snackBar = Snackbar.make(myView, myText, duration)
+        val snackbarView = snackBar.view
+        val snackbarLayout = snackBar.view as SnackbarLayout
+
+        val customView = LayoutInflater.from(context).inflate(R.layout.custom_snackbar, null)
+
+        val snackIcon = customView.findViewById<ImageView>(R.id.snackbarIcon)
+        val snackText = customView.findViewById<TextView>(R.id.snackbarText)
+
+        snackIcon.background = myIcon
+        snackText.text = myText
+
+        if(onTop){
+            val params = snackbarView.layoutParams as FrameLayout.LayoutParams
+            params.gravity = Gravity.TOP
+            snackbarView.layoutParams = params
+        }
+
+        snackbarLayout.setBackgroundColor(Color.TRANSPARENT)
+        snackbarLayout.setPadding(0, 0, 0, 0)
+        snackbarLayout.addView(customView)
+
+        return snackBar
     }
 }
