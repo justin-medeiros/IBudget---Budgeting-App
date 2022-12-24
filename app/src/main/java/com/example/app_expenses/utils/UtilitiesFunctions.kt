@@ -104,6 +104,11 @@ object UtilitiesFunctions{
         return formatter.format(Date(timestamp))
     }
 
+    fun timestampToMonthYear(timestamp: Long): String{
+        val formatter = SimpleDateFormat("MMMM, yyyy")
+        return formatter.format(Date(timestamp))
+    }
+
     fun setDeleteIcon(c: Canvas, viewHolder: RecyclerView.ViewHolder,
                                   dX: Float, context: Context){
         val clearPaint = Paint()

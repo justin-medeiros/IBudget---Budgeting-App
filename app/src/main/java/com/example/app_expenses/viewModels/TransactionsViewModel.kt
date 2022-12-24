@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.app_expenses.data.CategoryData
 import com.example.app_expenses.data.TransactionData
 import com.example.app_expenses.repositories.TransactionsRepository
+import java.sql.Timestamp
 
 class TransactionsViewModel: ViewModel() {
     private val transactionsRepository = TransactionsRepository()
@@ -47,8 +48,8 @@ class TransactionsViewModel: ViewModel() {
         transactionsRepository.addToTransactionsTotalAmount(transactionAmount)
     }
 
-    fun subtractFromTransactionsTotal(transactionAmount: Float){
-        transactionsRepository.subtractFromTransactionsTotalAmount(transactionAmount)
+    fun subtractFromTransactionsTotal(transactionAmount: Float, transactionMonth: String){
+        transactionsRepository.subtractFromTransactionsTotalAmount(transactionAmount, transactionMonth)
     }
 
     fun addToCategoryTransactionsTotal(categoryName: String, transactionDataAmount: Float){

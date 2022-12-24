@@ -151,7 +151,7 @@ class TransactionGraphFragment: Fragment() {
         fragmentTransactionGraphBinding.pieChartTransactionGraph.setUsePercentValues(true)
         fragmentTransactionGraphBinding.pieChartTransactionGraph.setEntryLabelTextSize(12f)
         fragmentTransactionGraphBinding.pieChartTransactionGraph.setEntryLabelTypeface(ResourcesCompat.getFont(requireContext(), R.font.figerona_bold))
-        fragmentTransactionGraphBinding.pieChartTransactionGraph.centerText = "Transactions by Category"
+        fragmentTransactionGraphBinding.pieChartTransactionGraph.centerText = "Transactions This Month by Category"
         fragmentTransactionGraphBinding.pieChartTransactionGraph.setCenterTextColor(ContextCompat.getColor(requireContext(), R.color.foreground_primary))
         fragmentTransactionGraphBinding.pieChartTransactionGraph.setCenterTextSize(24f)
         fragmentTransactionGraphBinding.pieChartTransactionGraph.setCenterTextTypeface(ResourcesCompat.getFont(requireContext(), R.font.figerona_bold))

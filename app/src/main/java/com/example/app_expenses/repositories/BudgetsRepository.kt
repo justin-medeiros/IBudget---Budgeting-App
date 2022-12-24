@@ -108,7 +108,7 @@ class BudgetsRepository {
                             val totalBudget = dataSnapshot.getValue(String::class.java)!!.toFloat()
                             totalBudgetLiveData.postValue(totalBudget)
                         } else{
-                            totalBudgetLiveData.postValue(0F)
+                            totalBudgetLiveData.postValue(0f)
                         }
                     }
                     override fun onCancelled(databaseError: DatabaseError) {}

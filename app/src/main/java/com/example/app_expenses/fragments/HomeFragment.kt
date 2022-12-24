@@ -3,6 +3,7 @@ package com.example.app_expenses.fragments
 import android.app.AlertDialog
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +13,18 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.app_expenses.R
 import com.example.app_expenses.activities.MainActivity
 import com.example.app_expenses.databinding.FragmentHomeBinding
 import com.example.app_expenses.utils.UtilitiesFunctions
 import com.example.app_expenses.viewModels.AuthViewModel
+import com.example.app_expenses.viewModels.BudgetsViewModel
+import com.example.app_expenses.viewModels.CategoryBudgetsViewModel
+import com.example.app_expenses.viewModels.TransactionsViewModel
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 
 
 class HomeFragment: Fragment() {
@@ -25,6 +32,12 @@ class HomeFragment: Fragment() {
     private lateinit var signOutAlertDialog: AlertDialog
     private val mainActivity = MainActivity()
     private val authViewModel: AuthViewModel by viewModels()
+    private val transactionsViewModel: TransactionsViewModel by viewModels()
+    private val budgetsViewModel: BudgetsViewModel by viewModels()
+
+    private var spentPercentage = -1f
+    private var totalBalance = -1f
+    private var totalBudget = -1f
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -33,9 +46,29 @@ class HomeFragment: Fragment() {
         signOutAlertDialog = createSignOutDialog()
         fragmentHomeBinding.currentDate = UtilitiesFunctions.timestampToDate(System.currentTimeMillis())
 
-        authViewModel.getCurrentUserName()
-        authViewModel.getCurrentUserNameLiveData().observe(viewLifecycleOwner){ name ->
-            fragmentHomeBinding.name = "Welcome, $name"
+        lifecycleScope.launch {
+            authViewModel.getCurrentUserName()
+            authViewModel.getCurrentUserNameLiveData().observe(viewLifecycleOwner){ name ->
+                fragmentHomeBinding.name = "Welcome, $name"
+            }
+        }
+
+        lifecycleScope.launch {
+            transactionsViewModel.getTransactionsTotalAmount()
+            transactionsViewModel.getTransactionsTotalAmountLiveData().observe(viewLifecycleOwner){ totalTransaction ->
+                fragmentHomeBinding.tvBalanceAmountHome.text = "$%.2f".format(totalTransaction)
+                totalBalance = totalTransaction
+                showPercentageSpent()
+            }
+        }
+
+        lifecycleScope.launch {
+            budgetsViewModel.getTotalBudget()
+            budgetsViewModel.getTotalBudgetLiveData().observe(viewLifecycleOwner){ totalBudg ->
+                fragmentHomeBinding.totalBudgetHome.text = "Total Budget: $%.2f".format(totalBudg)
+                totalBudget = totalBudg
+                showPercentageSpent()
+            }
         }
 
         return fragmentHomeBinding.root
@@ -81,5 +114,20 @@ class HomeFragment: Fragment() {
         alertDialog.window?.setBackgroundDrawable(ColorDrawable(0))
         return alertDialog
     }
+
+    private fun showPercentageSpent(){
+        if(totalBalance != -1f && totalBudget != -1f){
+            val spentPercentage = (totalBalance / totalBudget) * 100
+            fragmentHomeBinding.spentTextHome.text =  "You have spent %.1f%% of your monthly budget".format(spentPercentage)
+            if(spentPercentage >= 100){
+                fragmentHomeBinding.progressBarHome.setProgressCompat(100, true)
+            } else{
+                fragmentHomeBinding.progressBarHome.setProgressCompat(spentPercentage.toInt(), true)
+            }
+
+        }
+    }
+
+
 
 }

@@ -17,6 +17,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.sql.Timestamp
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -104,15 +105,15 @@ class TransactionsRepository {
         }
     }
 
-    fun subtractFromTransactionsTotalAmount(transactionDataAmount: Float){
+    fun subtractFromTransactionsTotalAmount(transactionDataAmount: Float, transactionMonth: String){
         CoroutineScope(Dispatchers.IO).launch {
-            addSubtractTransactionsTotal(transactionDataAmount, false)
+            subtractTransactionsTotal(transactionDataAmount, transactionMonth)
         }
     }
 
     fun addToTransactionsTotalAmount(transactionDataAmount: Float){
         CoroutineScope(Dispatchers.IO).launch {
-            addSubtractTransactionsTotal(transactionDataAmount, true)
+            addTransactionsTotal(transactionDataAmount)
         }
     }
 
@@ -128,20 +129,39 @@ class TransactionsRepository {
         }
     }
 
-    private fun addSubtractTransactionsTotal(transactionDataAmount: Float, isAdding: Boolean) {
+    private fun addTransactionsTotal(transactionDataAmount: Float) {
+        val currentMonth = UtilitiesFunctions.timestampToMonthYear(System.currentTimeMillis())
         val transactionsTotalBudget =
             firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("transactions_total")
+                .child(currentMonth)
         transactionsTotalBudget.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 var newTotalBudget: Float
                 val oldTotalBudget = snapshot.value as String?
-                if (oldTotalBudget == null) {
-                    newTotalBudget = transactionDataAmount
+                newTotalBudget = if (oldTotalBudget == null) {
+                    transactionDataAmount
                 } else {
-                    newTotalBudget = oldTotalBudget!!.toFloat() - transactionDataAmount
-                    if (isAdding) {
-                        newTotalBudget = oldTotalBudget!!.toFloat() + transactionDataAmount
-                    }
+                    oldTotalBudget!!.toFloat() + transactionDataAmount
+                }
+                transactionsTotalBudget.setValue(newTotalBudget.toString())
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
+    private fun subtractTransactionsTotal(transactionDataAmount: Float, transactionMonth: String){
+        val transactionsTotalBudget =
+            firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("transactions_total")
+                .child(transactionMonth)
+        transactionsTotalBudget.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var newTotalBudget: Float
+                val oldTotalBudget = snapshot.value as String?
+                newTotalBudget = if (oldTotalBudget == null) {
+                    0f
+                } else {
+                    oldTotalBudget!!.toFloat() - transactionDataAmount
                 }
                 transactionsTotalBudget.setValue(newTotalBudget.toString())
             }
@@ -175,13 +195,17 @@ class TransactionsRepository {
 
     fun getTransactionsTotalAmount(){
         CoroutineScope(Dispatchers.IO).launch {
+            val currentMonth = UtilitiesFunctions.timestampToMonthYear(System.currentTimeMillis())
             firebaseDatabase
                 .child("users").child(auth.currentUser?.uid!!).child("transactions_total")
+                .child(currentMonth)
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         if (dataSnapshot.exists()) {
                             val transactionsTotal = dataSnapshot.getValue(String::class.java)
                             transactionsTotalAmountLiveData.postValue(transactionsTotal!!.toFloat())
+                        } else{
+                            transactionsTotalAmountLiveData.postValue(0f)
                         }
                     }
                     override fun onCancelled(databaseError: DatabaseError) {}

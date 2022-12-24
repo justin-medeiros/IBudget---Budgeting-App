@@ -210,8 +210,17 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
 
     private fun removeTotalTransactionsAmount(){
         var total = 0F
-        itemsToRemove.forEach { item -> total += item.value.transactionAmount!!.toFloat() }
-        transactionViewModel.subtractFromTransactionsTotal(total)
+        var tempMap: MutableMap<String, Float> = mutableMapOf()
+        itemsToRemove.forEach { item ->
+            val itemMonth = UtilitiesFunctions.timestampToMonthYear(item.value.timeStamp)
+            if(tempMap.containsKey(itemMonth)){
+                tempMap[itemMonth] = tempMap[itemMonth]!!.plus(item.value.transactionAmount!!.toFloat())
+            } else{
+                tempMap[itemMonth] = item.value.transactionAmount!!.toFloat()
+            }
+        }
+        tempMap.forEach { item -> transactionViewModel.subtractFromTransactionsTotal(item.value, item.key)}
+
     }
 
     private fun addTotalTransactionsAmount(tempList: MutableCollection<TransactionData>){
