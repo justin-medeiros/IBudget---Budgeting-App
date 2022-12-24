@@ -3,6 +3,7 @@ package com.example.app_expenses.repositories
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.app_expenses.data.BudgetData
 import com.example.app_expenses.data.CategoryData
 import com.example.app_expenses.data.TransactionData
 import com.example.app_expenses.utils.UtilitiesFunctions
@@ -28,6 +29,7 @@ class TransactionsRepository {
     private val allTransactionLiveData = MutableLiveData<List<TransactionData>>()
     private val transactionsTotalAmountLiveData = MutableLiveData<Float>()
     private val totalCategoryTransactionLiveData = MutableLiveData<ArrayList<CategoryData>>()
+    private val latestTransactionsListLiveData = MutableLiveData<List<TransactionData>>()
 
     fun getMyTransactions() {
         CoroutineScope(Dispatchers.IO).launch {
@@ -60,6 +62,7 @@ class TransactionsRepository {
                 .setValue(transactionData).addOnCompleteListener { transactionAddedSuccessfully ->
                     if(transactionAddedSuccessfully.isSuccessful){
                         addTransactionLiveData?.postValue(transactionData)
+                        getLatestTransactions()
                     }
                     else{
                         addTransactionLiveData?.postValue(null)
@@ -80,7 +83,9 @@ class TransactionsRepository {
                     .addListenerForSingleValueEvent(object : ValueEventListener{
                         override fun onDataChange(snapshot: DataSnapshot) {
                             for(data in snapshot.children){
-                                data.ref.removeValue()
+                                data.ref.removeValue().addOnSuccessListener {
+                                    getLatestTransactions()
+                                }
                             }
                         }
                         override fun onCancelled(error: DatabaseError) {}
@@ -95,6 +100,7 @@ class TransactionsRepository {
                 firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("transactions").push()
                     .setValue(transactionData).addOnCompleteListener { transactionAddedSuccessfully ->
                         if(transactionAddedSuccessfully.isSuccessful){
+                            getLatestTransactions()
                             Log.e("SUCCESS", "Added successfully.")
                         }
                         else{
@@ -198,7 +204,7 @@ class TransactionsRepository {
             firebaseDatabase
                 .child("users").child(auth.currentUser?.uid!!).child("transactions_total")
                 .child(currentMonth)
-                .addValueEventListener(object : ValueEventListener {
+                .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         if (dataSnapshot.exists()) {
                             val transactionsTotal = dataSnapshot.getValue(String::class.java)
@@ -248,6 +254,53 @@ class TransactionsRepository {
 
     fun getCategoryTransactionsTotalLiveData(): LiveData<ArrayList<CategoryData>>{
         return totalCategoryTransactionLiveData
+    }
+
+    fun getLatestTransactions(){
+        CoroutineScope(Dispatchers.IO).launch {
+            val latestTransactionsMap: TreeMap<Long, TransactionData> = TreeMap()
+            val currentMonth = UtilitiesFunctions.timestampToMonthYear(System.currentTimeMillis())
+            firebaseDatabase.child("users").child(auth.currentUser?.uid!!)
+                .child("transactions")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if(dataSnapshot.exists()){
+                        for (dataSnapshot1 in dataSnapshot.children) {
+                            val transactionName = dataSnapshot1.child("transactionName").value as String
+                            val transactionAmount =
+                                dataSnapshot1.child("transactionAmount").value as String
+                            val transactionCategory =
+                                dataSnapshot1.child("categoryName").value as String
+                            val transactionTimeStamp = dataSnapshot1.child("timeStamp").value as Long
+                            val transactionData = TransactionData(transactionTimeStamp, transactionCategory, transactionName, transactionAmount)
+                            if(currentMonth == UtilitiesFunctions.timestampToMonthYear(transactionTimeStamp)){
+                                latestTransactionsMap[transactionTimeStamp] = transactionData
+                            }
+                        }
+                        latestTransactionsListLiveData.postValue(getFiveLatestTransactions(latestTransactionsMap))
+                    }
+                }
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
+        }
+    }
+
+    fun getLatestTransactionsLiveData(): LiveData<List<TransactionData>>{
+        return latestTransactionsListLiveData
+    }
+
+    private fun getFiveLatestTransactions(map: TreeMap<Long, TransactionData>): List<TransactionData>{
+        var tempList = arrayListOf<TransactionData>()
+        var i = 0
+        for(item in map.descendingMap().values){
+            if(i < 5){
+                tempList.add(item)
+                i++
+            } else{
+                break
+            }
+        }
+        return tempList
     }
 
 }

@@ -19,7 +19,6 @@ class BudgetsRepository {
     private val firebaseDatabase: DatabaseReference = Firebase.database.reference
     private val auth: FirebaseAuth = Firebase.auth
     private val myBudgetsLiveData = MutableLiveData<List<BudgetData>>()
-    private val latestBudgetsLiveData = MutableLiveData<List<BudgetData>>()
     private val addBudgetLiveData = MutableLiveData<BudgetData?>()
     private val totalBudgetLiveData = MutableLiveData<Float>()
 
