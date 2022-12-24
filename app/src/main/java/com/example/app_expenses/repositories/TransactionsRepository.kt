@@ -203,7 +203,7 @@ class TransactionsRepository {
             firebaseDatabase
                 .child("users").child(auth.currentUser?.uid!!).child("transactions_total")
                 .child(currentMonth)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
+                .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         if (dataSnapshot.exists()) {
                             val transactionsTotal = dataSnapshot.getValue(String::class.java)
