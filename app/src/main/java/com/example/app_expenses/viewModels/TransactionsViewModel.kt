@@ -25,7 +25,7 @@ class TransactionsViewModel: ViewModel() {
         transactionsRepository.getMyTransactions()
     }
 
-    fun getMyTransactionsLiveData(): LiveData<List<TransactionData>>{
+    fun getMyTransactionsLiveData(): LiveData<MutableCollection<TransactionData>>{
         return allTransactionsLiveData
     }
 

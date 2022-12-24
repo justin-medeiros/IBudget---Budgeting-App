@@ -26,15 +26,14 @@ class TransactionsRepository {
     private val firebaseDatabase: DatabaseReference = Firebase.database.reference
     private val auth: FirebaseAuth = Firebase.auth
     private val addTransactionLiveData = MutableLiveData<TransactionData?>()
-    private val allTransactionLiveData = MutableLiveData<List<TransactionData>>()
+    private val allTransactionsLiveData = MutableLiveData<MutableCollection<TransactionData>>()
     private val transactionsTotalAmountLiveData = MutableLiveData<Float>()
     private val totalCategoryTransactionLiveData = MutableLiveData<ArrayList<CategoryData>>()
     private val latestTransactionsListLiveData = MutableLiveData<List<TransactionData>>()
 
     fun getMyTransactions() {
         CoroutineScope(Dispatchers.IO).launch {
-            val myTransactionsList: MutableList<TransactionData> = mutableListOf()
-            // Want to order by timestamp so that the transactions are in the correct order every launch (most recent to oldest)
+            val myTransactionsList: TreeMap<Long, TransactionData> = TreeMap()
             firebaseDatabase
                 .child("users").child(auth.currentUser?.uid!!).child("transactions")
                 .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -42,18 +41,18 @@ class TransactionsRepository {
                         if (dataSnapshot.exists()) {
                             for (dataSnapshot1 in dataSnapshot.children) {
                                 val transactionData = dataSnapshot1.getValue(TransactionData::class.java)
-                                myTransactionsList.add(0, transactionData!!)
+                                myTransactionsList[transactionData!!.timeStamp] = transactionData!!
                             }
                         }
-                        allTransactionLiveData.postValue(myTransactionsList)
+                        allTransactionsLiveData.postValue(myTransactionsList.descendingMap().values)
                     }
                     override fun onCancelled(databaseError: DatabaseError) {}
                 })
         }
     }
 
-    fun getMyTransactionsLiveData(): LiveData<List<TransactionData>>{
-        return allTransactionLiveData
+    fun getMyTransactionsLiveData(): LiveData<MutableCollection<TransactionData>>{
+        return allTransactionsLiveData
     }
 
     fun addTransaction(transactionData: TransactionData){

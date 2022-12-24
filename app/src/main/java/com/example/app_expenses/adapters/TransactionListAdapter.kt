@@ -156,7 +156,7 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
         holder.dateText.text = latestDate
     }
 
-    fun addAllItems(items: List<TransactionData>){
+    fun addAllItems(items: MutableCollection<TransactionData>){
         this.listOfTransactions.clear()
         this.listOfTransactions.addAll(items)
         notifyDataSetChanged()
