@@ -14,6 +14,7 @@ class TransactionsViewModel: ViewModel() {
     private val allTransactionsLiveData = transactionsRepository.getMyTransactionsLiveData()
     private val getTransactionTotalLiveData = transactionsRepository.getTransactionsTotalAmountLiveData()
     private val getCategoryTransactionTotalLiveData = transactionsRepository.getCategoryTransactionsTotalLiveData()
+    private val getLatestTransactionsLiveData = transactionsRepository.getLatestTransactionsLiveData()
 
     val selectButtonClicked = MutableLiveData<Boolean>()
     val amountOfItemsSelected = MutableLiveData<Int>()
@@ -24,7 +25,7 @@ class TransactionsViewModel: ViewModel() {
         transactionsRepository.getMyTransactions()
     }
 
-    fun getMyTransactionsLiveData(): LiveData<List<TransactionData>>{
+    fun getMyTransactionsLiveData(): LiveData<MutableCollection<TransactionData>>{
         return allTransactionsLiveData
     }
 
@@ -74,5 +75,13 @@ class TransactionsViewModel: ViewModel() {
 
     fun getCategoryTransactionsTotalLiveData(): LiveData<ArrayList<CategoryData>>{
         return getCategoryTransactionTotalLiveData
+    }
+
+    fun getLatestTransactionsList(){
+        transactionsRepository.getLatestTransactions()
+    }
+
+    fun getLatestTransactionsLiveData(): LiveData<List<TransactionData>>{
+        return getLatestTransactionsLiveData
     }
 }

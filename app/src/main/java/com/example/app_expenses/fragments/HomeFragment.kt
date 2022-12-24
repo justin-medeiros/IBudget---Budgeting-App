@@ -15,8 +15,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_expenses.R
 import com.example.app_expenses.activities.MainActivity
+import com.example.app_expenses.adapters.LatestTransactionAdapter
 import com.example.app_expenses.databinding.FragmentHomeBinding
 import com.example.app_expenses.utils.UtilitiesFunctions
 import com.example.app_expenses.viewModels.AuthViewModel
@@ -30,12 +32,12 @@ import kotlinx.coroutines.launch
 class HomeFragment: Fragment() {
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
     private lateinit var signOutAlertDialog: AlertDialog
+    private lateinit var latestTransactionAdapter: LatestTransactionAdapter
+    private lateinit var transactionsViewModel: TransactionsViewModel
     private val mainActivity = MainActivity()
     private val authViewModel: AuthViewModel by viewModels()
-    private val transactionsViewModel: TransactionsViewModel by viewModels()
     private val budgetsViewModel: BudgetsViewModel by viewModels()
 
-    private var spentPercentage = -1f
     private var totalBalance = -1f
     private var totalBudget = -1f
 
@@ -43,9 +45,10 @@ class HomeFragment: Fragment() {
     ): View? {
         fragmentHomeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home,
             container, false)
+        transactionsViewModel = ViewModelProvider(requireActivity())[TransactionsViewModel::class.java]
         signOutAlertDialog = createSignOutDialog()
         fragmentHomeBinding.currentDate = UtilitiesFunctions.timestampToDate(System.currentTimeMillis())
-
+        latestTransactionAdapter = LatestTransactionAdapter()
         lifecycleScope.launch {
             authViewModel.getCurrentUserName()
             authViewModel.getCurrentUserNameLiveData().observe(viewLifecycleOwner){ name ->
@@ -71,6 +74,21 @@ class HomeFragment: Fragment() {
             }
         }
 
+        lifecycleScope.launch {
+            transactionsViewModel.getLatestTransactionsList()
+            transactionsViewModel.getLatestTransactionsLiveData().observe(viewLifecycleOwner){ latestTransactions ->
+                latestTransactionAdapter.replaceAll(latestTransactions)
+            }
+        }
+
+        val myLinearLayoutManager = object : LinearLayoutManager(requireContext()) {
+            override fun canScrollVertically(): Boolean {
+                return false
+            }
+        }
+        fragmentHomeBinding.rvRecentTransactionsHome.layoutManager = myLinearLayoutManager
+        fragmentHomeBinding.rvRecentTransactionsHome.adapter = latestTransactionAdapter
+
         return fragmentHomeBinding.root
     }
 
@@ -79,6 +97,10 @@ class HomeFragment: Fragment() {
 
         fragmentHomeBinding.signOutButton.setOnClickListener {
             signOutAlertDialog.show()
+        }
+
+        fragmentHomeBinding.seeAllRecentTransactionsHome.setOnClickListener {
+            mainActivity.switchToTab(1)
         }
 
         authViewModel.signOutLiveData().observe(viewLifecycleOwner){ signedOut ->
