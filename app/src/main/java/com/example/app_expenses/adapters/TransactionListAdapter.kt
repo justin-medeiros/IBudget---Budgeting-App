@@ -168,13 +168,13 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
         // Will notify item changed of the item that was previously at the top (position+1) to make sure the item does not show the date. Instead the
         // newly added transaction will show the date for the section.
         transactionViewModel.addToTransactionsTotal(item.transactionAmount!!.toFloat(), UtilitiesFunctions.timestampToMonthYear(item.timeStamp))
-        transactionViewModel.addToCategoryTransactionsTotal(item.categoryName!!, item.transactionAmount!!.toFloat())
+        transactionViewModel.addToCategoryTransactionsTotal(item.categoryName!!, item.transactionAmount!!.toFloat(),
+            UtilitiesFunctions.timestampToMonthYear(item.timeStamp))
         notifyItemInserted(position)
         notifyItemChanged(position+1)
     }
 
     private fun showSnackbar(view: View){
-        val totalAmountsMap: MutableMap<String, Float> = mutableMapOf()
         val tempList = itemsToRemove.clone() as TreeMap<Int, TransactionData>
         transactionViewModel.numberOfTransactions.postValue(listOfTransactions.size)
 
@@ -188,15 +188,11 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
             "Undo") {
             // Add all transactions back after clicking undo
             tempList.forEach { item ->
-                val categoryName = item.value.categoryName!!
-                val value = if (totalAmountsMap.containsKey(categoryName)) totalAmountsMap.getValue(categoryName) else 0F
-                totalAmountsMap[item.value.categoryName!!] = value + item.value.transactionAmount!!.toFloat()
                 listOfTransactions.add(item.key, item.value)
-                transactionViewModel.addToCategoryTransactionsTotal(item.value.categoryName!!, item.value.transactionAmount!!.toFloat())
             }
             transactionViewModel.addAllTransactions(tempList.values)
             addTotalTransactionsAmount(tempList.values)
-            addToCategoryTransactionTotalAmount(totalAmountsMap)
+            addToCategoryTransactionTotalAmount(tempList.values)
             transactionViewModel.numberOfTransactions.postValue(listOfTransactions.size)
             notifyDataSetChanged()
         }
@@ -223,7 +219,6 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
     }
 
     private fun addTotalTransactionsAmount(tempList: MutableCollection<TransactionData>){
-        var total = 0F
         var tempMap: MutableMap<String, Float> = mutableMapOf()
         tempList.forEach { item ->
             val itemMonth = UtilitiesFunctions.timestampToMonthYear(item.timeStamp)
@@ -238,18 +233,47 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
     }
 
     private fun removeFromCategoryTransactionTotalAmount(){
-        val removeValuesMap: MutableMap<String, Float> = mutableMapOf()
+        val transactionsByDate: MutableMap<String, MutableMap<String, Float>> = mutableMapOf() // Will store the category name and data by the date the item was added
+        val transactionsByCategory: MutableMap<String, Float> = mutableMapOf()
+
         itemsToRemove.forEach { item->
             val categoryName = item.value.categoryName!!
-            val value = if (removeValuesMap.containsKey(categoryName)) removeValuesMap.getValue(categoryName) else 0F
-            removeValuesMap[categoryName] = value + item.value.transactionAmount!!.toFloat()
+            val itemMonth = UtilitiesFunctions.timestampToMonthYear(item.value.timeStamp)
+            if (transactionsByCategory.containsKey(categoryName)){
+                transactionsByCategory[categoryName] = transactionsByCategory.getValue(categoryName) + item.value.transactionAmount!!.toFloat()
+            } else {
+                transactionsByCategory[categoryName] = item.value.transactionAmount!!.toFloat()
+            }
+            transactionsByDate[itemMonth] = transactionsByCategory // Add category name and category total to the month the item was added
         }
-        removeValuesMap.forEach { removeItem -> transactionViewModel.subtractFromCategoryTransactionsTotal(removeItem.key,
-            removeItem.value)}
+        transactionsByDate.forEach { removeItemDate ->
+            removeItemDate.value.forEach { removeItemByCategory ->
+                transactionViewModel.subtractFromCategoryTransactionsTotal(removeItemByCategory.key,
+                    removeItemByCategory.value, removeItemDate.key)} // Will store category total by month it was added in database
+            }
+
     }
 
-    private fun addToCategoryTransactionTotalAmount(map: Map<String, Float>){
-        map.forEach { item -> transactionViewModel.addToCategoryTransactionsTotal(item.key, item.value) }
+    private fun addToCategoryTransactionTotalAmount(listOfTransactions: MutableCollection<TransactionData>){
+        val transactionsByDate: MutableMap<String, MutableMap<String, Float>> = mutableMapOf() // Will store the category name and data by the date the item was added
+        val transactionsByCategory: MutableMap<String, Float> = mutableMapOf()
+
+        listOfTransactions.forEach { item->
+            val categoryName = item.categoryName!!
+            val itemMonth = UtilitiesFunctions.timestampToMonthYear(item.timeStamp)
+            if (transactionsByCategory.containsKey(categoryName)){
+                transactionsByCategory[categoryName] = transactionsByCategory.getValue(categoryName) + item.transactionAmount!!.toFloat()
+            } else {
+                transactionsByCategory[categoryName] = item.transactionAmount!!.toFloat()
+            }
+            transactionsByDate[itemMonth] = transactionsByCategory // Add category name and category total to the month the item was added
+        }
+        transactionsByDate.forEach { removeItemDate ->
+            removeItemDate.value.forEach { removeItemByCategory ->
+                transactionViewModel.addToCategoryTransactionsTotal(removeItemByCategory.key,
+                    removeItemByCategory.value, removeItemDate.key)} // Will store category total by month it was added in database
+        }
+
     }
 
 }

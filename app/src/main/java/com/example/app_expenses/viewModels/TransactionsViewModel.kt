@@ -53,12 +53,12 @@ class TransactionsViewModel: ViewModel() {
         transactionsRepository.subtractFromTransactionsTotalAmount(transactionAmount, transactionMonth)
     }
 
-    fun addToCategoryTransactionsTotal(categoryName: String, transactionDataAmount: Float){
-        transactionsRepository.addToCategoryTransactionsTotal(categoryName, transactionDataAmount)
+    fun addToCategoryTransactionsTotal(categoryName: String, transactionDataAmount: Float, transactionMonth: String){
+        transactionsRepository.addToCategoryTransactionsTotal(categoryName, transactionDataAmount, transactionMonth)
     }
 
-    fun subtractFromCategoryTransactionsTotal(categoryName: String, transactionDataAmount: Float){
-        transactionsRepository.subtractFromCategoryTransactionsTotal(categoryName, transactionDataAmount)
+    fun subtractFromCategoryTransactionsTotal(categoryName: String, transactionDataAmount: Float, transactionMonth: String){
+        transactionsRepository.subtractFromCategoryTransactionsTotal(categoryName, transactionDataAmount, transactionMonth)
     }
 
     fun getTransactionsTotalAmount(){

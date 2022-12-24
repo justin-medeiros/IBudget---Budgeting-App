@@ -8,6 +8,7 @@
     <string name="action_settings">Settings</string>
     <string name="no_items_budget_list">There are currently no budgets in the list.</string>
     <string name="no_items_transactions_list">There are currently no transactions in the list.</string>
+    <string name="no_items_transactions_month_list">There are currently no transactions in the list this month.</string>
     <string name="invalid_first_name">Field empty. Please enter your first name.</string>
     <string name="invalid_last_name">Field empty. Please enter your last name.</string>
     <string name="invalid_email">Please enter a valid email address.</string>
