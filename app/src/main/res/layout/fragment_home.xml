@@ -1,8 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="currentDate"
+            type="String" />
+        <variable
+            name="name"
+            type="String" />
 
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_primary"
+        android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp">
+
+            <TextView
+                android:id="@+id/titleGreeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{name}"
+                android:textSize="24sp"
+                android:fontFamily="@font/figerona_bold"
+                android:textColor="@color/white"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{currentDate}"
+                android:layout_marginTop="40dp"
+                android:textSize="16sp"
+                android:fontFamily="@font/figerona_regular"
+                android:textColor="@color/foreground_primary"
+                android:layout_alignTop="@+id/titleGreeting"
+                />
+
+            <ImageView
+                android:id="@+id/signOutButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:background="@drawable/ic_logout" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/balanceContainer"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/alert_box_background"
+            android:backgroundTint="@color/background_secondary"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/myBalanceTitleHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/figerona_semibold"
+                android:text="My Balance"
+                android:textColor="@color/foreground_primary"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tvBalanceAmountHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/myBalanceTitleHome"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/figerona_bold"
+                android:text="$0.00"
+                android:textColor="@color/white"
+                android:textSize="52sp" />
+
+            <TextView
+                android:id="@+id/totalBudgetHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tvBalanceAmountHome"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="75dp"
+                android:fontFamily="@font/figerona_regular"
+                android:text="Total Budget: $2000.00"
+                android:textColor="@color/foreground_primary"
+                android:textSize="14sp" />
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progressBarHome"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:scaleY="7"
+                android:layout_centerHorizontal="true"
+                android:layout_alignTop="@id/totalBudgetHome"
+                android:layout_marginTop="45dp"
+                app:trackCornerRadius="10dp"
+                app:trackColor="@color/background_primary"
+                app:indicatorColor="@color/foreground_primary"
+                />
+
+            <TextView
+                android:id="@+id/spentTextHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/progressBarHome"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/figerona_bold"
+                android:text="You have spent 73% of your monthly budget"
+                android:lines="2"
+                android:maxWidth="250dp"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:layout_marginBottom="55dp"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/recentTransactionsContainer"
+            android:layout_width="340dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/alert_box_background"
+            android:backgroundTint="@color/foreground_primary"
+            android:layout_gravity="center"
+            android:layout_marginTop="-35dp">
+
+            <TextView
+                android:id="@+id/recentTransactionsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/figerona_bold"
+                android:text="Recent Transactions This Month"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRecentTransactionsHome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="20dp"/>
+
+            <TextView
+                android:id="@+id/seeAllRecentTransactionsHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/figerona_semibold"
+                android:background="@drawable/alert_box_background"
+                android:backgroundTint="@color/white"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
+                android:text="See All..."
+                android:textAlignment="center"
+                android:textColor="@color/foreground_primary"
+                android:textSize="14sp"
+                android:layout_marginBottom="20dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

@@ -22,9 +22,7 @@
     <string name="alert_invalid">Email does not match any of our records. Please enter a valid email address.</string>
     <string name="password_requirement">* Password must be at least 6 characters long and contain at least a capital letter, a lowercase letter, a character and a number.</string>
     <string name="budget_amount_requirement">* Budget amount must have 2 numbers after the decimal.</string>
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="confirm_signout">Are you sure you want to sign out?</string>
 
     <string-array name="categories">
         <item>All</item>
