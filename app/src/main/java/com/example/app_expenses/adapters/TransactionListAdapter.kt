@@ -167,7 +167,7 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
         this.listOfTransactions.add(position, item)
         // Will notify item changed of the item that was previously at the top (position+1) to make sure the item does not show the date. Instead the
         // newly added transaction will show the date for the section.
-        transactionViewModel.addToTransactionsTotal(item.transactionAmount!!.toFloat())
+        transactionViewModel.addToTransactionsTotal(item.transactionAmount!!.toFloat(), UtilitiesFunctions.timestampToMonthYear(item.timeStamp))
         transactionViewModel.addToCategoryTransactionsTotal(item.categoryName!!, item.transactionAmount!!.toFloat())
         notifyItemInserted(position)
         notifyItemChanged(position+1)
@@ -209,7 +209,6 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
     }
 
     private fun removeTotalTransactionsAmount(){
-        var total = 0F
         var tempMap: MutableMap<String, Float> = mutableMapOf()
         itemsToRemove.forEach { item ->
             val itemMonth = UtilitiesFunctions.timestampToMonthYear(item.value.timeStamp)
@@ -225,8 +224,17 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
 
     private fun addTotalTransactionsAmount(tempList: MutableCollection<TransactionData>){
         var total = 0F
-        tempList.forEach { item -> total += item.transactionAmount!!.toFloat() }
-        transactionViewModel.addToTransactionsTotal(total)
+        var tempMap: MutableMap<String, Float> = mutableMapOf()
+        tempList.forEach { item ->
+            val itemMonth = UtilitiesFunctions.timestampToMonthYear(item.timeStamp)
+            if(tempMap.containsKey(itemMonth)){
+                tempMap[itemMonth] = tempMap[itemMonth]!!.plus(item.transactionAmount!!.toFloat())
+            } else{
+                tempMap[itemMonth] = item.transactionAmount!!.toFloat()
+            }
+        }
+        tempMap.forEach { item -> transactionViewModel.addToTransactionsTotal(item.value, item.key)}
+
     }
 
     private fun removeFromCategoryTransactionTotalAmount(){

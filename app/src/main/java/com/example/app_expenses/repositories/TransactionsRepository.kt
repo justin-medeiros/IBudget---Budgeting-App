@@ -111,9 +111,9 @@ class TransactionsRepository {
         }
     }
 
-    fun addToTransactionsTotalAmount(transactionDataAmount: Float){
+    fun addToTransactionsTotalAmount(transactionDataAmount: Float, transactionMonth: String){
         CoroutineScope(Dispatchers.IO).launch {
-            addTransactionsTotal(transactionDataAmount)
+            addTransactionsTotal(transactionDataAmount, transactionMonth)
         }
     }
 
@@ -129,11 +129,10 @@ class TransactionsRepository {
         }
     }
 
-    private fun addTransactionsTotal(transactionDataAmount: Float) {
-        val currentMonth = UtilitiesFunctions.timestampToMonthYear(System.currentTimeMillis())
+    private fun addTransactionsTotal(transactionDataAmount: Float, transactionMonth: String) {
         val transactionsTotalBudget =
             firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("transactions_total")
-                .child(currentMonth)
+                .child(transactionMonth)
         transactionsTotalBudget.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 var newTotalBudget: Float

@@ -44,8 +44,8 @@ class TransactionsViewModel: ViewModel() {
         transactionsRepository.addAllTransactions(listOfTransactions)
     }
 
-    fun addToTransactionsTotal(transactionAmount: Float){
-        transactionsRepository.addToTransactionsTotalAmount(transactionAmount)
+    fun addToTransactionsTotal(transactionAmount: Float, transactionMonth: String){
+        transactionsRepository.addToTransactionsTotalAmount(transactionAmount, transactionMonth)
     }
 
     fun subtractFromTransactionsTotal(transactionAmount: Float, transactionMonth: String){
