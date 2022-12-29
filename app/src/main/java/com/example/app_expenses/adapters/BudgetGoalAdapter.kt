@@ -47,11 +47,15 @@ class BudgetGoalAdapter(): RecyclerView.Adapter<BudgetGoalAdapter.ViewHolder>() 
         holder.itemPercentage.text = "${percentage.toInt()}%"
         holder.itemProgressBar.setProgressCompat(percentage.toInt(), true)
 
-        if(percentage.toInt() <= 100){
+
+        if(totalSpent <= totalCategoryBudget){
             holder.itemProgressBar.setIndicatorColor(ContextCompat.getColor(context, category?.categoryColor!!))
             holder.itemTotalBudget.setTextColor(ContextCompat.getColor(context, category?.categoryColor!!))
             holder.itemPercentage.setTextColor(ContextCompat.getColor(context, R.color.white))
         } else{
+            if(totalCategoryBudget == 0f){
+                holder.itemPercentage.text = "N/A"
+            }
             holder.itemProgressBar.setIndicatorColor(ContextCompat.getColor(context, R.color.red_bright))
             holder.itemTotalBudget.setTextColor(ContextCompat.getColor(context, R.color.red_bright))
             holder.itemPercentage.setTextColor(ContextCompat.getColor(context, R.color.red_bright))
