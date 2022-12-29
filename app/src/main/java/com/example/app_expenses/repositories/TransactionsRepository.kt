@@ -112,89 +112,92 @@ class TransactionsRepository {
 
     fun subtractFromTransactionsTotalAmount(transactionDataAmount: Float, transactionMonth: String){
         CoroutineScope(Dispatchers.IO).launch {
-            subtractTransactionsTotal(transactionDataAmount, transactionMonth)
+            val transactionsTotalBudget =
+                firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("transactions_total")
+                    .child(transactionMonth)
+            transactionsTotalBudget.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var newTotalBudget: Float
+                    val oldTotalBudget = snapshot.value as String?
+                    newTotalBudget = if (oldTotalBudget == null) {
+                        0f
+                    } else {
+                        oldTotalBudget!!.toFloat() - transactionDataAmount
+                    }
+                    transactionsTotalBudget.setValue(newTotalBudget.toString())
+                }
+
+                override fun onCancelled(error: DatabaseError) {}
+            })
         }
     }
 
     fun addToTransactionsTotalAmount(transactionDataAmount: Float, transactionMonth: String){
         CoroutineScope(Dispatchers.IO).launch {
-            addTransactionsTotal(transactionDataAmount, transactionMonth)
-        }
-    }
-
-    fun addToCategoryTransactionsTotal(categoryName: String, transactionDataAmount: Float){
-        CoroutineScope(Dispatchers.IO).launch {
-            addSubtractCategoryTransactionsTotal(categoryName, transactionDataAmount, true)
-        }
-    }
-
-    fun subtractFromCategoryTransactionsTotal(categoryName: String, transactionDataAmount: Float){
-        CoroutineScope(Dispatchers.IO).launch {
-            addSubtractCategoryTransactionsTotal(categoryName, transactionDataAmount, false)
-        }
-    }
-
-    private fun addTransactionsTotal(transactionDataAmount: Float, transactionMonth: String) {
-        val transactionsTotalBudget =
-            firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("transactions_total")
-                .child(transactionMonth)
-        transactionsTotalBudget.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                var newTotalBudget: Float
-                val oldTotalBudget = snapshot.value as String?
-                newTotalBudget = if (oldTotalBudget == null) {
-                    transactionDataAmount
-                } else {
-                    oldTotalBudget!!.toFloat() + transactionDataAmount
-                }
-                transactionsTotalBudget.setValue(newTotalBudget.toString())
-            }
-
-            override fun onCancelled(error: DatabaseError) {}
-        })
-    }
-
-    private fun subtractTransactionsTotal(transactionDataAmount: Float, transactionMonth: String){
-        val transactionsTotalBudget =
-            firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("transactions_total")
-                .child(transactionMonth)
-        transactionsTotalBudget.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                var newTotalBudget: Float
-                val oldTotalBudget = snapshot.value as String?
-                newTotalBudget = if (oldTotalBudget == null) {
-                    0f
-                } else {
-                    oldTotalBudget!!.toFloat() - transactionDataAmount
-                }
-                transactionsTotalBudget.setValue(newTotalBudget.toString())
-            }
-
-            override fun onCancelled(error: DatabaseError) {}
-        })
-    }
-
-    private fun addSubtractCategoryTransactionsTotal(categoryName: String, transactionAmount: Float, isAdding: Boolean) {
-        val categoryTotalBudget =
-            firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("categories")
-                .child(categoryName).child("category_transactions_total")
-        categoryTotalBudget.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                var newTotalBudget: Float
-                val oldTotalBudget = snapshot.value as String?
-                if (oldTotalBudget == null) {
-                    newTotalBudget = transactionAmount
-                } else {
-                    newTotalBudget = oldTotalBudget!!.toFloat() - transactionAmount
-                    if (isAdding) {
-                        newTotalBudget = oldTotalBudget!!.toFloat() + transactionAmount
+            val transactionsTotalBudget =
+                firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("transactions_total")
+                    .child(transactionMonth)
+            transactionsTotalBudget.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var newTotalBudget: Float
+                    val oldTotalBudget = snapshot.value as String?
+                    newTotalBudget = if (oldTotalBudget == null) {
+                        transactionDataAmount
+                    } else {
+                        oldTotalBudget!!.toFloat() + transactionDataAmount
                     }
+                    transactionsTotalBudget.setValue(newTotalBudget.toString())
                 }
-                categoryTotalBudget.setValue(newTotalBudget.toString())
-            }
 
-            override fun onCancelled(error: DatabaseError) {}
-        })
+                override fun onCancelled(error: DatabaseError) {}
+            })
+        }
+    }
+
+    fun addToCategoryTransactionsTotal(categoryName: String, transactionAmount: Float, transactionMonth: String){
+        CoroutineScope(Dispatchers.IO).launch {
+            val categoryTotalBudget =
+                firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("category_transactions_total")
+                    .child(transactionMonth).child(categoryName)
+            categoryTotalBudget.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var newTotalBudget: Float
+                    val oldTotalBudget = snapshot.value as String?
+                    newTotalBudget = if (oldTotalBudget == null) {
+                        transactionAmount
+                    } else {
+                        oldTotalBudget!!.toFloat() + transactionAmount
+
+                    }
+                    categoryTotalBudget.setValue(newTotalBudget.toString())
+                }
+
+                override fun onCancelled(error: DatabaseError) {}
+            })
+        }
+    }
+
+    fun subtractFromCategoryTransactionsTotal(categoryName: String, transactionAmount: Float, transactionMonth: String){
+        CoroutineScope(Dispatchers.IO).launch {
+            val categoryTotalBudget =
+                firebaseDatabase.child("users").child(auth.currentUser?.uid!!).child("category_transactions_total")
+                    .child(transactionMonth).child(categoryName)
+            categoryTotalBudget.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var newTotalBudget: Float
+                    val oldTotalBudget = snapshot.value as String?
+                    newTotalBudget = if (oldTotalBudget == null) {
+                        0f
+                    } else {
+                        oldTotalBudget!!.toFloat() - transactionAmount
+
+                    }
+                    categoryTotalBudget.setValue(newTotalBudget.toString())
+                }
+
+                override fun onCancelled(error: DatabaseError) {}
+            })
+        }
     }
 
     fun getTransactionsTotalAmount(){
@@ -203,7 +206,7 @@ class TransactionsRepository {
             firebaseDatabase
                 .child("users").child(auth.currentUser?.uid!!).child("transactions_total")
                 .child(currentMonth)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
+                .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         if (dataSnapshot.exists()) {
                             val transactionsTotal = dataSnapshot.getValue(String::class.java)
@@ -227,24 +230,23 @@ class TransactionsRepository {
         CoroutineScope(Dispatchers.IO).launch {
             for (category in budgetCategoryDefaultList) {
                 val currentBudget = firebaseDatabase.child("users").child(auth.currentUser?.uid!!)
-                    .child("categories")
-                    .child(category.categoryName!!).child("category_transactions_total")
+                    .child("category_transactions_total")
+                    .child(UtilitiesFunctions.timestampToMonthYear(System.currentTimeMillis())).child(category.categoryName!!)
                 currentBudget.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         val categoryPosition =
                             UtilitiesFunctions.getCategoryBudgetsPosition(category.categoryName)
                         if (dataSnapshot.value != null) {
                             val newCategoryTransactionTotal = dataSnapshot.value as String?
-                            if(newCategoryTransactionTotal?.toFloat() != 0F){
-                                newCategoryTransactionList.add(CategoryData(category.categoryName, newCategoryTransactionTotal))
-                            }
+                            newCategoryTransactionList.add(CategoryData(category.categoryName, newCategoryTransactionTotal))
+                        } else{
+                            currentBudget.setValue("0.00")
+                            newCategoryTransactionList.add(CategoryData(category.categoryName, "0.00"))
                         }
                         if (categoryPosition == budgetCategoryDefaultList.size - 1) {
                             totalCategoryTransactionLiveData.postValue(newCategoryTransactionList)
                         }
-
                     }
-
                     override fun onCancelled(databaseError: DatabaseError) {}
                 })
             }

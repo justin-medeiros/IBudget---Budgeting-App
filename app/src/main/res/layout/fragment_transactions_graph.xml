@@ -64,7 +64,7 @@
                 android:fontFamily="@font/figerona_semibold"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
-                android:text="@string/no_items_transactions_list"
+                android:text="@string/no_items_transactions_month_list"
                 android:textSize="14sp"
                 android:textColor="@color/white"
                 android:visibility="gone" />

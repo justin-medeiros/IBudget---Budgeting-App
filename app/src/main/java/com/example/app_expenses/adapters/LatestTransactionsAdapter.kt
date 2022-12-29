@@ -2,8 +2,6 @@ package com.example.app_expenses.adapters
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +11,10 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.app_expenses.R
-import com.example.app_expenses.data.BudgetData
 import com.example.app_expenses.data.TransactionData
 import com.example.app_expenses.utils.UtilitiesFunctions
 
-class LatestTransactionAdapter(): RecyclerView.Adapter<LatestTransactionAdapter.ViewHolder>() {
+class LatestTransactionsAdapter(): RecyclerView.Adapter<LatestTransactionsAdapter.ViewHolder>() {
     private lateinit var context: Context
     private val listOfLatestTransactions: MutableList<TransactionData> = mutableListOf()
 
@@ -29,13 +26,13 @@ class LatestTransactionAdapter(): RecyclerView.Adapter<LatestTransactionAdapter.
         val borderItemContainer: RelativeLayout = itemView.findViewById(R.id.borderContainerItemGraph)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LatestTransactionAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LatestTransactionsAdapter.ViewHolder {
         context = parent.context
         val categoryView = LayoutInflater.from(context).inflate(R.layout.categories_graph, parent, false)
         return ViewHolder(categoryView)
     }
 
-    override fun onBindViewHolder(holder: LatestTransactionAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: LatestTransactionsAdapter.ViewHolder, position: Int) {
         val latestTransaction: TransactionData = listOfLatestTransactions[position]
         val category = UtilitiesFunctions.getCategoryEnum(latestTransaction.categoryName!!)
         holder.itemTitle.text = latestTransaction.transactionName
