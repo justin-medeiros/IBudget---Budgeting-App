@@ -82,13 +82,7 @@ class HomeFragment: Fragment() {
                 fragmentHomeBinding.totalBudgetHome.text = "Total Budget: $%.2f".format(totalBudg)
                 totalBudget = totalBudg
                 showPercentageSpent()
-            }
-        }
-
-        lifecycleScope.launch {
-            transactionsViewModel.getLatestTransactionsList()
-            transactionsViewModel.getLatestTransactionsLiveData().observe(viewLifecycleOwner){ latestTransactions ->
-                latestTransactionAdapter.replaceAll(latestTransactions)
+                categoryBudgetsViewModel.getCategoryBudgets()
             }
         }
 
@@ -100,14 +94,6 @@ class HomeFragment: Fragment() {
         }
 
         lifecycleScope.launch{
-            categoryBudgetsViewModel.getCategoryBudgets()
-            categoryBudgetsViewModel.getCategoryBudgetsLiveData().observe(viewLifecycleOwner){ map ->
-                transactionsViewModel.getCategoryTransactionsTotal()
-            }
-        }
-
-        lifecycleScope.launch{
-            categoryBudgetsViewModel.getCategoryBudgets()
             categoryBudgetsViewModel.getCategoryBudgetsLiveData().observe(viewLifecycleOwner){ categoryBudgetsMap ->
                 totalCategoryBudgets = categoryBudgetsMap
                 transactionsViewModel.getCategoryTransactionsTotal()
@@ -187,13 +173,19 @@ class HomeFragment: Fragment() {
 
     private fun showPercentageSpent(){
         if(totalBalance != -1f && totalBudget != -1f){
-            val spentPercentage = (totalBalance / totalBudget) * 100
-            fragmentHomeBinding.spentTextHome.text =  "You have spent %.1f%% of your monthly budget".format(spentPercentage)
-            if(spentPercentage >= 100){
+            val spentPercentage = UtilitiesFunctions.calculateTotalPercentage(totalBalance, totalBudget) * 100
+            if(spentPercentage > 100){
+                fragmentHomeBinding.progressBarHome.setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
+                fragmentHomeBinding.spentTextHome.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
+                fragmentHomeBinding.tvBalanceAmountHome.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
                 fragmentHomeBinding.progressBarHome.setProgressCompat(100, true)
             } else{
+                fragmentHomeBinding.progressBarHome.setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.foreground_primary))
+                fragmentHomeBinding.spentTextHome.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                fragmentHomeBinding.tvBalanceAmountHome.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                 fragmentHomeBinding.progressBarHome.setProgressCompat(spentPercentage.toInt(), true)
             }
+            fragmentHomeBinding.spentTextHome.text =  "You have spent ${spentPercentage.toInt()}% of your monthly budget"
 
         }
     }

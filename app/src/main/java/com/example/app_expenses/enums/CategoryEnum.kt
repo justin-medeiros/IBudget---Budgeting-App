@@ -8,7 +8,7 @@ enum class CategoryEnum {
     ENTERTAINMENT("Entertainment", R.color.purpleCategory, R.drawable.ic_filmstrip),
     TRANSPORTATION("Transportation", R.color.yellowCategory, R.drawable.ic_train_car),
     BILLS("Bills", R.color.greenCategory, R.drawable.ic_cash),
-    SUBSCRIPTIONS("Subscriptions", R.color.redCategory, R.drawable.ic_playlist_check);
+    SUBSCRIPTIONS("Subscriptions", R.color.tanCategory, R.drawable.ic_playlist_check);
 
     var categoryName: String? = null
     var categoryColor : Int? = null

@@ -61,6 +61,7 @@ class ForgetPasswordFragment: DialogFragment() {
 
         fragmentForgetPassword.tvAlertEmail.setOnFocusChangeListener { _, _ ->
             fragmentForgetPassword.tvInvalidAlert.visibility = View.GONE
+            fragmentForgetPassword.tvAlertEmail.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.foreground_primary_50))
             fragmentForgetPassword.alertEmailTextInput.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.background_secondary)
             fragmentForgetPassword.alertEmailTextInput.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.white))
             fragmentForgetPassword.tvAlertEmail.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
@@ -72,8 +73,8 @@ class ForgetPasswordFragment: DialogFragment() {
 
     private fun forgotPasswordInvalid(invalidAlert: TextView, textBox: TextInputLayout, text: TextInputEditText){
         invalidAlert.visibility = View.VISIBLE
+        text.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
         textBox.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.red)
-        textBox.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red_bright))
         text.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
     }
 

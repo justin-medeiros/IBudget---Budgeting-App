@@ -145,7 +145,12 @@ object UtilitiesFunctions{
     }
 
     fun calculateTotalPercentage(amount: Float, totalAmount: Float): Float{
-        return "%.2f".format(amount/totalAmount).toFloat()
+        val total = amount/totalAmount
+        return if(total > 1.0f && total < 1.01f){
+            1.01f
+        } else{
+            "%.2f".format(amount/totalAmount).toFloat()
+        }
     }
 
     fun createSimpleSnackbar(myView: View, myText: String, myIcon: Drawable, duration: Int, context: Context, onTop: Boolean): Snackbar{

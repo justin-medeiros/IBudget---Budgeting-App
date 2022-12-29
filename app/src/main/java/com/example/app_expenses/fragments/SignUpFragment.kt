@@ -8,6 +8,8 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -25,6 +27,7 @@ class SignUpFragment: Fragment() {
     private lateinit var lastName: String
     private lateinit var email: String
     private lateinit var password: String
+    private lateinit var progressBar: ProgressBar
     private val authViewModel: AuthViewModel by viewModels()
 
     override fun onCreateView(
@@ -42,11 +45,13 @@ class SignUpFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         authViewModel.getCreateUserLiveData().observe(viewLifecycleOwner){ userCreated ->
+            progressBar.visibility = View.GONE
             when(userCreated){
                 SignUpEnum.USER_CREATED -> {
                     Toast.makeText(context, "User has been registered successfully!", Toast.LENGTH_LONG).show()
                     UtilitiesFunctions.replaceFragment(requireActivity(), LoginFragment(),
-                        R.id.frameLayoutSplashScreen, false)
+                        R.id.loginRelativeLayout, false)
+                    authViewModel.signOut()
                 }
                 SignUpEnum.USER_NOT_CREATED ->{
                     Toast.makeText(context, "Error. User not created. Try again", Toast.LENGTH_LONG).show()
@@ -59,7 +64,7 @@ class SignUpFragment: Fragment() {
 
         fragmentSignUpBinding.tvSignIn.setOnClickListener {
             UtilitiesFunctions.replaceFragment(requireActivity(), LoginFragment(),
-                R.id.frameLayoutSplashScreen,false)
+                R.id.loginRelativeLayout,false)
         }
 
         fragmentSignUpBinding.btnSignUp.setOnClickListener {
@@ -67,8 +72,11 @@ class SignUpFragment: Fragment() {
             fragmentSignUpBinding.tvLastName.clearFocus()
             fragmentSignUpBinding.tvEmailSignUp.clearFocus()
             fragmentSignUpBinding.tvPasswordSignUp.clearFocus()
+            createProgressBar()
             if(validateFields()){
                 userToDatabase()
+            } else{
+                progressBar.visibility = View.GONE
             }
         }
     }
@@ -88,8 +96,8 @@ class SignUpFragment: Fragment() {
         if(TextUtils.isEmpty(fragmentSignUpBinding.tvFirstName.text)){
             fieldsValid = false
             fragmentSignUpBinding.tvInvalidFirstName.visibility = View.VISIBLE
+            fragmentSignUpBinding.tvFirstName.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
             fragmentSignUpBinding.inputLayoutFirstName.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.red)
-            fragmentSignUpBinding.inputLayoutFirstName.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red_bright))
             fragmentSignUpBinding.inputLayoutFirstName.setStartIconTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red_bright)))
             fragmentSignUpBinding.tvFirstName.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
         }
@@ -100,8 +108,8 @@ class SignUpFragment: Fragment() {
         if(TextUtils.isEmpty(fragmentSignUpBinding.tvLastName.text)){
             fieldsValid = false
             fragmentSignUpBinding.tvInvalidLastName.visibility = View.VISIBLE
+            fragmentSignUpBinding.tvLastName.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
             fragmentSignUpBinding.inputLayoutLastName.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.red)
-            fragmentSignUpBinding.inputLayoutLastName.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red_bright))
             fragmentSignUpBinding.inputLayoutLastName.setStartIconTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red_bright)))
             fragmentSignUpBinding.tvLastName.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
         } else{
@@ -112,8 +120,8 @@ class SignUpFragment: Fragment() {
             !Patterns.EMAIL_ADDRESS.matcher(fragmentSignUpBinding.tvEmailSignUp.text.toString()).matches()){
             fieldsValid = false
             fragmentSignUpBinding.tvInvalidEmail.visibility = View.VISIBLE
+            fragmentSignUpBinding.tvEmailSignUp.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
             fragmentSignUpBinding.inputLayoutEmail.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.red)
-            fragmentSignUpBinding.inputLayoutEmail.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red_bright))
             fragmentSignUpBinding.inputLayoutEmail.setStartIconTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red_bright)))
             fragmentSignUpBinding.tvEmailSignUp.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
         }else{
@@ -124,8 +132,8 @@ class SignUpFragment: Fragment() {
             !isValidPassword(fragmentSignUpBinding.tvPasswordSignUp.text.toString())){
             fieldsValid = false
             fragmentSignUpBinding.tvInvalidPassword.visibility = View.VISIBLE
+            fragmentSignUpBinding.tvPasswordSignUp.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
             fragmentSignUpBinding.inputLayoutPassword.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.red)
-            fragmentSignUpBinding.inputLayoutPassword.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red_bright))
             fragmentSignUpBinding.inputLayoutPassword.setStartIconTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red_bright)))
             fragmentSignUpBinding.tvPasswordSignUp.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
         }else{
@@ -151,6 +159,7 @@ class SignUpFragment: Fragment() {
             fragmentSignUpBinding.inputLayoutFirstName.setStartIconTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.foreground_primary)))
             fragmentSignUpBinding.tvFirstName.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
             fragmentSignUpBinding.tvInvalidFirstName.visibility = View.GONE
+            fragmentSignUpBinding.tvFirstName.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.foreground_primary_50))
         }
         fragmentSignUpBinding.tvLastName.setOnFocusChangeListener { _, _ ->
             fragmentSignUpBinding.inputLayoutLastName.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.background_secondary)
@@ -158,6 +167,7 @@ class SignUpFragment: Fragment() {
             fragmentSignUpBinding.inputLayoutLastName.setStartIconTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.foreground_primary)))
             fragmentSignUpBinding.tvLastName.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
             fragmentSignUpBinding.tvInvalidLastName.visibility = View.GONE
+            fragmentSignUpBinding.tvLastName.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.foreground_primary_50))
         }
         fragmentSignUpBinding.tvEmailSignUp.setOnFocusChangeListener { _, _ ->
             fragmentSignUpBinding.inputLayoutEmail.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.background_secondary)
@@ -165,6 +175,7 @@ class SignUpFragment: Fragment() {
             fragmentSignUpBinding.inputLayoutEmail.setStartIconTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.foreground_primary)))
             fragmentSignUpBinding.tvEmailSignUp.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
             fragmentSignUpBinding.tvInvalidEmail.visibility = View.GONE
+            fragmentSignUpBinding.tvEmailSignUp.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.foreground_primary_50))
         }
         fragmentSignUpBinding.tvPasswordSignUp.setOnFocusChangeListener { _, _ ->
             fragmentSignUpBinding.inputLayoutPassword.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.background_secondary)
@@ -172,6 +183,7 @@ class SignUpFragment: Fragment() {
             fragmentSignUpBinding.inputLayoutPassword.setStartIconTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.foreground_primary)))
             fragmentSignUpBinding.tvPasswordSignUp.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
             fragmentSignUpBinding.tvInvalidPassword.visibility = View.GONE
+            fragmentSignUpBinding.tvPasswordSignUp.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.foreground_primary_50))
         }
     }
 
@@ -183,5 +195,12 @@ class SignUpFragment: Fragment() {
         fragmentSignUpBinding.inputLayoutEmail.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red_bright))
         fragmentSignUpBinding.inputLayoutEmail.setStartIconTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red_bright)))
         fragmentSignUpBinding.tvEmailSignUp.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
+    }
+
+    private fun createProgressBar(){
+        progressBar = ProgressBar(context, null, android.R.attr.progressBarStyleLarge)
+        val params = RelativeLayout.LayoutParams(200, 200)
+        params.addRule(RelativeLayout.CENTER_IN_PARENT)
+        fragmentSignUpBinding.relativeLayoutSignUp.addView(progressBar, params)
     }
 }
