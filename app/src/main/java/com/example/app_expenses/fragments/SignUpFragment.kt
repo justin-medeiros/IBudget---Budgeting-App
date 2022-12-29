@@ -8,6 +8,8 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -25,6 +27,7 @@ class SignUpFragment: Fragment() {
     private lateinit var lastName: String
     private lateinit var email: String
     private lateinit var password: String
+    private lateinit var progressBar: ProgressBar
     private val authViewModel: AuthViewModel by viewModels()
 
     override fun onCreateView(
@@ -42,11 +45,13 @@ class SignUpFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         authViewModel.getCreateUserLiveData().observe(viewLifecycleOwner){ userCreated ->
+            progressBar.visibility = View.GONE
             when(userCreated){
                 SignUpEnum.USER_CREATED -> {
                     Toast.makeText(context, "User has been registered successfully!", Toast.LENGTH_LONG).show()
                     UtilitiesFunctions.replaceFragment(requireActivity(), LoginFragment(),
-                        R.id.frameLayoutSplashScreen, false)
+                        R.id.loginRelativeLayout, false)
+                    authViewModel.signOut()
                 }
                 SignUpEnum.USER_NOT_CREATED ->{
                     Toast.makeText(context, "Error. User not created. Try again", Toast.LENGTH_LONG).show()
@@ -67,6 +72,7 @@ class SignUpFragment: Fragment() {
             fragmentSignUpBinding.tvLastName.clearFocus()
             fragmentSignUpBinding.tvEmailSignUp.clearFocus()
             fragmentSignUpBinding.tvPasswordSignUp.clearFocus()
+            createProgressBar()
             if(validateFields()){
                 userToDatabase()
             }
@@ -183,5 +189,12 @@ class SignUpFragment: Fragment() {
         fragmentSignUpBinding.inputLayoutEmail.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red_bright))
         fragmentSignUpBinding.inputLayoutEmail.setStartIconTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red_bright)))
         fragmentSignUpBinding.tvEmailSignUp.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
+    }
+
+    private fun createProgressBar(){
+        progressBar = ProgressBar(context, null, android.R.attr.progressBarStyleLarge)
+        val params = RelativeLayout.LayoutParams(200, 200)
+        params.addRule(RelativeLayout.CENTER_IN_PARENT)
+        fragmentSignUpBinding.relativeLayoutSignUp.addView(progressBar, params)
     }
 }
