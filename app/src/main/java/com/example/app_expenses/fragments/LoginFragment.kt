@@ -76,17 +76,15 @@ class LoginFragment: Fragment() {
     private fun invalidUI(){
         fragmentLoginBinding.tvInvalidLogin.visibility = View.VISIBLE
 
+        fragmentLoginBinding.tvLoginEmail.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
         fragmentLoginBinding.loginEmailTextInput.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.red)
-        fragmentLoginBinding.loginEmailTextInput.defaultHintTextColor = ColorStateList.valueOf(
-            ContextCompat.getColor(requireContext(), R.color.red_bright))
         fragmentLoginBinding.loginEmailTextInput.setStartIconTintList(
             ColorStateList.valueOf(
                 ContextCompat.getColor(requireContext(), R.color.red_bright)))
         fragmentLoginBinding.tvLoginEmail.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
 
+        fragmentLoginBinding.tvLoginPassword.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
         fragmentLoginBinding.loginPasswordTextInput.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.red)
-        fragmentLoginBinding.loginPasswordTextInput.defaultHintTextColor = ColorStateList.valueOf(
-            ContextCompat.getColor(requireContext(), R.color.red_bright))
         fragmentLoginBinding.loginPasswordTextInput.setStartIconTintList(
             ColorStateList.valueOf(
                 ContextCompat.getColor(requireContext(), R.color.red_bright)))
@@ -111,11 +109,14 @@ class LoginFragment: Fragment() {
         fragmentLoginBinding.loginPasswordTextInput.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.white))
         fragmentLoginBinding.loginPasswordTextInput.setStartIconTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.foreground_primary)))
         fragmentLoginBinding.tvLoginPassword.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        fragmentLoginBinding.tvLoginPassword.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.foreground_primary_50))
+
         fragmentLoginBinding.tvInvalidLogin.visibility = View.GONE
         fragmentLoginBinding.loginEmailTextInput.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.background_secondary)
         fragmentLoginBinding.loginEmailTextInput.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.white))
         fragmentLoginBinding.loginEmailTextInput.setStartIconTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.foreground_primary)))
         fragmentLoginBinding.tvLoginEmail.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        fragmentLoginBinding.tvLoginEmail.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.foreground_primary_50))
     }
 
     private fun createProgressBar(){

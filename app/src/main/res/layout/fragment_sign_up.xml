@@ -45,7 +45,6 @@
                 android:layout_marginLeft="60dp"
                 android:layout_marginRight="60dp"
                 android:gravity="center"
-                android:textColorHint="@color/white"
                 app:boxBackgroundColor="@color/background_secondary"
                 app:boxCornerRadiusBottomEnd="10dp"
                 app:boxCornerRadiusBottomStart="10dp"
@@ -53,7 +52,7 @@
                 app:boxCornerRadiusTopStart="10dp"
                 app:boxStrokeColor="@color/background_secondary"
                 app:boxStrokeWidth="2dp"
-                app:hintTextColor="@color/white"
+                app:hintEnabled="false"
                 app:startIconDrawable="@drawable/ic_account"
                 app:startIconTint="@color/foreground_primary">
 
@@ -64,8 +63,8 @@
                     android:layout_gravity="center"
                     android:fontFamily="@font/figerona_regular"
                     android:hint="First Name"
+                    android:textColorHint="@color/foreground_primary_50"
                     android:inputType="textPersonName"
-                    android:paddingTop="20dp"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -96,7 +95,6 @@
                 android:layout_marginRight="60dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:textColorHint="@color/white"
                 app:boxBackgroundColor="@color/background_secondary"
                 app:boxCornerRadiusBottomEnd="10dp"
                 app:boxCornerRadiusBottomStart="10dp"
@@ -104,7 +102,7 @@
                 app:boxCornerRadiusTopStart="10dp"
                 app:boxStrokeColor="@color/background_secondary"
                 app:boxStrokeWidth="2dp"
-                app:hintTextColor="@color/white"
+                app:hintEnabled="false"
                 app:startIconDrawable="@drawable/ic_account"
                 app:startIconTint="@color/foreground_primary">
 
@@ -115,8 +113,8 @@
                     android:layout_gravity="center"
                     android:fontFamily="@font/figerona_regular"
                     android:hint="Last Name"
+                    android:textColorHint="@color/foreground_primary_50"
                     android:inputType="textPersonName"
-                    android:paddingTop="20dp"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -147,7 +145,6 @@
                 android:layout_marginRight="60dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:textColorHint="@color/white"
                 app:boxBackgroundColor="@color/background_secondary"
                 app:boxCornerRadiusBottomEnd="10dp"
                 app:boxCornerRadiusBottomStart="10dp"
@@ -155,7 +152,7 @@
                 app:boxCornerRadiusTopStart="10dp"
                 app:boxStrokeColor="@color/background_secondary"
                 app:boxStrokeWidth="2dp"
-                app:hintTextColor="@color/white"
+                app:hintEnabled="false"
                 app:startIconDrawable="@drawable/ic_email"
                 app:startIconTint="@color/foreground_primary">
 
@@ -166,8 +163,8 @@
                     android:layout_gravity="center"
                     android:fontFamily="@font/figerona_regular"
                     android:hint="Email"
+                    android:textColorHint="@color/foreground_primary_50"
                     android:inputType="textEmailAddress"
-                    android:paddingTop="20dp"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -198,7 +195,6 @@
                 android:layout_marginRight="60dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:textColorHint="@color/white"
                 app:boxBackgroundColor="@color/background_secondary"
                 app:boxCornerRadiusBottomEnd="10dp"
                 app:boxCornerRadiusBottomStart="10dp"
@@ -206,7 +202,7 @@
                 app:boxCornerRadiusTopStart="10dp"
                 app:boxStrokeColor="@color/background_secondary"
                 app:boxStrokeWidth="2dp"
-                app:hintTextColor="@color/white"
+                app:hintEnabled="false"
                 app:startIconDrawable="@drawable/ic_lock"
                 app:startIconTint="@color/foreground_primary">
 
@@ -217,8 +213,8 @@
                     android:fontFamily="@font/figerona_regular"
                     android:gravity="center_vertical"
                     android:hint="Password"
+                    android:textColorHint="@color/foreground_primary_50"
                     android:inputType="textPassword"
-                    android:paddingTop="20dp"
                     android:textColor="@color/white"
                     app:boxStrokeColor="@color/background_secondary" />
             </com.google.android.material.textfield.TextInputLayout>
