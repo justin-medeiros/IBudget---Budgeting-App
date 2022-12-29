@@ -47,8 +47,16 @@ class BudgetGoalAdapter(): RecyclerView.Adapter<BudgetGoalAdapter.ViewHolder>() 
         holder.itemPercentage.text = "${percentage.toInt()}%"
         holder.itemProgressBar.setProgressCompat(percentage.toInt(), true)
 
-        holder.itemProgressBar.setIndicatorColor(ContextCompat.getColor(context, category?.categoryColor!!))
-        holder.itemTotalBudget.setTextColor(ContextCompat.getColor(context, category?.categoryColor!!))
+        if(percentage.toInt() <= 100){
+            holder.itemProgressBar.setIndicatorColor(ContextCompat.getColor(context, category?.categoryColor!!))
+            holder.itemTotalBudget.setTextColor(ContextCompat.getColor(context, category?.categoryColor!!))
+            holder.itemPercentage.setTextColor(ContextCompat.getColor(context, R.color.white))
+        } else{
+            holder.itemProgressBar.setIndicatorColor(ContextCompat.getColor(context, R.color.red_bright))
+            holder.itemTotalBudget.setTextColor(ContextCompat.getColor(context, R.color.red_bright))
+            holder.itemPercentage.setTextColor(ContextCompat.getColor(context, R.color.red_bright))
+        }
+
 
         val relativeParams = RelativeLayout.LayoutParams(
             RelativeLayout.LayoutParams.MATCH_PARENT,
