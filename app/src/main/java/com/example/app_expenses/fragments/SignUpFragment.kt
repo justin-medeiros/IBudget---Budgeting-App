@@ -59,7 +59,7 @@ class SignUpFragment: Fragment() {
 
         fragmentSignUpBinding.tvSignIn.setOnClickListener {
             UtilitiesFunctions.replaceFragment(requireActivity(), LoginFragment(),
-                R.id.frameLayoutSplashScreen,false)
+                R.id.loginRelativeLayout,false)
         }
 
         fragmentSignUpBinding.btnSignUp.setOnClickListener {
