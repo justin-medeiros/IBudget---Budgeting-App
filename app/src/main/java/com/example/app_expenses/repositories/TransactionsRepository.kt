@@ -238,16 +238,15 @@ class TransactionsRepository {
                             UtilitiesFunctions.getCategoryBudgetsPosition(category.categoryName)
                         if (dataSnapshot.value != null) {
                             val newCategoryTransactionTotal = dataSnapshot.value as String?
-                            if(newCategoryTransactionTotal?.toFloat() != 0F){
-                                newCategoryTransactionList.add(CategoryData(category.categoryName, newCategoryTransactionTotal))
-                            }
+                            newCategoryTransactionList.add(CategoryData(category.categoryName, newCategoryTransactionTotal))
+                        } else{
+                            currentBudget.setValue("0.00")
+                            newCategoryTransactionList.add(CategoryData(category.categoryName, "0.00"))
                         }
                         if (categoryPosition == budgetCategoryDefaultList.size - 1) {
                             totalCategoryTransactionLiveData.postValue(newCategoryTransactionList)
                         }
-
                     }
-
                     override fun onCancelled(databaseError: DatabaseError) {}
                 })
             }

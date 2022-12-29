@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/budgetGoalsItemContainer"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="vertical"
+    android:background="@color/background_primary"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/budgetGoalsItemTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Groceries"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/figerona_bold"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="5dp">
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progressBarBudgetGoal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleY="4"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignLeft="@id/budgetGoalsItemPercentage"
+            android:layout_marginRight="55dp"
+            app:trackCornerRadius="10dp"
+            app:trackColor="@color/background_tertiary"
+            app:indicatorColor="@color/foreground_primary"
+            />
+
+        <TextView
+            android:id="@+id/budgetGoalsItemPercentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="73%"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/white"
+            android:fontFamily="@font/figerona_bold"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/currentSpentTotalItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$200.00 spent"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/figerona_bold"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/totalBudgetItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/$200.00 total"
+            android:layout_marginLeft="2dp"
+            android:layout_gravity="bottom"
+            android:textColor="@color/orangeCategory"
+            android:fontFamily="@font/figerona_bold"
+            android:textSize="10sp"/>
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -18,7 +18,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_expenses.R
 import com.example.app_expenses.activities.MainActivity
-import com.example.app_expenses.adapters.LatestTransactionAdapter
+import com.example.app_expenses.adapters.BudgetGoalAdapter
+import com.example.app_expenses.adapters.LatestTransactionsAdapter
+import com.example.app_expenses.data.BudgetGoalData
+import com.example.app_expenses.data.CategoryData
 import com.example.app_expenses.databinding.FragmentHomeBinding
 import com.example.app_expenses.utils.UtilitiesFunctions
 import com.example.app_expenses.viewModels.AuthViewModel
@@ -27,19 +30,25 @@ import com.example.app_expenses.viewModels.CategoryBudgetsViewModel
 import com.example.app_expenses.viewModels.TransactionsViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class HomeFragment: Fragment() {
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
     private lateinit var signOutAlertDialog: AlertDialog
-    private lateinit var latestTransactionAdapter: LatestTransactionAdapter
+    private lateinit var latestTransactionAdapter: LatestTransactionsAdapter
+    private lateinit var budgetGoalAdapter: BudgetGoalAdapter
     private lateinit var transactionsViewModel: TransactionsViewModel
     private val mainActivity = MainActivity()
     private val authViewModel: AuthViewModel by viewModels()
     private val budgetsViewModel: BudgetsViewModel by viewModels()
+    private val categoryBudgetsViewModel: CategoryBudgetsViewModel by viewModels()
 
     private var totalBalance = -1f
     private var totalBudget = -1f
+    private var totalCategoryBudgets: TreeMap<Int, CategoryData> = TreeMap()
+    private var totalCategoryTransactions: ArrayList<CategoryData> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -48,7 +57,9 @@ class HomeFragment: Fragment() {
         transactionsViewModel = ViewModelProvider(requireActivity())[TransactionsViewModel::class.java]
         signOutAlertDialog = createSignOutDialog()
         fragmentHomeBinding.currentDate = UtilitiesFunctions.timestampToDate(System.currentTimeMillis())
-        latestTransactionAdapter = LatestTransactionAdapter()
+        latestTransactionAdapter = LatestTransactionsAdapter()
+        budgetGoalAdapter = BudgetGoalAdapter()
+
         lifecycleScope.launch {
             authViewModel.getCurrentUserName()
             authViewModel.getCurrentUserNameLiveData().observe(viewLifecycleOwner){ name ->
@@ -81,13 +92,50 @@ class HomeFragment: Fragment() {
             }
         }
 
-        val myLinearLayoutManager = object : LinearLayoutManager(requireContext()) {
+        lifecycleScope.launch {
+            transactionsViewModel.getLatestTransactionsList()
+            transactionsViewModel.getLatestTransactionsLiveData().observe(viewLifecycleOwner){ latestTransactions ->
+                latestTransactionAdapter.replaceAll(latestTransactions)
+            }
+        }
+
+        lifecycleScope.launch{
+            categoryBudgetsViewModel.getCategoryBudgets()
+            categoryBudgetsViewModel.getCategoryBudgetsLiveData().observe(viewLifecycleOwner){ map ->
+                transactionsViewModel.getCategoryTransactionsTotal()
+            }
+        }
+
+        lifecycleScope.launch{
+            categoryBudgetsViewModel.getCategoryBudgets()
+            categoryBudgetsViewModel.getCategoryBudgetsLiveData().observe(viewLifecycleOwner){ categoryBudgetsMap ->
+                totalCategoryBudgets = categoryBudgetsMap
+                transactionsViewModel.getCategoryTransactionsTotal()
+            }
+        }
+
+        lifecycleScope.launch{
+            transactionsViewModel.getCategoryTransactionsTotalLiveData().observe(viewLifecycleOwner){ categoryTransactionTotalList ->
+                totalCategoryTransactions = categoryTransactionTotalList
+                showBudgetGoalItems()
+            }
+        }
+
+        val recentTransactionsLinearLayout = object : LinearLayoutManager(requireContext()) {
             override fun canScrollVertically(): Boolean {
                 return false
             }
         }
-        fragmentHomeBinding.rvRecentTransactionsHome.layoutManager = myLinearLayoutManager
+
+        val budgetGoalLinearLayout = object : LinearLayoutManager(requireContext()) {
+            override fun canScrollVertically(): Boolean {
+                return false
+            }
+        }
+        fragmentHomeBinding.rvBudgetGoalItems.layoutManager = budgetGoalLinearLayout
+        fragmentHomeBinding.rvRecentTransactionsHome.layoutManager = recentTransactionsLinearLayout
         fragmentHomeBinding.rvRecentTransactionsHome.adapter = latestTransactionAdapter
+        fragmentHomeBinding.rvBudgetGoalItems.adapter = budgetGoalAdapter
 
         return fragmentHomeBinding.root
     }
@@ -150,6 +198,18 @@ class HomeFragment: Fragment() {
         }
     }
 
-
-
+    private fun showBudgetGoalItems(){
+        if(totalCategoryTransactions.isNotEmpty() && totalCategoryBudgets.isNotEmpty()){
+            totalCategoryTransactions.sortBy { item -> UtilitiesFunctions.getCategoryBudgetsPosition(item.categoryName!!) }
+            val listOfBudgetGoalItems: MutableList<BudgetGoalData> = mutableListOf()
+            for(i  in 0..5){
+                val categoryBudget = totalCategoryBudgets.getValue(i)
+                val categoryTransaction = totalCategoryTransactions[i]
+                val budgetGoalItem = BudgetGoalData(categoryBudget.categoryName, categoryBudget?.totalAmount!!.toFloat(),
+                    categoryTransaction?.totalAmount!!.toFloat())
+                listOfBudgetGoalItems.add(budgetGoalItem)
+            }
+            budgetGoalAdapter.replaceAll(listOfBudgetGoalItems)
+        }
+    }
 }
