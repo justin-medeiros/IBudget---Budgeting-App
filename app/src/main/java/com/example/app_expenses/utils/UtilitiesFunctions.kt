@@ -163,7 +163,9 @@ object UtilitiesFunctions{
 
         val snackIcon = customView.findViewById<ImageView>(R.id.snackbarIcon)
         val snackText = customView.findViewById<TextView>(R.id.snackbarText)
+        val snackAction = customView.findViewById<TextView>(R.id.snackbarActionText)
 
+        snackAction.visibility = View.GONE
         snackIcon.background = myIcon
         snackText.text = myText
 
