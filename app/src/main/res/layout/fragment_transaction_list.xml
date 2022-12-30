@@ -35,39 +35,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:id="@+id/dropDownMenuTransactionList"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                app:boxStrokeColor="@color/foreground_primary"
-                app:boxBackgroundColor="@android:color/transparent"
-                android:textColorHint="@color/foreground_primary"
-                android:background="@android:color/transparent"
-                app:hintTextColor="@color/foreground_primary"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                app:endIconTint="@color/foreground_primary">
-
-                <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/tvAutoCompleteTransactionList"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:boxBackgroundColor="@android:color/transparent"
-                    app:hintTextColor="@color/foreground_primary"
-                    android:textColorHint="@color/foreground_primary"
-                    android:layout_weight="1"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="16dp"
-                    android:text="Select"
-                    android:hint="Category"
-                    android:fontFamily="@font/figerona_medium"
-                    android:inputType="none"
-                    android:textSize="12sp"
-                    android:textColor="@color/foreground_primary" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

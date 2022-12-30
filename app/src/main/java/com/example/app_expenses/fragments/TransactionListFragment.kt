@@ -31,9 +31,6 @@ class TransactionListFragment: Fragment() {
         transactionViewModel = ViewModelProvider(requireActivity())[TransactionsViewModel::class.java]
         transactionViewModel.getMyTransactions()
 
-        val categoriesArray = resources.getStringArray(R.array.categories)
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, categoriesArray)
-
         transactionViewModel.getMyTransactionsLiveData().observe(viewLifecycleOwner){ transactionsList ->
             if(transactionsList.isEmpty()){
                 fragmentTransactionListBinding.rvTransactionList.visibility = View.GONE
@@ -43,7 +40,6 @@ class TransactionListFragment: Fragment() {
             }
         }
 
-        fragmentTransactionListBinding.tvAutoCompleteTransactionList.setAdapter(arrayAdapter)
         val myLinearLayoutManager = object : LinearLayoutManager(requireContext()) {
             override fun canScrollVertically(): Boolean {
                 return false

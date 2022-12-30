@@ -25,14 +25,4 @@
     <string name="password_requirement">* Password must be at least 6 characters long and contain at least a capital letter, a lowercase letter, a character and a number.</string>
     <string name="budget_amount_requirement">* Budget amount must have 2 numbers after the decimal.</string>
     <string name="confirm_signout">Are you sure you want to sign out?</string>
-
-    <string-array name="categories">
-        <item>All</item>
-        <item>Groceries</item>
-        <item>Entertainment</item>
-        <item>Transportation</item>
-        <item>Subscriptions</item>
-        <item>Bills</item>
-        <item>Personal Spending</item>
-    </string-array>
 </resources>
