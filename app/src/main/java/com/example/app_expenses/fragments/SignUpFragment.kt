@@ -50,9 +50,7 @@ class SignUpFragment: Fragment() {
                 SignUpEnum.USER_CREATED -> {
                     UtilitiesFunctions.createSuccessSnackbar(view, "User has been registered successfully!", ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)!!,
                         Snackbar.LENGTH_LONG, requireContext(), true, true).show()
-                    UtilitiesFunctions.replaceFragment(requireActivity(), LoginFragment(),
-                        R.id.loginRelativeLayout, false)
-                    authViewModel.signOut()
+                    UtilitiesFunctions.replaceFragment(requireActivity(), OnboardingFragment(), R.id.loginRelativeLayout, false)
                 }
                 SignUpEnum.USER_NOT_CREATED ->{
                     UtilitiesFunctions.createSuccessSnackbar(view, "Error. User not created. Try again", ContextCompat.getDrawable(requireContext(), R.drawable.ic_close_thick)!!,

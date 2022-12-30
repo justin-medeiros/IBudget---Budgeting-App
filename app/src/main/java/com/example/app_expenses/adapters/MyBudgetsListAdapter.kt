@@ -34,7 +34,7 @@ class MyBudgetsListAdapter(): RecyclerView.Adapter<MyBudgetsListAdapter.ViewHold
         val myBudget: BudgetData = listOfBudgets[position]
         val category: CategoryEnum? = UtilitiesFunctions.getCategoryEnum(myBudget.categoryName!!)
         holder.categoryMyBudgetsNameTitle.text = myBudget.budgetName
-        holder.categoryMyBudgetsAmount.text = myBudget.budgetAmount
+        holder.categoryMyBudgetsAmount.text = UtilitiesFunctions.formatNumber(myBudget.budgetAmount!!.toFloat())
 
         val relativeParams = RelativeLayout.LayoutParams(
             RelativeLayout.LayoutParams.MATCH_PARENT,

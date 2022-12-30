@@ -62,4 +62,6 @@ dependencies {
     //SwipeMenuListView
     implementation 'com.baoyz.swipemenulistview:library:1.3.0'
 
+    //Picasso library
+    implementation 'com.squareup.picasso:picasso:2.8'
 }

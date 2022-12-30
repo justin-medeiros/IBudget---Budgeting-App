@@ -9,11 +9,11 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center"
-            android:background="@color/background_primary">
+            android:background="@color/white">
             <ImageView
                 android:id="@+id/imageSplashScreen"
-                android:layout_width="280px"
-                android:layout_height="280px"
+                android:layout_width="158dp"
+                android:layout_height="158dp"
                 android:layout_gravity="center"
                 android:background="@drawable/logo_dark"
                 android:layout_marginBottom="30dp"/>
@@ -27,8 +27,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="I"
-                    android:textSize="22dp"
-                    android:letterSpacing="0.2"
+                    android:textSize="42dp"
+                    android:letterSpacing="0.1"
                     android:fontFamily="@font/figerona_bold"
                     android:textColor="@color/foreground_primary"/>
 
@@ -37,10 +37,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="BUDGET"
-                    android:textSize="22dp"
-                    android:letterSpacing="0.2"
+                    android:textSize="42dp"
                     android:fontFamily="@font/figerona_bold"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/background_tertiary"/>
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>

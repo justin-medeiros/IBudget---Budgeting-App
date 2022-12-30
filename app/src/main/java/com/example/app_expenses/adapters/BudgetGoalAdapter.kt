@@ -2,6 +2,7 @@ package com.example.app_expenses.adapters
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,16 +43,19 @@ class BudgetGoalAdapter(): RecyclerView.Adapter<BudgetGoalAdapter.ViewHolder>() 
         val percentage = UtilitiesFunctions.calculateTotalPercentage(totalSpent!!, totalCategoryBudget!!) * 100
 
         holder.itemTitle.text = budgetGoalItem.categoryName
-        holder.itemTotalBudget.text = "/$%.2f".format(budgetGoalItem.totalCategoryBudget)
-        holder.itemSpent.text = "$%.2f".format(budgetGoalItem.totalCategoryTransaction)
-        holder.itemPercentage.text = "${percentage.toInt()}%"
+        holder.itemTotalBudget.text = "/${UtilitiesFunctions.formatNumber(budgetGoalItem.totalCategoryBudget)}"
+        holder.itemSpent.text = UtilitiesFunctions.formatNumber(budgetGoalItem.totalCategoryTransaction)
+        holder.itemPercentage.text = formatPercentage(percentage)
         holder.itemProgressBar.setProgressCompat(percentage.toInt(), true)
-
 
         if(totalSpent <= totalCategoryBudget){
             holder.itemProgressBar.setIndicatorColor(ContextCompat.getColor(context, category?.categoryColor!!))
             holder.itemTotalBudget.setTextColor(ContextCompat.getColor(context, category?.categoryColor!!))
             holder.itemPercentage.setTextColor(ContextCompat.getColor(context, R.color.white))
+            if(totalSpent != 0f && percentage.toInt() == 0){
+                holder.itemProgressBar.setProgressCompat(1, true)
+                holder.itemPercentage.text = "1%"
+            }
         } else{
             if(totalCategoryBudget == 0f){
                 holder.itemPercentage.text = "N/A"
@@ -60,6 +64,7 @@ class BudgetGoalAdapter(): RecyclerView.Adapter<BudgetGoalAdapter.ViewHolder>() 
             holder.itemTotalBudget.setTextColor(ContextCompat.getColor(context, R.color.red_bright))
             holder.itemPercentage.setTextColor(ContextCompat.getColor(context, R.color.red_bright))
         }
+
 
 
         val relativeParams = RelativeLayout.LayoutParams(
@@ -84,5 +89,17 @@ class BudgetGoalAdapter(): RecyclerView.Adapter<BudgetGoalAdapter.ViewHolder>() 
         listOfBudgetGoalItems.clear()
         listOfBudgetGoalItems.addAll(listOfBudgetGoalData)
         notifyDataSetChanged()
+    }
+
+    private fun formatPercentage(number: Float): String{
+        return if(number >= 1000000000){
+            "$%dB%%".format((number / 1000000000.00).toInt())
+        } else if(number >= 1000000){
+            "$%dM%%".format((number / 1000000.00).toInt())
+        } else if(number >= 1000){
+            "%dk%%".format((number/1000.00).toInt())
+        } else{
+            "%d%%".format(number.toInt())
+        }
     }
 }

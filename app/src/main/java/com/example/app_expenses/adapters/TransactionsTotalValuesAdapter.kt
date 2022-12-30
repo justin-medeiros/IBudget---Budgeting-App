@@ -36,7 +36,7 @@ class TransactionsTotalValuesAdapter(): RecyclerView.Adapter<TransactionsTotalVa
         val transaction: CategoryData = listOfTransactions[position]
         val category = UtilitiesFunctions.getCategoryEnum(transaction.categoryName!!)
         holder.graphItemTitle.text = transaction.categoryName
-        holder.graphItemAmount.text = "$%.2f".format(transaction.totalAmount!!.toFloat())
+        holder.graphItemAmount.text = UtilitiesFunctions.formatNumber(transaction.totalAmount!!.toFloat())
         holder.graphItemTitle.setTextColor(ContextCompat.getColor(context, R.color.white))
         holder.graphItemAmount.setTextColor(ContextCompat.getColor(context, R.color.white))
         holder.graphItemIcon.background = ContextCompat.getDrawable(context, category?.categoryIcon!!)

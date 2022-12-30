@@ -36,7 +36,8 @@ class LatestBudgetsAdapter(): RecyclerView.Adapter<LatestBudgetsAdapter.ViewHold
         val latestBudget: BudgetData = listOfLatestBudgets[position]
         val category = UtilitiesFunctions.getCategoryEnum(latestBudget.categoryName!!)
         holder.graphItemTitle.text = latestBudget.budgetName
-        holder.graphItemAmount.text = "$%.2f".format(latestBudget.budgetAmount!!.toFloat())
+
+        holder.graphItemAmount.text =  UtilitiesFunctions.formatNumber(latestBudget.budgetAmount!!.toFloat())
         holder.graphItemTitle.setTextColor(ContextCompat.getColor(context, R.color.white))
         holder.graphItemAmount.setTextColor(ContextCompat.getColor(context, R.color.white))
         holder.graphItemIcon.background = ContextCompat.getDrawable(context, category?.categoryIcon!!)

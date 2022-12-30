@@ -85,7 +85,7 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
         var isItemSelected = false
 
         holder.transactionName.text = myTransaction.transactionName
-        holder.transactionAmount.text = myTransaction.transactionAmount
+        holder.transactionAmount.text = UtilitiesFunctions.formatNumber(myTransaction.transactionAmount!!.toFloat())
         holder.transactionIcon.background = ContextCompat.getDrawable(context, category?.categoryIcon!!)
 
         showDates(holder, myTransaction, position)

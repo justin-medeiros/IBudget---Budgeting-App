@@ -36,7 +36,7 @@ class LatestTransactionsAdapter(): RecyclerView.Adapter<LatestTransactionsAdapte
         val latestTransaction: TransactionData = listOfLatestTransactions[position]
         val category = UtilitiesFunctions.getCategoryEnum(latestTransaction.categoryName!!)
         holder.itemTitle.text = latestTransaction.transactionName
-        holder.itemAmount.text = "$%.2f".format(latestTransaction.transactionAmount!!.toFloat())
+        holder.itemAmount.text = UtilitiesFunctions.formatNumber(latestTransaction.transactionAmount!!.toFloat())
         holder.itemTitle.setTextColor(ContextCompat.getColor(context, R.color.white))
         holder.itemAmount.setTextColor(ContextCompat.getColor(context, R.color.white))
         holder.itemIcon.background = ContextCompat.getDrawable(context, category?.categoryIcon!!)

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/relativeLayoutOnboarding"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/background_primary"
+            android:paddingTop="40dp"
+            android:paddingBottom="40dp">
+
+            <ImageView
+                android:id="@+id/imageViewOnboarding"
+                android:layout_width="280dp"
+                android:layout_height="280dp"
+                android:layout_centerHorizontal="true"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"/>
+
+            <TextView
+                android:id="@+id/onboardTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:fontFamily="@font/figerona_bold"
+                android:textSize="36dp"
+                android:text="@string/onboard_first_title"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewOnboarding"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_margin="20dp" />
+
+            <TextView
+                android:id="@+id/onboardDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:fontFamily="@font/figerona_regular"
+                android:textSize="20dp"
+                android:text="@string/onboard_first_desc"
+                android:textColor="@color/foreground_primary"
+                app:layout_constraintTop_toBottomOf="@+id/onboardTitle"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:layout_marginTop="20dp" />
+
+            <Button
+                android:id="@+id/onboardingButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Continue"
+                android:textSize="16dp"
+                android:fontFamily="@font/figerona_bold"
+                android:backgroundTint="@color/background_tertiary"
+                app:layout_constraintBottom_toTopOf="@+id/onboardingDots"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginBottom="-20dp"
+                android:layout_marginTop="20dp"/>
+
+            <ImageView
+                android:id="@+id/onboardingDots"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:background="@drawable/onboard_dots_first"
+                android:layout_gravity="center"
+                android:layout_marginBottom="-50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+
+
+</layout>

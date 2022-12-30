@@ -9,6 +9,7 @@
     <string name="no_items_budget_list">There are currently no budgets in the list.</string>
     <string name="no_items_transactions_list">There are currently no transactions in the list.</string>
     <string name="no_items_transactions_month_list">There are currently no transactions in the list this month.</string>
+    <string name="balance_reset">Your balance has reset as it is a new month!</string>
     <string name="invalid_first_name">Field empty. Please enter your first name.</string>
     <string name="invalid_last_name">Field empty. Please enter your last name.</string>
     <string name="invalid_email">Please enter a valid email address.</string>
@@ -24,14 +25,10 @@
     <string name="password_requirement">* Password must be at least 6 characters long and contain at least a capital letter, a lowercase letter, a character and a number.</string>
     <string name="budget_amount_requirement">* Budget amount must have 2 numbers after the decimal.</string>
     <string name="confirm_signout">Are you sure you want to sign out?</string>
-
-    <string-array name="categories">
-        <item>All</item>
-        <item>Groceries</item>
-        <item>Entertainment</item>
-        <item>Transportation</item>
-        <item>Subscriptions</item>
-        <item>Bills</item>
-        <item>Personal Spending</item>
-    </string-array>
+    <string name="onboard_first_title">Set your goals!</string>
+    <string name="onboard_first_desc">Your goals are our goals. Set your goals and we will help you achieve them.</string>
+    <string name="onboard_second_title">Visualize your savings!</string>
+    <string name="onboard_second_desc">Visually presented diagrams will show you the progress of your savings each month.</string>
+    <string name="onboard_third_title">Save your money!</string>
+    <string name="onboard_third_desc">We make it easy for you to budget every month. Start controlling your money and we will help you manage it.</string>
 </resources>
