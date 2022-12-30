@@ -216,7 +216,7 @@
                     android:fontFamily="@font/figerona_regular"
                     android:gravity="center_vertical"
                     android:hint="Password"
-                    android:textColorHint="@color/foreground_primary"
+                    android:textColorHint="@color/foreground_primary_50"
                     android:inputType="textPassword"
                     android:textColor="@color/white"
                     app:boxStrokeColor="@color/background_secondary" />

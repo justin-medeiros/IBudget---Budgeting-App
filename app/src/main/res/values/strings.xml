@@ -25,4 +25,10 @@
     <string name="password_requirement">* Password must be at least 6 characters long and contain at least a capital letter, a lowercase letter, a character and a number.</string>
     <string name="budget_amount_requirement">* Budget amount must have 2 numbers after the decimal.</string>
     <string name="confirm_signout">Are you sure you want to sign out?</string>
+    <string name="onboard_first_title">Set your goals!</string>
+    <string name="onboard_first_desc">Your goals are our goals. Set your goals and we will help you achieve them.</string>
+    <string name="onboard_second_title">Visualize your savings!</string>
+    <string name="onboard_second_desc">Visually presented diagrams will show you the progress of your savings each month.</string>
+    <string name="onboard_third_title">Save your money!</string>
+    <string name="onboard_third_desc">We make it easy for you to budget every month. Start controlling your money and we will help you manage it.</string>
 </resources>
