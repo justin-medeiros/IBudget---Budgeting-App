@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -25,6 +24,7 @@ import com.example.app_expenses.enums.CategoryEnum
 import com.example.app_expenses.utils.UtilitiesFunctions
 import com.example.app_expenses.viewModels.BudgetsViewModel
 import com.example.app_expenses.viewModels.CategoryBudgetsViewModel
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -61,9 +61,13 @@ class AddBudgetFragment(private val budgetsAdapter: BudgetsAdapter): Fragment() 
                     delay(100)
                     categoryBudgetsViewModel.getCategoryTotalBudget(newBudget.categoryName!!)
                 }
-                Toast.makeText(context, "Budget has been created successfully!", Toast.LENGTH_LONG).show()
+                UtilitiesFunctions.createSuccessSnackbar(requireView(), "Budget has been created successfully!",
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)!!, Snackbar.LENGTH_LONG, requireContext(),
+                    true, true).show()
             } else{
-                Toast.makeText(context, "Error. User not registered.", Toast.LENGTH_LONG).show()
+                UtilitiesFunctions.createSuccessSnackbar(requireView(), "Error. Budget not created. Try again",
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_close_thick)!!, Snackbar.LENGTH_LONG, requireContext(),
+                    true, false).show()
             }
         }
 
