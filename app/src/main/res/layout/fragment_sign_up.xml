@@ -203,6 +203,9 @@
                 app:boxStrokeColor="@color/background_secondary"
                 app:boxStrokeWidth="2dp"
                 app:hintEnabled="false"
+                app:endIconDrawable="@drawable/custom_password_eye"
+                app:endIconTint="@color/foreground_primary"
+                app:endIconMode="password_toggle"
                 app:startIconDrawable="@drawable/ic_lock"
                 app:startIconTint="@color/foreground_primary">
 
@@ -213,7 +216,7 @@
                     android:fontFamily="@font/figerona_regular"
                     android:gravity="center_vertical"
                     android:hint="Password"
-                    android:textColorHint="@color/foreground_primary_50"
+                    android:textColorHint="@color/foreground_primary"
                     android:inputType="textPassword"
                     android:textColor="@color/white"
                     app:boxStrokeColor="@color/background_secondary" />

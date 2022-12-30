@@ -279,6 +279,8 @@ class TransactionsRepository {
                             }
                         }
                         latestTransactionsListLiveData.postValue(getFiveLatestTransactions(latestTransactionsMap))
+                    } else{
+                        latestTransactionsListLiveData.postValue(mutableListOf())
                     }
                 }
                 override fun onCancelled(databaseError: DatabaseError) {}

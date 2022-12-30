@@ -89,7 +89,16 @@ class HomeFragment: Fragment() {
         lifecycleScope.launch {
             transactionsViewModel.getLatestTransactionsList()
             transactionsViewModel.getLatestTransactionsLiveData().observe(viewLifecycleOwner){ latestTransactions ->
-                latestTransactionAdapter.replaceAll(latestTransactions)
+                if(latestTransactions.isEmpty()){
+                    fragmentHomeBinding.rvRecentTransactionsHome.visibility = View.GONE
+                    fragmentHomeBinding.seeAllRecentTransactionsHome.visibility = View.GONE
+                    fragmentHomeBinding.tvNoLatestTransactions.visibility = View.VISIBLE
+                } else {
+                    fragmentHomeBinding.rvRecentTransactionsHome.visibility = View.VISIBLE
+                    fragmentHomeBinding.seeAllRecentTransactionsHome.visibility = View.VISIBLE
+                    fragmentHomeBinding.tvNoLatestTransactions.visibility = View.GONE
+                    latestTransactionAdapter.replaceAll(latestTransactions)
+                }
             }
         }
 

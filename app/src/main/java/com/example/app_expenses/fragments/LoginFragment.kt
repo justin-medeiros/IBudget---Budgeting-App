@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -18,6 +17,7 @@ import com.example.app_expenses.activities.MainActivity
 import com.example.app_expenses.databinding.FragmentLoginBinding
 import com.example.app_expenses.utils.UtilitiesFunctions
 import com.example.app_expenses.viewModels.AuthViewModel
+import com.google.android.material.snackbar.Snackbar
 
 
 class LoginFragment: Fragment() {
@@ -40,8 +40,8 @@ class LoginFragment: Fragment() {
             if(isSuccessful){
                 replaceActivity()
             } else{
-                Toast.makeText(context, "Authentication failed.",
-                    Toast.LENGTH_SHORT).show()
+                UtilitiesFunctions.createSuccessSnackbar(requireView(), "Authentication failed.", ContextCompat.getDrawable(requireContext(), R.drawable.ic_close_thick)!!,
+                    Snackbar.LENGTH_LONG, requireContext(), true, false).show()
                 invalidUI()
             }
         }
@@ -58,7 +58,7 @@ class LoginFragment: Fragment() {
 
         }
         fragmentLoginBinding.tvLoginForgotPassword.setOnClickListener {
-            ForgetPasswordFragment().show(childFragmentManager, "")
+            ForgetPasswordFragment(this).show(childFragmentManager, "")
         }
     }
 

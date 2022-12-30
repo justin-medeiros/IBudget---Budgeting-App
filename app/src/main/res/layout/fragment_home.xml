@@ -158,6 +158,18 @@
                     android:layout_margin="20dp"/>
 
                 <TextView
+                    android:id="@+id/tvNoLatestTransactions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/figerona_semibold"
+                    android:layout_margin="20dp"
+                    android:text="@string/no_items_transactions_list"
+                    android:textSize="14sp"
+                    android:textColor="@color/background_primary"
+                    android:visibility="visible"
+                    />
+
+                <TextView
                     android:id="@+id/seeAllRecentTransactionsHome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -204,8 +216,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="20dp"/>
-
-
             </LinearLayout>
 
         </LinearLayout>

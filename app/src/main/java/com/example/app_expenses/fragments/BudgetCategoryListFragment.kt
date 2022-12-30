@@ -4,9 +4,13 @@ import android.content.res.ColorStateList
 import android.graphics.*
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -105,10 +109,17 @@ class BudgetCategoryListFragment(private val category: CategoryEnum, private val
                         fragmentBudgetCategoryListBinding.rvMyBudgets.itemAnimator = DefaultItemAnimator()
                     }
 
+                    val snackBar = Snackbar.make(fragmentBudgetCategoryListBinding.root, "Budget deleted.", Snackbar.LENGTH_LONG)
+                    val snackbarView = snackBar.view
+                    val snackbarLayout = snackBar.view as Snackbar.SnackbarLayout
+                    val customView = LayoutInflater.from(context).inflate(R.layout.custom_snackbar, null)
+                    val snackIcon = customView.findViewById<ImageView>(R.id.snackbarIcon)
+                    val snackText = customView.findViewById<TextView>(R.id.snackbarText)
+                    val snackAction = customView.findViewById<TextView>(R.id.snackbarActionText)
+
                     // When click undo add budget back to database, add amount to category total budget amount and add amount
                     // to all budgets total amount
-                    Snackbar.make(fragmentBudgetCategoryListBinding.root, "Budget deleted.", Snackbar.LENGTH_LONG).setAction(
-                        "Undo") {
+                    snackAction.setOnClickListener {
                         myBudgetsCategoryAdapter.addItem(item, position)
                         budgetsAdapter.addToBudgetAmount(categoryPosition, item.budgetAmount!!)
                         myBudgetsViewModel.addBudget(item)
@@ -116,7 +127,22 @@ class BudgetCategoryListFragment(private val category: CategoryEnum, private val
                         myBudgetsViewModel.addToTotalBudget(item.budgetAmount!!.toFloat())
                         fragmentBudgetCategoryListBinding.rvMyBudgets.visibility = View.VISIBLE
                         fragmentBudgetCategoryListBinding.tvRvNoBudgets.visibility = View.GONE
-                    }.show()
+                        snackBar.dismiss()
+                    }
+
+                    snackIcon.background = ContextCompat.getDrawable(requireContext(), R.drawable.ic_trash_can)
+                    snackText.text = "Budget deleted."
+
+                    val params = snackbarView.layoutParams as FrameLayout.LayoutParams
+                    params.setMargins(params.leftMargin, params.topMargin + 30, params.rightMargin, params.bottomMargin)
+                    params.gravity = Gravity.TOP
+                    snackbarView.layoutParams = params
+
+                    snackbarLayout.setBackgroundColor(Color.TRANSPARENT)
+                    snackbarLayout.setPadding(0, 0, 0, 0)
+                    snackbarLayout.addView(customView)
+
+                    snackBar.show()
                 }
 
                 override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {

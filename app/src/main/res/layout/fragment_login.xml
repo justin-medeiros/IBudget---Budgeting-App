@@ -87,6 +87,9 @@
                 app:boxStrokeColor="@color/background_secondary"
                 app:boxStrokeWidth="2dp"
                 app:hintEnabled="false"
+                app:endIconDrawable="@drawable/custom_password_eye"
+                app:endIconTint="@color/foreground_primary"
+                app:endIconMode="password_toggle"
                 app:startIconDrawable="@drawable/ic_lock"
                 app:startIconTint="@color/foreground_primary">
 

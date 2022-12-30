@@ -1,6 +1,7 @@
 package com.example.app_expenses.adapters
 
 import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -184,8 +185,16 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
         removeFromCategoryTransactionTotalAmount()
 
         itemsToRemove.clear()
-        val snackBar = Snackbar.make(view, "${tempList.size} transactions deleted.", Snackbar.LENGTH_LONG).setAction(
-            "Undo") {
+        val snackBar = Snackbar.make(view, "${tempList.size} transactions deleted.", Snackbar.LENGTH_LONG)
+        val snackbarView = snackBar.view
+
+        val snackbarLayout = snackBar.view as Snackbar.SnackbarLayout
+        val customView = LayoutInflater.from(context).inflate(R.layout.custom_snackbar, null)
+        val snackIcon = customView.findViewById<ImageView>(R.id.snackbarIcon)
+        val snackText = customView.findViewById<TextView>(R.id.snackbarText)
+        val snackAction = customView.findViewById<TextView>(R.id.snackbarActionText)
+
+        snackAction.setOnClickListener {
             // Add all transactions back after clicking undo
             tempList.forEach { item ->
                 listOfTransactions.add(item.key, item.value)
@@ -195,12 +204,21 @@ class TransactionListAdapter(private val activity: FragmentActivity): RecyclerVi
             addToCategoryTransactionTotalAmount(tempList.values)
             transactionViewModel.numberOfTransactions.postValue(listOfTransactions.size)
             notifyDataSetChanged()
+            snackBar.dismiss()
         }
-        val snackbarView = snackBar.view
+
+        snackIcon.background = ContextCompat.getDrawable(context, R.drawable.ic_trash_can)
+        snackText.text = "${tempList.size} transactions deleted."
+
         val params = snackbarView.layoutParams as FrameLayout.LayoutParams
         params.setMargins(params.leftMargin, params.topMargin + 70, params.rightMargin, params.bottomMargin)
         params.gravity = Gravity.TOP
         snackbarView.layoutParams = params
+
+        snackbarLayout.setBackgroundColor(Color.TRANSPARENT)
+        snackbarLayout.setPadding(0, 0, 0, 0)
+        snackbarLayout.addView(customView)
+
         snackBar.show()
     }
 
