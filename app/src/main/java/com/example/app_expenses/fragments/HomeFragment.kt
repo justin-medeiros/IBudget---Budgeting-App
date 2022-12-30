@@ -40,6 +40,7 @@ class HomeFragment: Fragment() {
     private lateinit var latestTransactionAdapter: LatestTransactionsAdapter
     private lateinit var budgetGoalAdapter: BudgetGoalAdapter
     private lateinit var transactionsViewModel: TransactionsViewModel
+    private var onLaunch = true
     private val mainActivity = MainActivity()
     private val authViewModel: AuthViewModel by viewModels()
     private val budgetsViewModel: BudgetsViewModel by viewModels()
@@ -72,6 +73,9 @@ class HomeFragment: Fragment() {
             transactionsViewModel.getTransactionsTotalAmountLiveData().observe(viewLifecycleOwner){ totalTransaction ->
                 fragmentHomeBinding.tvBalanceAmountHome.text = "$%.2f".format(totalTransaction)
                 totalBalance = totalTransaction
+                if(onLaunch){
+                    resetBalance(totalBalance)
+                }
                 showPercentageSpent()
             }
         }
@@ -182,7 +186,11 @@ class HomeFragment: Fragment() {
 
     private fun showPercentageSpent(){
         if(totalBalance != -1f && totalBudget != -1f){
-            val spentPercentage = UtilitiesFunctions.calculateTotalPercentage(totalBalance, totalBudget) * 100
+           val spentPercentage = if(totalBudget == 0f){
+                totalBalance
+            } else{
+                UtilitiesFunctions.calculateTotalPercentage(totalBalance, totalBudget) * 100
+            }
             if(spentPercentage > 100){
                 fragmentHomeBinding.progressBarHome.setIndicatorColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
                 fragmentHomeBinding.spentTextHome.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_bright))
@@ -195,7 +203,6 @@ class HomeFragment: Fragment() {
                 fragmentHomeBinding.progressBarHome.setProgressCompat(spentPercentage.toInt(), true)
             }
             fragmentHomeBinding.spentTextHome.text =  "You have spent ${spentPercentage.toInt()}% of your monthly budget"
-
         }
     }
 
@@ -212,5 +219,27 @@ class HomeFragment: Fragment() {
             }
             budgetGoalAdapter.replaceAll(listOfBudgetGoalItems)
         }
+    }
+
+    private fun resetBalance(balanceTotal: Float){
+        if(balanceTotal > 0 && UtilitiesFunctions.timestampToDay(System.currentTimeMillis()) == "1"){
+            val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+
+            val inflater = this.layoutInflater
+            val dialogView: View = inflater.inflate(R.layout.custom_main_alert, null)
+            dialogBuilder.setView(dialogView)
+
+            val continueButton = dialogView.findViewById<Button>(R.id.continueButton)
+
+            val alertDialog: AlertDialog = dialogBuilder.create()
+
+            continueButton.setOnClickListener {
+                alertDialog.dismiss()
+            }
+
+            alertDialog.window?.setBackgroundDrawable(ColorDrawable(0))
+            alertDialog.show()
+        }
+        onLaunch = false
     }
 }

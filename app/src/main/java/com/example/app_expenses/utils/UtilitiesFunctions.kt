@@ -110,6 +110,11 @@ object UtilitiesFunctions{
         return formatter.format(Date(timestamp))
     }
 
+    fun timestampToDay(timestamp: Long): String{
+        val formatter = SimpleDateFormat("dd")
+        return formatter.format(Date(timestamp))
+    }
+
     fun setDeleteIcon(c: Canvas, viewHolder: RecyclerView.ViewHolder,
                                   dX: Float, context: Context){
         val clearPaint = Paint()
@@ -192,7 +197,9 @@ object UtilitiesFunctions{
         val snackIcon = customView.findViewById<ImageView>(R.id.snackbarIcon)
         val snackText = customView.findViewById<TextView>(R.id.snackbarText)
         val snackContainer = customView.findViewById<RelativeLayout>(R.id.snackbarContainer)
+        val snackAction = customView.findViewById<TextView>(R.id.snackbarActionText)
 
+        snackAction.visibility = View.GONE
         snackIcon.background = myIcon
         snackText.text = myText
 
