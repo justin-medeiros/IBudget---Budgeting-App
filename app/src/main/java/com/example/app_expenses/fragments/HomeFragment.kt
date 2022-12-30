@@ -71,7 +71,7 @@ class HomeFragment: Fragment() {
         lifecycleScope.launch {
             transactionsViewModel.getTransactionsTotalAmount()
             transactionsViewModel.getTransactionsTotalAmountLiveData().observe(viewLifecycleOwner){ totalTransaction ->
-                fragmentHomeBinding.tvBalanceAmountHome.text = "$%.2f".format(totalTransaction)
+                fragmentHomeBinding.tvBalanceAmountHome.text = UtilitiesFunctions.formatNumber(totalTransaction)
                 totalBalance = totalTransaction
                 if(onLaunch){
                     resetBalance(totalBalance)
@@ -83,7 +83,7 @@ class HomeFragment: Fragment() {
         lifecycleScope.launch {
             budgetsViewModel.getTotalBudget()
             budgetsViewModel.getTotalBudgetLiveData().observe(viewLifecycleOwner){ totalBudg ->
-                fragmentHomeBinding.totalBudgetHome.text = "Total Budget: $%.2f".format(totalBudg)
+                fragmentHomeBinding.totalBudgetHome.text = "Total Budget: ${UtilitiesFunctions.formatNumber(totalBudg)}"
                 totalBudget = totalBudg
                 showPercentageSpent()
                 categoryBudgetsViewModel.getCategoryBudgets()

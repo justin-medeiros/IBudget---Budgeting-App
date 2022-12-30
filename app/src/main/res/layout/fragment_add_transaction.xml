@@ -84,6 +84,8 @@
                         android:background="@android:color/transparent"
                         android:fontFamily="@font/figerona_bold"
                         android:hint="0.00"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
                         android:inputType="numberDecimal"
                         android:textColor="@color/foreground_primary"
                         android:textColorHint="@color/foreground_primary_50"

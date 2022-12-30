@@ -231,4 +231,15 @@ object UtilitiesFunctions{
 
         return snackBar
     }
+
+    fun formatNumber(number: Float): String{
+        return if(number >= 1000000000){
+            "$%,.2fB".format(number / 1000000000.00)
+        }else if(number >= 1000000){
+            "$%,.2fM".format(number / 1000000.00)
+        } else{
+            "$%,.2f".format(number)
+        }
+    }
+
 }

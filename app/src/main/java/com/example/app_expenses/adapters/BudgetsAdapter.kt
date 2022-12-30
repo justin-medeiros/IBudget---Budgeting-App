@@ -40,7 +40,7 @@ class BudgetsAdapter(): RecyclerView.Adapter<BudgetsAdapter.ViewHolder>() {
         val categoryBudget: CategoryData = listOfCategoryBudgets[position]
         val category = UtilitiesFunctions.getCategoryEnum(categoryBudget.categoryName!!)
         holder.categoryMyBudgetsNameTitle.text = category?.categoryName
-        holder.categoryMyBudgetsAmount.text = "$%.2f".format(categoryBudget.totalAmount!!.toFloat())
+        holder.categoryMyBudgetsAmount.text = UtilitiesFunctions.formatNumber(categoryBudget.totalAmount!!.toFloat())
         holder.categoryMyBudgetsIcon.background = ContextCompat.getDrawable(context, category?.categoryIcon!!)
         holder.categoryMyBudgetsIcon.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white))
 

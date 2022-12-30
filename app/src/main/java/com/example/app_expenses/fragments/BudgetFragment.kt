@@ -48,7 +48,7 @@ class BudgetFragment: Fragment() {
         }
 
         myBudgetsViewModel.getTotalBudgetLiveData().observe(viewLifecycleOwner){ totalBudget ->
-            fragmentBudgetBinding.tvBudgetAmount.text = "$%.2f".format(totalBudget)
+            fragmentBudgetBinding.tvBudgetAmount.text = UtilitiesFunctions.formatNumber(totalBudget)
         }
 
         fragmentBudgetBinding.addNewBudgetButton.setOnClickListener {
