@@ -15,5 +15,9 @@
     <color name="greenCategory">#8BCC39</color>
     <color name="purpleCategory">#DB00FF</color>
     <color name="yellowCategory">#ECC437</color>
+    <color name="greenSuccessBackground">#628C57</color>
+    <color name="greenSuccessForeground">#235926</color>
+    <color name="redUnsuccessBackground">#8C5757</color>
+    <color name="redUnsuccessForeground">#592323</color>
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">@color/background_secondary</color>
 </resources>

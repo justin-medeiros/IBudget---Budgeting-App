@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -170,6 +171,49 @@ object UtilitiesFunctions{
             val params = snackbarView.layoutParams as FrameLayout.LayoutParams
             params.gravity = Gravity.TOP
             snackbarView.layoutParams = params
+        }
+
+        snackbarLayout.setBackgroundColor(Color.TRANSPARENT)
+        snackbarLayout.setPadding(0, 0, 0, 0)
+        snackbarLayout.addView(customView)
+
+        return snackBar
+    }
+
+    fun createSuccessSnackbar(myView: View, myText: String, myIcon: Drawable, duration: Int, context: Context, onTop: Boolean, isSuccess: Boolean): Snackbar{
+        val snackBar = Snackbar.make(myView, myText, duration)
+        val snackbarView = snackBar.view
+        val snackbarLayout = snackBar.view as SnackbarLayout
+
+        val customView = LayoutInflater.from(context).inflate(R.layout.custom_snackbar, null)
+
+        val snackIcon = customView.findViewById<ImageView>(R.id.snackbarIcon)
+        val snackText = customView.findViewById<TextView>(R.id.snackbarText)
+        val snackContainer = customView.findViewById<RelativeLayout>(R.id.snackbarContainer)
+
+        snackIcon.background = myIcon
+        snackText.text = myText
+
+        if(onTop){
+            val params = snackbarView.layoutParams as FrameLayout.LayoutParams
+            params.gravity = Gravity.TOP
+            snackbarView.layoutParams = params
+        }
+
+        if(isSuccess){
+            snackBar.setBackgroundTint(ContextCompat.getColor(context, R.color.greenSuccessBackground))
+            snackIcon.backgroundTintList = ColorStateList.valueOf(
+                ContextCompat.getColor(context, R.color.greenSuccessForeground))
+            snackText.setTextColor(ContextCompat.getColor(context, R.color.greenSuccessForeground))
+            snackContainer.backgroundTintList =  ColorStateList.valueOf(
+                ContextCompat.getColor(context, R.color.greenSuccessBackground))
+        } else{
+            snackBar.setBackgroundTint(ContextCompat.getColor(context, R.color.redUnsuccessBackground))
+            snackIcon.backgroundTintList = ColorStateList.valueOf(
+                ContextCompat.getColor(context, R.color.redUnsuccessForeground))
+            snackText.setTextColor(ContextCompat.getColor(context, R.color.redUnsuccessForeground))
+            snackContainer.backgroundTintList =  ColorStateList.valueOf(
+                ContextCompat.getColor(context, R.color.redUnsuccessBackground))
         }
 
         snackbarLayout.setBackgroundColor(Color.TRANSPARENT)

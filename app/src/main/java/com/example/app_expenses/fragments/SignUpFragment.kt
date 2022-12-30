@@ -20,6 +20,7 @@ import com.example.app_expenses.databinding.FragmentSignUpBinding
 import com.example.app_expenses.enums.SignUpEnum
 import com.example.app_expenses.utils.UtilitiesFunctions
 import com.example.app_expenses.viewModels.AuthViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class SignUpFragment: Fragment() {
     private lateinit var fragmentSignUpBinding: FragmentSignUpBinding
@@ -48,13 +49,15 @@ class SignUpFragment: Fragment() {
             progressBar.visibility = View.GONE
             when(userCreated){
                 SignUpEnum.USER_CREATED -> {
-                    Toast.makeText(context, "User has been registered successfully!", Toast.LENGTH_LONG).show()
+                    UtilitiesFunctions.createSuccessSnackbar(view, "User has been registered successfully!", ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)!!,
+                        Snackbar.LENGTH_LONG, requireContext(), true, true).show()
                     UtilitiesFunctions.replaceFragment(requireActivity(), LoginFragment(),
                         R.id.loginRelativeLayout, false)
                     authViewModel.signOut()
                 }
                 SignUpEnum.USER_NOT_CREATED ->{
-                    Toast.makeText(context, "Error. User not created. Try again", Toast.LENGTH_LONG).show()
+                    UtilitiesFunctions.createSuccessSnackbar(view, "Error. User not created. Try again", ContextCompat.getDrawable(requireContext(), R.drawable.ic_close_thick)!!,
+                        Snackbar.LENGTH_LONG, requireContext(), true, false).show()
                 }
                 SignUpEnum.EMAIL_TAKEN ->{
                     emailIsTaken()
@@ -76,6 +79,8 @@ class SignUpFragment: Fragment() {
             if(validateFields()){
                 userToDatabase()
             } else{
+                UtilitiesFunctions.createSuccessSnackbar(requireView(), "Error. User not created. Try again", ContextCompat.getDrawable(requireContext(), R.drawable.ic_close_thick)!!,
+                    Snackbar.LENGTH_LONG, requireContext(), true, false).show()
                 progressBar.visibility = View.GONE
             }
         }
@@ -188,7 +193,8 @@ class SignUpFragment: Fragment() {
     }
 
     private fun emailIsTaken(){
-        Toast.makeText(context, "Error. Email has been taken. Try again", Toast.LENGTH_LONG).show()
+        UtilitiesFunctions.createSuccessSnackbar(requireView(), "Error. User not created. Try again", ContextCompat.getDrawable(requireContext(), R.drawable.ic_close_thick)!!,
+            Snackbar.LENGTH_LONG, requireContext(), true, false).show()
         fragmentSignUpBinding.tvInvalidEmail.visibility = View.VISIBLE
         fragmentSignUpBinding.tvInvalidEmail.text = resources.getString(R.string.email_taken)
         fragmentSignUpBinding.inputLayoutEmail.boxBackgroundColor = ContextCompat.getColor(requireContext(), R.color.red)
