@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -35,6 +34,7 @@ class TransactionListFragment: Fragment() {
             if(transactionsList.isEmpty()){
                 fragmentTransactionListBinding.rvTransactionList.visibility = View.GONE
                 fragmentTransactionListBinding.tvRvNoTransactions.visibility = View.VISIBLE
+                fragmentTransactionListBinding.tvSelectToDeleteTransactionList.isEnabled = false
             } else{
                 myTransactionsListAdapter.addAllItems(transactionsList)
             }
@@ -57,15 +57,18 @@ class TransactionListFragment: Fragment() {
             myTransactionsListAdapter.addItem(transactionData!!, 0)
             fragmentTransactionListBinding.rvTransactionList.visibility = View.VISIBLE
             fragmentTransactionListBinding.tvRvNoTransactions.visibility = View.GONE
+            fragmentTransactionListBinding.tvSelectToDeleteTransactionList.isEnabled = true
         }
 
         transactionViewModel.numberOfTransactions.observe(viewLifecycleOwner){ numberOfTransactions ->
             if(numberOfTransactions > 0){
                 fragmentTransactionListBinding.rvTransactionList.visibility = View.VISIBLE
                 fragmentTransactionListBinding.tvRvNoTransactions.visibility = View.GONE
+                fragmentTransactionListBinding.tvSelectToDeleteTransactionList.isEnabled = true
             } else{
                 fragmentTransactionListBinding.rvTransactionList.visibility = View.GONE
                 fragmentTransactionListBinding.tvRvNoTransactions.visibility = View.VISIBLE
+                fragmentTransactionListBinding.tvSelectToDeleteTransactionList.isEnabled = false
             }
         }
 
