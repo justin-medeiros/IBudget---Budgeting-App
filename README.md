@@ -3,9 +3,12 @@
 IBudget is an android application designed to help students keep track 
 of their expenses and help them budget their money every month. 
 
-Developed the application in Kotlin and XML using Android Studio.
-
-<hr />
+## What was used to build the application
+* Kotlin
+* XML
+* Firebase (FirebaseAuth & NoSQL Realtime Database)
+* Android Jetpack Architecture
+* Android Studio
 
 ## Features
 * Set your monthly goals and keep track of your progress
@@ -14,10 +17,9 @@ Developed the application in Kotlin and XML using Android Studio.
 * Swipe to delete your budgets and select to delete your transactions
 * Create an occount or login to an existing account to access your savings from any device
 
-And many more!
-
-<hr />
-
 ## Libraries Used
 * <a href="https://github.com/PhilJay/MPAndroidChart">MPAndroidChart</a>
 * <a href="https://github.com/square/picasso">Picasso</a>
+* <a href="https://developer.android.com/topic/libraries/data-binding">Data Binding</a>
+
+
