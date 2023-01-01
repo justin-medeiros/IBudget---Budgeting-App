@@ -1,15 +1,13 @@
 # IBudget
 
-
-# <p align="center">IBudget</p>
-
 IBudget is an android application designed to help students keep track 
 of their expenses and help them budget their money every month. 
 
 Developed the application in Kotlin and XML using Android Studio.
 
 <hr />
-# <p align="center">Features</p>
+# Features
+
 * Set your monthly goals and keep track of your progress
 * Visualize your savings through pie charts
 * Add budgets and transactions to control your spending
