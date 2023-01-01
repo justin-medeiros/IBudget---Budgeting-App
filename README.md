@@ -6,8 +6,8 @@ of their expenses and help them budget their money every month.
 Developed the application in Kotlin and XML using Android Studio.
 
 <hr />
-## Features
 
+## Features
 * Set your monthly goals and keep track of your progress
 * Visualize your savings through pie charts
 * Add monthly budgets and transactions to control your spending
