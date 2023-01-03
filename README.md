@@ -3,6 +3,8 @@
 IBudget is an android application designed to help students keep track 
 of their expenses and help them budget their money every month. 
 
+<br/>
+
 ![Ibudget-picture](https://user-images.githubusercontent.com/81980956/210410482-26a8fb3b-af49-45fd-a4ab-6b6da0e2540c.png)
 
 
